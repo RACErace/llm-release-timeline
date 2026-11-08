@@ -7,6 +7,48 @@ import pad
 
 
 class PadMaintainerTests(unittest.TestCase):
+    def test_associated_pr_hold_changes_issue_revision(self):
+        item = {"number": 5, "title": "candidate", "body": "", "state": "open",
+                "user": {"login": "publisher"}, "html_url": "issue", "labels": []}
+        pull = {"number": 7, "state": "OPEN", "url": "pull", "headRefOid": "head",
+                "repository": {"nameWithOwner": pad.agent.REPO},
+                "labels": {"nodes": [], "pageInfo": {"hasNextPage": False}}}
+        with (patch.object(pad.agent, "github", return_value=item),
+              patch.object(pad, "pages", return_value=[]),
+              patch.object(pad, "connection", return_value=[pull])):
+            clear = pad.inspect(5, "backup")
+            pull["labels"]["nodes"] = [{"name": "needs-human"}]
+            held = pad.inspect(5, "backup")
+            self.assertEqual(held["linked_prs"][0]["labels"], ["needs-human"])
+            self.assertNotEqual(held["revision"], clear["revision"])
+            pull["labels"]["nodes"] = []
+            self.assertEqual(pad.inspect(5, "backup")["revision"], clear["revision"])
+
+    def test_refresh_hint_requires_own_pr_and_exact_local_closing_issue(self):
+        repo = {"full_name": pad.agent.REPO}
+        issue = {"number": 5, "repository": {"nameWithOwner": pad.agent.REPO}}
+        pr = {"state": "open", "user": {"login": "backup"},
+              "base": {"repo": repo, "ref": "main"},
+              "head": {"repo": repo, "ref": "atlas-agent/issue-5", "sha": "head"}}
+        for bad_pr, links in [
+            (dict(pr, user={"login":"other"}), [issue]),
+            (dict(pr, head={**pr["head"], "repo":{"full_name":"fork/repo"}}), [issue]),
+            (dict(pr, base={**pr["base"], "ref":"dev"}), [issue]),
+            (dict(pr, head={**pr["head"], "ref":"submission/issue-5"}), [issue]),
+            (pr, [dict(issue, repository={"nameWithOwner":"other/repo"})]),
+            (pr, [dict(issue, number=3)]), (pr, [issue, issue]),
+        ]:
+            with self.subTest(pr=bad_pr, links=links), patch.object(pad.agent, "github") as api:
+                self.assertIsNone(pad.maintenance_branch(bad_pr, "backup", links))
+                api.assert_not_called()
+        commit = {"message":"Add verified release from issue #5", "parents":[{"sha":"old"}]}
+        with patch.object(pad.agent, "github", side_effect=[commit, {"object":{"sha":"new"}}]):
+            self.assertEqual(pad.maintenance_branch(pr, "backup", [issue]), {
+                "issue":5, "based_on":"old", "current_main":"new", "needs_refresh":True,
+            })
+        with patch.object(pad.agent, "github", return_value={**commit, "message":"manual edit"}):
+            self.assertIsNone(pad.maintenance_branch(pr, "backup", [issue]))
+
     def test_wrong_and_owner_identity_never_reach_repository(self):
         for actual in ("different", "RACErace"):
             with (

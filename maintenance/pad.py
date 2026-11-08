@@ -93,22 +93,62 @@ def connection(number, target, field, select, extra=""):
 
 
 def linked_prs(number):
-    return [
-        {
-            "number": p["number"],
-            "url": p["url"],
-            "state": p["state"].lower(),
-            "head": p["headRefOid"],
-        }
-        for p in connection(
-            number,
-            "issue",
-            "closedByPullRequestsReferences",
-            "number url state headRefOid repository{nameWithOwner}",
-            ",includeClosedPrs:true",
+    pulls = connection(
+        number,
+        "issue",
+        "closedByPullRequestsReferences",
+        "number url state headRefOid repository{nameWithOwner} "
+        "labels(first:100){nodes{name} pageInfo{hasNextPage}}",
+        ",includeClosedPrs:true",
+    )
+    result = []
+    for p in pulls:
+        if p["repository"]["nameWithOwner"] != agent.REPO:
+            continue
+        labels = p["labels"]["nodes"]
+        if p["labels"]["pageInfo"]["hasNextPage"]:
+            labels = pages(f"issues/{p['number']}/labels")
+        result.append(
+            {
+                "number": p["number"],
+                "url": p["url"],
+                "state": p["state"].lower(),
+                "head": p["headRefOid"],
+                "labels": sorted(label["name"] for label in labels),
+            }
         )
-        if p["repository"]["nameWithOwner"] == agent.REPO
-    ]
+    return result
+
+
+def maintenance_branch(pr, login, linked_issues):
+    """Describe open, host-generated branches. All mutation checks still run afresh."""
+    head, base = pr["head"], pr["base"]
+    match = re.fullmatch(re.escape(agent.BRANCH) + r"([1-9]\d*)", head["ref"])
+    if (
+        not match
+        or pr["state"] != "open"
+        or pr["user"]["login"].casefold() != login.casefold()
+        or (head.get("repo") or {}).get("full_name") != agent.REPO
+        or base["repo"]["full_name"] != agent.REPO
+        or base["ref"] != agent.MAIN
+        or len(linked_issues) != 1
+    ):
+        return None
+    issue = int(match[1])
+    linked = linked_issues[0]
+    if linked["number"] != issue or linked["repository"]["nameWithOwner"] != agent.REPO:
+        return None
+    commit = agent.github("git/commits/" + head["sha"])
+    if commit["message"] != agent.proposal_message(issue) or not commit["parents"]:
+        return None
+    based_on = commit["parents"][0]["sha"]
+    current = agent.github("git/ref/heads/" + agent.MAIN)["object"]["sha"]
+    return {
+        "issue": issue,
+        "based_on": based_on,
+        "current_main": current,
+        "needs_refresh": based_on != current,
+    }
 
 
 def threads(number):
@@ -244,6 +284,9 @@ def inspect(number, login, query="", page=1):
             "pullRequest",
             "closingIssuesReferences",
             "number url repository{nameWithOwner}",
+        )
+        result["pr"]["maintenance_branch"] = maintenance_branch(
+            p, login, result["linked_issues"]
         )
         groups.update(
             reviews=notes(pages(f"pulls/{number}/reviews")),

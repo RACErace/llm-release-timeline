@@ -155,6 +155,10 @@ def check_reviews(state):
         raise ValueError("有待处理的审查意见或必需的审查")
 
 
+def proposal_message(number):
+    return f"Add verified release from issue #{number}"
+
+
 def propose(number, row):
     candidate(number)
     branch = BRANCH + str(number)
@@ -173,7 +177,7 @@ def propose(number, row):
     base = github("git/ref/heads/" + MAIN)["object"]["sha"]
     refs = github("git/matching-refs/heads/" + branch)
     old = next((r["object"]["sha"] for r in refs if r["ref"] == ref), None)
-    message = f"Add verified release from issue #{number}"
+    message = proposal_message(number)
     if old:
         head = github("git/commits/" + old)
         if head["message"] != message or not head["parents"]:
