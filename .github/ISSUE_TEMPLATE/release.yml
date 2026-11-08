@@ -1,0 +1,23 @@
+name: 补充模型发布记录
+description: 提交已找到一手出处的发布事件，或补上采集遗漏的团队。
+title: "待核实 · "
+labels: [release-candidate]
+body:
+  - type: textarea
+    id: record
+    attributes:
+      label: 发布记录
+      description: 核对原始公告或权重页面，填写日期、事件类型和中文说明；同一模型的不同发布阶段可分别提交。
+      render: json
+      value: |
+        {
+          "date": "",
+          "org": "",
+          "name": "",
+          "kind": "发布",
+          "note": "",
+          "url": "",
+          "source": "发布方原文"
+        }
+    validations:
+      required: true

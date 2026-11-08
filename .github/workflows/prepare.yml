@@ -1,0 +1,43 @@
+name: 准备收录
+on:
+  issues:
+    types: [labeled]
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: '含已核实 JSON 记录的 Issue 编号'
+        required: true
+        type: string
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: prepare-issue-${{ github.event.issue.number || inputs.issue }}
+  cancel-in-progress: false
+jobs:
+  prepare:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || github.event.label.name == 'prepare-release')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE: ${{ github.event.issue.number || inputs.issue }}
+    steps:
+      - name: 核对操作人权限
+        run: |
+          permission=$(gh api "repos/$GITHUB_REPOSITORY/collaborators/$GITHUB_ACTOR/permission" --jq .permission)
+          case "$permission" in admin|maintain|write) ;; *) echo '需要仓库写入权限'; exit 1 ;; esac
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: maintenance/requirements.txt
+      - run: python -m pip install -r maintenance/requirements.txt
+      - name: 生成可审阅的分支并写回 Issue
+        run: |
+          gh auth setup-git
+          python maintenance/catalog.py prepare --issue "$ISSUE"

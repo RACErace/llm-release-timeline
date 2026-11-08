@@ -1,0 +1,36 @@
+name: 采集模型发布消息
+on:
+  schedule:
+    - cron: '17,47 * * * *'
+  workflow_dispatch:
+    inputs:
+      model:
+        description: '选填。人工补查一个已登记发布方的 Hugging Face 模型，格式为 组织/模型'
+        required: false
+        type: string
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: release-collector
+  cancel-in-progress: false
+jobs:
+  collect:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: maintenance/requirements.txt
+      - run: python -m pip install -r maintenance/requirements.txt
+      - name: 采集、保存进度并发送候选
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVIEW_MODEL: ${{ inputs.model }}
+        run: bash maintenance/run-collector.sh
