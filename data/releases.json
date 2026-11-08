@@ -6364,6 +6364,16 @@
     "source": "NVIDIA 发布公告"
   },
   {
+    "date": "2026-10-15",
+    "org": "G42 Inception",
+    "name": "Jais 3",
+    "kind": "开放权重",
+    "note": "MBZUAI 的基础模型研究所与 Inception、Cerebras 合作，开放六个阿拉伯语模型的权重，规模从 0.9B 到 375B，采用 Apache 2.0 许可。",
+    "url": "https://ifm.ai/blog/jais3/",
+    "source": "MBZUAI IFM 发布公告",
+    "url2": "https://huggingface.co/inception42/Jais-3-3.7B"
+  },
+  {
     "date": "2026-10-17",
     "org": "DeepSeek",
     "name": "DeepSeek-V4.1-Flash-1017",
