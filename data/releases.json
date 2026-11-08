@@ -6471,6 +6471,16 @@
     "source": "OpenAI API 更新记录"
   },
   {
+    "date": "2026-10-30",
+    "org": "商汤科技",
+    "name": "SenseNova-Loop-9B-Preview",
+    "kind": "开放权重",
+    "note": "商汤公开该循环多模态预览模型的权重，支持长上下文和智能体任务。",
+    "url": "https://huggingface.co/sensenova/SenseNova-Loop-9B-Preview",
+    "source": "官方模型卡与权重",
+    "url2": "https://github.com/OpenSenseNova/SenseNova-Loop/blob/main/README_CN.md"
+  },
+  {
     "date": "2026-11-02",
     "org": "美团",
     "name": "LongCat-2.5",
