@@ -180,7 +180,9 @@ def feed_items(source, raw):
                 and not re.search(source["include"], text, re.IGNORECASE)
             ):
                 continue
-            if RETIRED.search(part) or not LAUNCH.search(text):
+            if RETIRED.search(part) or (
+                not source.get("discovery") and not LAUNCH.search(text)
+            ):
                 continue
             if source["id"] in {"claude", "vertex"} and not re.search(
                 r"(?:launch|releas|introduc|announc)\w*\s+(?:the\s+)?(?:Claude|Gemini|Gemma)\b|"
@@ -345,6 +347,7 @@ def hub_items(source, since):
                 return
             item = hub_signal(source, row)
             if item:
+                item["upstream_updated"] = updated
                 yield item
         if not since:
             return

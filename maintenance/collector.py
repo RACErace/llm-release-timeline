@@ -87,16 +87,26 @@ def report(message):
 def accept_snapshot(state, source, snapshot, checked, records):
     old = state["sources"].get(source["id"])
     seen = set(old["seen"]) if old else set()
+    baseline = old.get("baseline", old["checked"]) if old else checked
     added = 0
     if old:
         for ident, item in snapshot.items():
-            if ident in seen or already_catalogued(item, records):
+            if ident in seen:
+                continue
+            # A busy Hub may return older items on another page of the overlap window.
+            updated = item.get("upstream_updated")
+            if updated and datetime.fromisoformat(updated) <= datetime.fromisoformat(
+                baseline
+            ):
+                continue
+            if already_catalogued(item, records):
                 continue
             group = event_id(item)
             state["pending"].setdefault(group, {})[ident] = item
             added += 1
     state["sources"][source["id"]] = {
         "checked": checked,
+        "baseline": baseline,
         "seen": sorted(seen | snapshot.keys()),
     }
     return added

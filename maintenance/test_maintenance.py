@@ -22,6 +22,21 @@ def weight(channel, name="Test-7B"):
 
 
 class CollectorTests(unittest.TestCase):
+    def test_old_weight_on_second_page_of_first_incremental_scan(self):
+        initial = "2025-02-02T12:00:00+00:00"
+        state = {"sources": {"hf": {"checked": initial, "seen": []}}, "pending": {}}
+        old = dict(weight("hf", "Older"), upstream_updated="2025-02-02T11:59:00Z")
+        new = dict(weight("hf", "New"), upstream_updated="2025-02-02T12:02:00Z")
+        count = collector.accept_snapshot(
+            state,
+            {"id": "hf"},
+            {old["id"]: old, new["id"]: new},
+            "2025-02-02T12:30:00+00:00",
+            [],
+        )
+        self.assertEqual(count, 1)
+        self.assertEqual(set(state["pending"]), {collector.event_id(new)})
+
     def test_baseline_cross_source_evidence_and_later_stage(self):
         with tempfile.TemporaryDirectory() as tmp:
             state = collector.state_at(Path(tmp) / "state.json")
