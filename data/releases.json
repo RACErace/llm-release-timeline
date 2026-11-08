@@ -4617,6 +4617,16 @@
     "source": "Mistral 发布公告"
   },
   {
+    "date": "2025-12-09",
+    "org": "G42 Inception",
+    "name": "Jais-2-70B-Chat",
+    "kind": "受限开放",
+    "note": "G42 Inception 与 MBZUAI、Cerebras 联合发布 Jais 2 家族（8B 与 70B），70B 对话权重以 Apache-2.0 许可在 Hugging Face 开放，仓库需同意共享联系方式后下载；同日上线网页与 iOS、Android 聊天应用。",
+    "url": "https://www.cerebras.ai/blog/jais2",
+    "source": "Cerebras 联合发布公告",
+    "url2": "https://huggingface.co/inception42/Jais-2-70B-Chat"
+  },
+  {
     "date": "2025-12-10",
     "org": "蚂蚁集团",
     "name": "LLaDA 2.0",
