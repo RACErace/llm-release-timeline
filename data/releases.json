@@ -2370,6 +2370,16 @@
     "source": "Qwen 团队发布日志"
   },
   {
+    "date": "2024-08-12",
+    "kind": "开放权重",
+    "name": "Falcon Mamba 7B",
+    "note": "TII 发布 Falcon 系列首款状态空间模型 Falcon Mamba 7B，采用纯 Mamba 架构并加 RMS 归一化；7B 基座与指令版权重在 Hugging Face 开放，采用以 Apache 2.0 为基础的 TII Falcon 许可证（附可接受使用政策）。",
+    "org": "TII",
+    "source": "ATRC / TII 发布公告",
+    "url": "https://www.atrc.gov.ae/news/uaes-technology-innovation-institute-revolutionizes-ai-language-models-new-architecture",
+    "url2": "https://huggingface.co/tiiuae/falcon-mamba-7b"
+  },
+  {
     "date": "2024-08-13",
     "org": "xAI",
     "name": "Grok-2 / Grok-2 mini",
