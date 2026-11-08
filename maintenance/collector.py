@@ -188,10 +188,10 @@ def issue_body(group, items):
     }
     excerpt = safe_text(first["excerpt"])
     return (
-        f"<!-- atlas-candidate:{group} -->\n这是一条待核实的公开消息。请打开原文核对模型名、发布阶段及事件日期，补写一句中文说明。\n\n"
+        f"<!-- atlas-candidate:{group} -->\n待核实的发布线索：\n\n"
         + "\n".join(evidence_text(x) for x in items)
-        + (f"\n\n原文片段：{excerpt}" if excerpt else "")
-        + "\n\n维护 Agent 会核实原文并处理收录 PR。你可以在评论里补充来源，或添加 `needs-human` 暂停自动处理。手动收录时可编辑下方 JSON，再添加 `prepare-release` 生成分支。\n\n"
+        + (f"\n\n{excerpt}" if excerpt else "")
+        + "\n\n欢迎补充能确认模型名称、发布日期和开放范围的一手来源。\n\n"
         + "```json\n"
         + json.dumps(proposal, ensure_ascii=False, indent=2).replace("`", "\\u0060")
         + "\n```"

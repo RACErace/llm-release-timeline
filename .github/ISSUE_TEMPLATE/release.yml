@@ -1,5 +1,5 @@
 name: 补充模型发布记录
-description: 提交已找到一手出处的发布事件，或补上采集遗漏的团队。
+description: 提交有一手来源的模型发布事件。
 title: "待核实 · "
 labels: [release-candidate]
 body:

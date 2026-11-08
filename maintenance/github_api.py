@@ -1,4 +1,4 @@
-"""Shared GitHub CLI transport for the collector and release maintainer."""
+"""GitHub CLI transport for release collection."""
 
 import json
 import subprocess
