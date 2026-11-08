@@ -36,13 +36,42 @@ class AgentTests(unittest.TestCase):
 
     def test_whole_tree_mismatch_rejects_extra_code_or_metadata(self):
         html = '<time id="updated" datetime="2024-03-01">2024.03.01</time>'
+        row = record("B", "2024-02-01")
         head = {"sha": "reviewed", "tree": {"sha": "changed-mode-or-extra-file"}}
         with (
-            patch.object(agent, "contents", return_value=html),
+            patch.object(agent, "contents", side_effect=[json.dumps([row]), html]),
             patch.object(agent, "release_tree", return_value="one-approved-entry"),
             self.assertRaisesRegex(ValueError, "完整文件树"),
         ):
-            agent.verify_tree("main", head, record("B", "2024-02-01"))
+            agent.verify_tree("main", head, row)
+
+    def test_verify_tree_accepts_reordered_receipt_but_checks_exact_fields(self):
+        row = record("B", "2024-02-01")
+        restored = dict(sorted(row.items()))
+        self.assertNotEqual(list(row), list(restored))
+        html = '<time id="updated" datetime="2024-03-01">2024.03.01</time>'
+        head = {"sha": "reviewed", "tree": {"sha": "original"}}
+
+        def build(base, approved, stamp):
+            self.assertEqual(
+                (base, list(approved.items()), stamp),
+                ("main", list(row.items()), "2024-03-01"),
+            )
+            return "original"
+
+        with (
+            patch.object(agent, "contents", side_effect=[json.dumps([row]), html]),
+            patch.object(agent, "release_tree", side_effect=build),
+        ):
+            authenticated = agent.verify_tree("main", head, restored)
+            self.assertEqual(list(authenticated.items()), list(row.items()))
+        for changed in ([dict(row, note="not the reviewed text")], [row, row]):
+            with (
+                self.subTest(changed=changed),
+                patch.object(agent, "contents", return_value=json.dumps(changed)),
+                self.assertRaisesRegex(ValueError, "已核实字段"),
+            ):
+                agent.verify_tree("main", head, restored)
 
     def test_ci_must_belong_to_pr_and_latest_attempt_must_pass(self):
         pr = {"number": 5, "head": {"sha": "reviewed"}}

@@ -114,11 +114,21 @@ def release_tree(base_sha, row, stamp):
 
 
 def verify_tree(base_sha, head, row):
+    # Tool calls and persisted JSON may reorder the reviewed record's keys.
+    # Recover its presentation from the PR only after every field matches.
+    entries = json.loads(contents(DATA, head["sha"]))
+    if not isinstance(entries, list):
+        raise ValueError("PR 中的发布记录列表无效")
+    matches = [entry for entry in entries if entry == row]
+    if len(matches) != 1:
+        raise ValueError("PR 须包含且只包含一条与已核实字段完全相同的记录")
+    proposed = matches[0]
     stamp = stamp_of(contents(INDEX, head["sha"]))
-    if head["tree"]["sha"] != release_tree(base_sha, row, stamp):
+    if head["tree"]["sha"] != release_tree(base_sha, proposed, stamp):
         raise ValueError(
             "PR 与当前 main 加入这一条核实记录后的完整文件树不同，请检查变更或更新分支"
         )
+    return proposed
 
 
 def open_pr_state(pr):
@@ -169,7 +179,7 @@ def propose(number, row):
         if head["message"] != message or not head["parents"]:
             raise ValueError("维护分支已有其他提交，请人工检查")
         previous_base = head["parents"][0]["sha"]
-        verify_tree(previous_base, head, row)
+        row = verify_tree(previous_base, head, row)
     if not old or previous_base != base:
         tree = release_tree(base, row, catalog.today())
         # Keeping the old head as a parent permits a normal fast-forward update.
