@@ -161,8 +161,10 @@ def recheck(path, model):
     report("已从官方模型库读取指定候选：" + item["name"])
 
 
-def api(endpoint, data=None, paginate=False):
+def api(endpoint, data=None, paginate=False, *, method=None):
     cmd = ["gh", "api", endpoint]
+    if method:
+        cmd.extend(["--method", method])
     if paginate:
         cmd.extend(["--paginate", "--slurp"])
     if data is not None:
@@ -212,7 +214,7 @@ def issue_body(group, items):
         f"<!-- atlas-candidate:{group} -->\n这是一条待核实的公开消息。请打开原文核对模型名、发布阶段及事件日期，补写一句中文说明。\n\n"
         + "\n".join(evidence_text(x) for x in items)
         + (f"\n\n原文片段：{excerpt}" if excerpt else "")
-        + "\n\n编辑下方 JSON 后，添加 `prepare-release` 标签即可生成收录分支。对应的 PR 合并后网页会更新。已有记录或无关消息可直接关闭。\n\n"
+        + "\n\n维护 Agent 会核实原文并处理收录 PR。你可以在评论里补充来源，或添加 `needs-human` 暂停自动处理。手动收录时可编辑下方 JSON，再添加 `prepare-release` 生成分支。\n\n"
         + "```json\n"
         + json.dumps(proposal, ensure_ascii=False, indent=2).replace("`", "\\u0060")
         + "\n```"

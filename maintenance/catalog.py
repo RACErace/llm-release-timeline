@@ -111,6 +111,10 @@ def incorporate(rows, row):
     return result
 
 
+def release_document(rows):
+    return json.dumps(rows, ensure_ascii=False, indent=2) + "\n"
+
+
 def render_date(html, stamp):
     if len(STAMP.findall(html)) != 1:
         raise ValueError("首页应有一个资料整理日期")
@@ -165,7 +169,7 @@ def prepare(number, repo):
     ref = "refs/heads/" + branch
     if not cmd("git", "ls-remote", "--heads", "origin", ref):
         DATA.write_text(
-            json.dumps(rows, ensure_ascii=False, indent=2) + "\n",
+            release_document(rows),
             encoding="utf-8",
             newline="\n",
         )

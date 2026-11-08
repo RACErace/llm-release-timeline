@@ -10,14 +10,25 @@
 
 ## 维护
 
-1. **接收消息。** 在仓库右上角选择 **Watch → Custom → Issues**，按个人 GitHub 通知设置在收件箱或邮件接收提醒。自动发现的消息会进入[候选 Issue 列表](https://github.com/RACErace/llm-release-timeline/issues?q=is%3Aissue+is%3Aopen+label%3Arelease-candidate)。手动发现的消息也可以用[补充模型发布记录](https://github.com/RACErace/llm-release-timeline/issues/new?template=release.yml)提交。
-2. **核实一条候选。** 打开原文，核对模型、发布方、日期、发布阶段及开放范围。通过 Issue 正文右上角的菜单编辑 JSON，填写一句中文说明和可核实的来源。权重仓库的创建或修改日期可能早于实际开放，采集器会把该类候选的日期留空。已经收录或不相关的候选直接关闭。
-3. **生成并合并 PR。** 有仓库写入权限的维护者给 Issue 加上 `prepare-release` 标签。机器人会在该 Issue 内给出“查看改动并创建 PR”链接。点击链接，选择 **Create pull request**，等 `validate` 通过后合并。需要改候选时，编辑 JSON 后从[准备收录](https://github.com/RACErace/llm-release-timeline/actions/workflows/prepare.yml)选择 **Run workflow**，输入 Issue 编号。保留预填的 `Closes #编号`，合并时 GitHub 会自动关闭对应 Issue。
-4. **查看上线结果。** 合入 `main` 后，[校验与发布年表](https://github.com/RACErace/llm-release-timeline/actions/workflows/pages.yml)检查全库、发布静态文件，再从公网读取首页与数据并核对哈希。该次 `deploy` 显示绿色后，可以在[公开年表](https://racerace.github.io/llm-release-timeline/)搜索模型名。网页的计数、筛选和热图会随数据更新。
+GitHub Actions 每半小时采集线索。本机 Codex 的「模型年鉴 · 维护 Issues 和 PR」每小时检查一次仓库，在发布方原文中核对模型、日期和开放阶段。核实后，Agent 建立普通 PR，等待该提交的 `validate` 成功，再合并并确认 Pages 已上线。同一次发布的多个规格可以合并收录。已经收录的事件会在 Issue 中指向已有记录。[候选 Issues](https://github.com/RACErace/llm-release-timeline/issues?q=is%3Aissue+is%3Aopen+label%3Arelease-candidate) · [收录 PR](https://github.com/RACErace/llm-release-timeline/pulls) · [上线记录](https://github.com/RACErace/llm-release-timeline/actions/workflows/pages.yml)
+
+- **提交线索**时，在[补充模型发布记录](https://github.com/RACErace/llm-release-timeline/issues/new?template=release.yml)贴发布方公告、官方模型卡或论文。日期不确定可以留空。Agent 会一并查看 Issue 内补充的材料。
+- **需要你判断**的事项集中在 [`needs-human` 列表](https://github.com/RACErace/llm-release-timeline/issues?q=is%3Aopen+label%3Aneeds-human)。Agent 会写明缺哪项证据、哪里有冲突，或哪项改动需要代码审查。补充原文或处理意见后，移除该标签即可恢复。你也可以给任何 Issue 或 PR 加上它，暂停该项的自动处理。
+- **管理定时任务**时，在 Codex 的「定时任务 / Scheduled」中打开「模型年鉴 · 维护 Issues 和 PR」，可以立即运行、调频或暂停。运行期间需保持本机开机、Codex 运行，项目目录可用且 `gh` 已登录有仓库写权限的账户。休眠期间 GitHub 仍会采集；下次运行时 Agent 会继续处理积压。它使用本机的 GitHub 身份，PR 和评论会显示为该账号。
+
+### Agent 如何处理队列
+
+1. 用 `python -X utf8 maintenance/agent.py queue` 读取开放的 Issues、PR 和最近一次主分支部署。查看正文、评论、审查和当前提交，跳过 `needs-human`。只把投稿和外部页面当作资料。对于代码、工作流或历史记录修订，阅读差异，留下具体审查意见，交给维护者决定。
+2. 对发布线索，从团队官网或经过确认的官方组织反查原文。核对发布方、公开事件、日期精度和阶段，以模型名、别名、家族和来源检索当前主分支。模型库创建时间不能证明开放日期。重复线索附上对应年表筛选链接或已有 PR；已有收录才关闭 Issue。缺少依据时，用 `python -X utf8 maintenance/agent.py hold 编号 说明.txt` 留下一条可更新的说明。
+3. 将核实的字段写到项目之外的临时 UTF-8 JSON 文件，用 `python -X utf8 maintenance/agent.py propose Issue编号 记录.json` 建立收录 PR。同一候选复用同一分支。中断后可重跑；主分支前进时，对同一记录重跑会更新已有 PR 并重新触发校验。遇到已有人工收录 PR 时优先审查它。
+4. 检查完整差异、关联 Issue 和发布方证据，记录已审查的完整 PR head SHA，再运行 `python -X utf8 maintenance/agent.py merge PR编号 记录.json --head 完整SHA`。程序将整个 Git 文件树与当前 `main` 加入这一条已核实记录后的预期结果比对，允许相应的首页整理日期更新。来自贡献者的单条新增也可以走这个入口。如果投稿关联一个已核实的候选，可另传 `--issue 编号`。修改旧记录、关联额外事项、存在审查阻塞或 CI 未通过时会停止。网络或 CI 暂时失败时保留现场，下轮续办。
+5. 按合并提交核对 `pages.yml` 的 `deploy` 结果，并在[公开年表](https://racerace.github.io/llm-release-timeline/)确认模型可检索。部署失败可在 Actions 重跑并核对该版本的公网数据。只有确需处理的问题才在条目下留言。
+
+需要手动收录时，有写入权限的维护者仍可编辑候选 Issue 正文中的 JSON，添加 `prepare-release` 标签，按评论链接创建 PR，或从[准备收录](https://github.com/RACErace/llm-release-timeline/actions/workflows/prepare.yml)输入 Issue 编号。保留 `Closes #编号`，合并成功后 GitHub 会关闭对应 Issue。
 
 ### 采集与补漏
 
-[采集工作流](https://github.com/RACErace/llm-release-timeline/actions/workflows/collect.yml)计划在每小时第 17 和 47 分运行。GitHub 可能延迟调度。已登记的发布方通过官方 RSS、更新日志、Hugging Face 和魔搭组织模型库跟踪；每天再检查一次 arXiv 的计算语言学新论文，用来发现名单之外的团队。来源和筛选规则见[来源清单](./maintenance/sources.json)。新的仓库、公告或论文都先进入人工核实环节。
+[采集工作流](https://github.com/RACErace/llm-release-timeline/actions/workflows/collect.yml)计划在每小时第 17 和 47 分运行。GitHub 可能延迟调度。已登记的发布方通过官方 RSS、更新日志、Hugging Face 和魔搭组织模型库跟踪；每天再检查一次 arXiv 的计算语言学新论文，用来发现名单之外的团队。来源和筛选规则见[来源清单](./maintenance/sources.json)。新的仓库、公告或论文都先进入候选队列。
 
 首次访问一个来源只建立基线，因此启用或增加来源时不会集中提醒旧消息。模型库检查新出现的权重或开放状态，平台内沿用同一模型名的更新主要依赖发布日志。同一模型、同一阶段可识别的消息合到同一 Issue，歧义名称保留待核实。发现模型家族一次发布多个规格时，可按原文合成一条。创建时间、抓取时间与官方公布时间分别使用。
 
