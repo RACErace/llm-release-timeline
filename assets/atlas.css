@@ -23,7 +23,7 @@ button:focus-visible, select:focus-visible, a:focus-visible, input:focus-visible
 input, select, button { border-radius: 0; }
 .sr-only, .skip:not(:focus) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .skip:focus { position: absolute; top: 8px; left: 8px; z-index: 10; padding: 8px 15px; background: var(--paper); }
-.wrap { width: min(1260px, calc(100% - clamp(48px, 10vw, 168px))); margin: 0 auto; }
+.wrap { margin: 0 clamp(18px, 2.25vw, 68px); }
 .masthead { border-bottom: 1px solid var(--rule); }
 .mast-inner { display: flex; justify-content: space-between; align-items: center; min-height: 68px; gap: 12px; }
 .wordmark { display: inline-flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 750; letter-spacing: .09em; }
@@ -157,9 +157,30 @@ dialog::backdrop { background: #15251ec4; }
 dialog h3 { font-size: 15px; margin: 16px 0 4px; }
 dialog p { color: #48564c; font-size: 14px; line-height: 1.8; }
 .dialog-links { border-top: 1px solid var(--rule); margin-top: 19px; padding-top: 14px; display: flex; flex-wrap: wrap; gap: 12px 22px; color: var(--red); font-size: 13px; }
-@media (min-width: 1500px) { .hero { grid-template-columns: .92fr 1fr; } }
+@media (min-width: 1380px) {
+  .hero { grid-template-columns: .94fr 1.06fr; gap: clamp(36px, 3.5vw, 105px); }
+  .archive-grid { grid-template-columns: clamp(138px, 9vw, 192px) minmax(0,1fr); gap: clamp(26px, 2.1vw, 62px); }
+  .events { display: grid; grid-template-columns: repeat(auto-fill,minmax(clamp(520px,32vw,650px),1fr)); column-gap: clamp(24px,2vw,60px); border-top: 1px solid var(--rule); }
+  .month-heading { margin-bottom: 10px; }
+  .entry { border-bottom: 1px dotted #c5cbbe; }
+  .entry + .entry .entry-body::after { display: none; }
+}
+@media (min-width: 1600px) {
+  .hero { grid-template-columns: 1fr 1.04fr; padding-block: clamp(41px, 2.9vw, 67px); }
+  h1 { font-size: clamp(75px, 4.6vw, 124px); margin-block: 23px 19px; }
+  h1 br { display: none; }
+  .intro { max-width: 54ch; font-size: clamp(16px, .9vw, 21px); }
+  .stats { margin-top: 28px; }
+  .stats dd { font-size: clamp(35px, 2.15vw, 49px); }
+  .stats div { padding-inline: clamp(24px, 2.1vw, 56px); }
+  .stats div:first-child { padding-left: 0; }
+  #matrix { gap: 5px; grid-template-columns: 42px repeat(12,minmax(0,1fr)); }
+  .cell { height: clamp(15px, .84vw, 22px); }
+  .axis { font-size: 11px; }
+  .axis.year { font-size: 12px; }
+}
 @media (max-width: 870px) {
-  .wrap { width: calc(100% - 48px); }
+  .wrap { margin-inline: 22px; }
   .hero { grid-template-columns: .85fr 1fr; gap: 24px; }
   h1 { font-size: clamp(52px, 6.8vw, 64px); }
   .density { padding: 20px 16px; }
@@ -169,7 +190,7 @@ dialog p { color: #48564c; font-size: 14px; line-height: 1.8; }
   .archive-grid { gap: 20px; }
 }
 @media (max-width: 690px) {
-  .wrap { width: calc(100% - 36px); }
+  .wrap { margin-inline: 18px; }
   .mast-inner { min-height: 57px; }
   .masthead nav { gap: 15px; font-size: 12px; }
   .nav-repo { padding-left: 12px; }
@@ -207,7 +228,8 @@ dialog p { color: #48564c; font-size: 14px; line-height: 1.8; }
   .month-heading { margin-top: 17px; }
 }
 @media (max-width: 375px) {
-  .wrap { width: calc(100% - 26px); }
+  .wrap { margin-inline: 13px; }
+  h1 { font-size: clamp(34px,10.25vw,39px); }
   .masthead nav { gap: 10px; }
   .nav-repo { padding-left: 8px; }
   .chart-bottom { font-size: 10px; }
