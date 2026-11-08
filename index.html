@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f8f6ef">
+  <meta name="description" content="按日期、机构和发布阶段探索大语言模型的发展。从早期研究到开放权重与 API，每条记录都可追溯到来源。">
+  <title>模型年鉴 · 大模型发布年表</title>
+  <link rel="icon" type="image/png" href="./assets/mark.png">
+  <link rel="stylesheet" href="./assets/atlas.css">
+  <script src="./assets/atlas.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#archive">跳至发布记录</a>
+  <header class="masthead">
+    <div class="wrap mast-inner">
+      <a class="wordmark" href="./" aria-label="模型年鉴首页"><span class="book-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>模型年鉴</span></a>
+      <nav aria-label="网站导航">
+        <a class="nav-current" href="#archive">时间线</a>
+        <button class="nav-button" data-about type="button">收录说明</button>
+        <a class="repo nav-repo" href="https://github.com/RACErace/llm-release-timeline" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <div class="edition"><span class="edition-rule"></span><span lang="en">MODEL RELEASE ATLAS</span></div>
+        <h1 id="page-title">大模型<br>发布年表<span class="title-stop" aria-hidden="true">.</span></h1>
+        <p class="intro">从 Transformer 到今天，沿着时间线查阅模型的首次亮相、权重开放与版本演进。</p>
+        <dl class="stats">
+          <div><dt>发布记录</dt><dd id="total">—</dd></div>
+          <div><dt>机构与团队</dt><dd id="labs">—</dd></div>
+          <div><dt>收录年份</dt><dd id="span">—</dd></div>
+        </dl>
+      </div>
+      <figure class="density" aria-labelledby="density-title" aria-describedby="density-help">
+        <div class="chart-top">
+          <figcaption id="density-title">逐月发布热图</figcaption>
+          <span class="range" id="chart-range"></span>
+        </div>
+        <div id="matrix" role="group" aria-label="逐月发布热图，方向键切换月份，回车筛选"></div>
+        <div class="chart-bottom">
+          <span id="density-help">选择月份，查看当月记录</span>
+          <label class="month-picker"><span class="sr-only">从列表选择月份</span><select id="month-picker" aria-label="从列表选择月份"><option value="">按月份查看</option></select></label>
+          <span class="scale" aria-label="每月收录记录从少到多"><span>少</span><i data-level="0"></i><i data-level="1"></i><i data-level="2"></i><i data-level="3"></i><i data-level="4"></i><i data-level="5"></i><span>多</span></span>
+        </div>
+      </figure>
+    </section>
+    <section class="archive" id="archive" aria-labelledby="archive-title" tabindex="-1">
+      <div class="archive-heading">
+        <h2 id="archive-title">发布档案</h2>
+        <div class="catalog-date">资料整理于 <time datetime="2026-11-08">2026.11.08</time></div>
+      </div>
+      <div class="controls" aria-label="查找发布记录">
+        <label class="search"><span class="magnifier" aria-hidden="true"></span>
+          <input id="query" type="search" placeholder="搜索模型、机构或关键词" aria-label="搜索模型、机构或关键词" autocomplete="off" spellcheck="false"><kbd aria-hidden="true">/</kbd>
+        </label>
+        <label class="select"><select id="org" aria-label="机构"><option value="">全部机构</option></select></label>
+        <label class="select"><select id="kind" aria-label="事件类型"><option value="">全部事件</option></select></label>
+        <label class="select order"><select id="order" aria-label="时间顺序"><option value="desc">由新到旧</option><option value="asc">由旧到新</option></select></label>
+      </div>
+      <div class="archive-grid">
+        <aside class="years" aria-label="年份索引">
+          <div class="index-title"><span class="index-icon" aria-hidden="true"></span>年份索引</div>
+          <nav id="year-list" aria-label="按年份筛选"></nav>
+        </aside>
+        <div class="records">
+          <div class="results-bar">
+            <div id="summary" role="status" aria-live="polite" aria-atomic="true">正在载入记录…</div>
+            <button id="reset" class="text-button" type="button" hidden>重置筛选 <span aria-hidden="true">×</span></button>
+          </div>
+          <div id="list"></div>
+          <button id="more" type="button" hidden></button>
+          <noscript><p>请启用 JavaScript 以使用交互年表。也可以直接查看<a href="./data/releases.json">完整 JSON 数据</a>。</p></noscript>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="wrap footer"><span>模型年鉴 <span class="footer-slash">/</span> <span lang="en">Model Release Atlas</span></span><a href="#page-title">回到顶部 ↑</a></footer>
+  <dialog id="about" aria-labelledby="about-title">
+    <div class="dialog-head"><h2 id="about-title">收录说明</h2><form method="dialog"><button aria-label="关闭收录说明" class="close">×</button></form></div>
+    <h3>一条记录代表什么？</h3>
+    <p>一个有日期和出处的公开事件。一个模型可能先发表论文、再推出预览，之后才开放 API 或权重。筛选和标签按各条记录的主要事件归类，同时开放的渠道见条目说明。同日发布的多个规格可能合并在一条记录中。</p>
+    <h3>如何理解日期？</h3>
+    <p>优先采用发布方公告、更新日志、论文首版或官方权重仓库记录的日期。日期沿用来源的记法，特殊时区和分批开放情况见条目说明。只能确定月份或年份时，保留该精度。</p>
+    <h3>热图如何计数？</h3>
+    <p>每格表示一个月内符合当前关键词、机构和事件类型的记录数。颜色由少到多分别代表 0、1、2–3、4–7、8–15、16 条及以上。仅精确到年份的记录列入档案和年度统计。</p>
+    <h3>范围与出处</h3>
+    <p>以原始《LLM 模型发布日期时间线》为起点，补录语言、多模态、推理与代码模型，以及少量架构前史。仅收录已发生且有公开来源的事件，涵盖受限预览。数据截至 2026 年 11 月 8 日。</p>
+    <div class="dialog-links"><a id="data-link" href="./data/releases.json" target="_blank" rel="noopener">查看完整数据 ↗</a><a href="https://github.com/RACErace/llm-release-timeline/issues" target="_blank" rel="noopener noreferrer">提交补充或勘误 ↗</a></div>
+  </dialog>
+</body>
+</html>
