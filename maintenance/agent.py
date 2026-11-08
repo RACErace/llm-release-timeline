@@ -10,7 +10,7 @@ from pathlib import Path
 from urllib.parse import urlencode
 
 import catalog
-from collector import LABEL, api
+from github_api import LABEL, api
 
 REPO = "RACErace/llm-release-timeline"
 MAIN = "main"

@@ -4,16 +4,15 @@ import argparse
 import json
 import os
 import re
-import subprocess
 import sys
 import unicodedata
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import UTC, datetime
 from pathlib import Path
 
+from github_api import LABEL, api
 from sources import HERE, checked_model, key, read_source, registry
 
-LABEL = "release-candidate"
 FAMILY = re.compile(
     r"\b(?:GPT[- ]?\d+(?:\.\d+)*|Claude[- ](?:Opus|Sonnet|Haiku|Fable)[- ]\d+(?:\.\d+)*|Gemini[- ]\d+(?:\.\d+)*|Kimi[- ]K\d+(?:\.\d+)*|DeepSeek[- ]V\d+(?:\.\d+)*|Qwen[- ]?\d+(?:\.\d+)*)(?:[- ](?:Pro|Flash|Cyber|Thinking|Highspeed|Lite|Base|Instant|Mini|[\d.]+[BMT]|\d{4}))*\b",
     re.IGNORECASE,
@@ -159,28 +158,6 @@ def recheck(path, model):
     state["pending"].setdefault(group, {})[item["id"]] = item
     save(path, state)
     report("已从官方模型库读取指定候选：" + item["name"])
-
-
-def api(endpoint, data=None, paginate=False, *, method=None):
-    cmd = ["gh", "api", endpoint]
-    if method:
-        cmd.extend(["--method", method])
-    if paginate:
-        cmd.extend(["--paginate", "--slurp"])
-    if data is not None:
-        cmd.extend(["--input", "-"])
-    result = subprocess.run(
-        cmd,
-        check=False,
-        input=json.dumps(data, ensure_ascii=False) if data is not None else None,
-        text=True,
-        encoding="utf-8",
-        capture_output=True,
-    )
-    if result.returncode:
-        raise RuntimeError(result.stderr.strip()[:500])
-    value = json.loads(result.stdout)
-    return [item for page in value for item in page] if paginate else value
 
 
 def safe_text(value):

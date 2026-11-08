@@ -153,7 +153,7 @@ def cmd(*args):
 
 
 def prepare(number, repo):
-    from collector import api
+    from github_api import api
 
     issue = api(f"repos/{repo}/issues/{number}")
     if "pull_request" in issue or issue["state"] != "open":
