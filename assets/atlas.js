@@ -12,6 +12,10 @@ const list = byId("list");
 const help = byId("density-help");
 const more = byId("more");
 const about = byId("about");
+const densityDialog = byId("density-dialog");
+const densityChart = densityDialog.querySelector(".density");
+const chartToggle = document.querySelector("[data-chart]");
+const wideScreen = window.matchMedia("(min-width: 1200px)");
 const chunk = 35;
 const aliases = {
   Alibaba: "阿里巴巴 通义千问 阿里云 Qwen",
@@ -56,7 +60,7 @@ const chineseNames = {
   Meituan: "美团", "01.AI": "零一万物", Baichuan: "百川智能"
 };
 const kindOrder = ["发布", "预览", "开放权重", "开放 API", "受限开放", "版本更新", "研究公开", "公告"];
-const cutoffMonth = byId("archive").querySelector("time").dateTime.slice(0, 7);
+const cutoffMonth = byId("updated").dateTime.slice(0, 7);
 let releases = [];
 let years = [];
 let selectedYear = "";
@@ -209,7 +213,7 @@ function releaseItem(row) {
   const heading = element("div", "entry-top");
   const category = element("span", "type", row.kind);
   category.dataset.kind = row.kind;
-  heading.append(element("h4", "", row.name), category);
+  heading.append(element("h3", "", row.name), category);
   const meta = element("div", "entry-meta");
   meta.append(element("span", "lab", displayOrg(row.org)));
   if (row.stage) meta.append(element("span", "stage", row.stage));
@@ -228,7 +232,7 @@ function renderList() {
   for (const row of shown) {
     const key = row.date.slice(0, 7);
     if (key !== previous) {
-      const title = element("h3", "month-heading");
+      const title = element("h2", "month-heading");
       title.append(element("span", "yr", key.slice(0, 4)), element("span", "mn", key.length === 7 ? Number(key.slice(5)) + " 月" : "月份未详"));
       events = element("ol", "events");
       fragment.append(title, events);
@@ -240,7 +244,7 @@ function renderList() {
     const empty = element("div", "empty");
     const clear = button("text-button", "清除全部筛选");
     clear.addEventListener("click", resetFilters);
-    empty.append(element("h3", "", "没有匹配的发布记录"), element("p", "", "可换一个关键词，或放宽年份、机构与事件类型。"), clear);
+    empty.append(element("h2", "", "没有匹配的发布记录"), element("p", "", "可换一个关键词，或放宽年份、机构与事件类型。"), clear);
     fragment.append(empty);
   }
   list.replaceChildren(fragment);
@@ -276,7 +280,9 @@ function refresh() {
   renderMatrix(monthCounts);
   renderYears(yearCounts, context.length);
   renderList();
-  byId("reset").hidden = !(query.value || orgSelect.value || kindSelect.value || selectedYear || orderSelect.value === "asc");
+  const filtered = Boolean(query.value || orgSelect.value || kindSelect.value || selectedYear || orderSelect.value === "asc");
+  byId("results-bar").hidden = !filtered;
+  byId("reset").hidden = !filtered;
 }
 
 function changed(replace = false) {
@@ -298,10 +304,24 @@ function setCursor(cell) {
 }
 
 function selectPeriod(period) {
-  [selectedYear, selectedMonth] = period.split("-");
+  [selectedYear, selectedMonth] = period ? period.split("-") : ["", ""];
+  if (densityDialog.open) densityDialog.close();
   changed();
-  byId("archive").focus({preventScroll: true});
-  byId("archive").scrollIntoView({block: "start"});
+  list.focus({preventScroll: true});
+  const top = list.getBoundingClientRect().top;
+  if (top < 0 || top >= window.innerHeight) list.scrollIntoView({block: "start"});
+}
+
+function placeDensityChart() {
+  const moveFocus = densityDialog.open || densityChart.contains(document.activeElement);
+  if (wideScreen.matches) {
+    if (densityDialog.open) densityDialog.close();
+    yearList.after(densityChart);
+    if (moveFocus) matrix.querySelector('[tabindex="0"]')?.focus({preventScroll: true});
+  } else {
+    densityDialog.append(densityChart);
+    if (moveFocus) chartToggle.focus({preventScroll: true});
+  }
 }
 
 function bindControls() {
@@ -322,10 +342,7 @@ function bindControls() {
     setCursor(cell);
     selectPeriod(cell.dataset.month);
   });
-  monthPicker.addEventListener("change", () => {
-    if (monthPicker.value) selectPeriod(monthPicker.value);
-    else { selectedYear = selectedMonth = ""; changed(); }
-  });
+  monthPicker.addEventListener("change", () => selectPeriod(monthPicker.value));
   function showCell(event) {
     const cell = event.target.closest(".cell");
     if (cell) help.textContent = cell.getAttribute("aria-label");
@@ -360,13 +377,18 @@ function bindControls() {
 }
 
 document.querySelector("[data-about]").addEventListener("click", () => about.showModal());
-about.addEventListener("click", event => {
-  if (event.target !== about) return;
-  const box = about.getBoundingClientRect();
-  if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) about.close();
-});
+chartToggle.addEventListener("click", () => densityDialog.showModal());
+wideScreen.addEventListener("change", placeDensityChart);
+placeDensityChart();
+for (const dialog of [about, densityDialog]) {
+  dialog.addEventListener("click", event => {
+    if (event.target !== dialog) return;
+    const box = dialog.getBoundingClientRect();
+    if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close();
+  });
+}
 document.addEventListener("keydown", event => {
-  if (event.key !== "/" || event.ctrlKey || event.altKey || event.metaKey || about.open || event.target.closest("input,select,textarea,[contenteditable]")) return;
+  if (event.key !== "/" || event.ctrlKey || event.altKey || event.metaKey || about.open || densityDialog.open || event.target.closest("input,select,textarea,[contenteditable]")) return;
   event.preventDefault();
   query.focus();
 });
@@ -398,7 +420,7 @@ async function start() {
   populateSelect(kindSelect, kindOrder.filter(kind => kinds.has(kind)), value => value);
   byId("total").textContent = releases.length;
   byId("labs").textContent = orgs.length;
-  byId("span").textContent = years.length;
+  byId("span").textContent = years[0] + "–" + years[years.length - 1];
   byId("chart-range").textContent = years[0] + " — " + years[years.length - 1];
   buildMatrix();
   readUrl();

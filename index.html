@@ -7,8 +7,8 @@
   <meta name="description" content="按日期、机构和发布阶段探索大语言模型的发展。从早期研究到开放权重与 API，每条记录都可追溯到来源。">
   <title>模型年鉴 · 大模型发布年表</title>
   <link rel="icon" type="image/png" href="./assets/mark.png">
-  <link rel="stylesheet" href="./assets/atlas.css?v=2">
-  <script src="./assets/atlas.js" defer></script>
+  <link rel="stylesheet" href="./assets/atlas.css?v=4">
+  <script src="./assets/atlas.js?v=4" defer></script>
 </head>
 <body>
   <a class="skip" href="#archive">跳至发布记录</a>
@@ -23,34 +23,13 @@
     </div>
   </header>
   <main class="wrap">
-    <section class="hero" aria-labelledby="page-title">
-      <div class="hero-copy">
-        <div class="edition"><span class="edition-rule"></span><span lang="en">MODEL RELEASE ATLAS</span></div>
-        <h1 id="page-title">大模型<br>发布年表<span class="title-stop" aria-hidden="true">.</span></h1>
-        <p class="intro">从 Transformer 到今天，沿着时间线查阅模型的首次亮相、权重开放与版本演进。</p>
-        <dl class="stats">
-          <div><dt>发布记录</dt><dd id="total">—</dd></div>
-          <div><dt>机构与团队</dt><dd id="labs">—</dd></div>
-          <div><dt>收录年份</dt><dd id="span">—</dd></div>
-        </dl>
-      </div>
-      <figure class="density" aria-labelledby="density-title" aria-describedby="density-help">
-        <div class="chart-top">
-          <figcaption id="density-title">逐月发布热图</figcaption>
-          <span class="range" id="chart-range"></span>
-        </div>
-        <div id="matrix" role="group" aria-label="逐月发布热图，方向键切换月份，回车筛选"></div>
-        <div class="chart-bottom">
-          <span id="density-help">选择月份，查看当月记录</span>
-          <label class="month-picker"><span class="sr-only">从列表选择月份</span><select id="month-picker" aria-label="从列表选择月份"><option value="">按月份查看</option></select></label>
-          <span class="scale" aria-label="每月收录记录从少到多"><span>少</span><i data-level="0"></i><i data-level="1"></i><i data-level="2"></i><i data-level="3"></i><i data-level="4"></i><i data-level="5"></i><span>多</span></span>
-        </div>
-      </figure>
-    </section>
-    <section class="archive" id="archive" aria-labelledby="archive-title" tabindex="-1">
+    <section class="archive" id="archive" aria-labelledby="page-title" tabindex="-1">
       <div class="archive-heading">
-        <h2 id="archive-title">发布档案</h2>
-        <div class="catalog-date">资料整理于 <time datetime="2026-11-08">2026.11.08</time></div>
+        <div class="heading-main">
+          <h1 id="page-title">大模型发布年表<span class="title-stop" aria-hidden="true">.</span></h1>
+          <p class="catalog-meta"><span id="span">—</span><span><b id="total">—</b> 条记录</span><span><b id="labs">—</b> 个机构与团队</span></p>
+        </div>
+        <button type="button" class="heat-toggle" data-chart aria-haspopup="dialog" aria-controls="density-dialog"><span class="grid-icon" aria-hidden="true"></span>逐月热图</button>
       </div>
       <div class="controls" aria-label="查找发布记录">
         <label class="search"><span class="magnifier" aria-hidden="true"></span>
@@ -66,18 +45,33 @@
           <nav id="year-list" aria-label="按年份筛选"></nav>
         </aside>
         <div class="records">
-          <div class="results-bar">
+          <div class="results-bar" id="results-bar">
             <div id="summary" role="status" aria-live="polite" aria-atomic="true">正在载入记录…</div>
             <button id="reset" class="text-button" type="button" hidden>重置筛选 <span aria-hidden="true">×</span></button>
           </div>
-          <div id="list"></div>
+          <div id="list" tabindex="-1"></div>
           <button id="more" type="button" hidden></button>
           <noscript><p>请启用 JavaScript 以使用交互年表。也可以直接查看<a href="./data/releases.json">完整 JSON 数据</a>。</p></noscript>
         </div>
       </div>
     </section>
   </main>
-  <footer class="wrap footer"><span>模型年鉴 <span class="footer-slash">/</span> <span lang="en">Model Release Atlas</span></span><a href="#page-title">回到顶部 ↑</a></footer>
+  <footer class="wrap footer"><span>模型年鉴 <span class="footer-slash">/</span> <span lang="en">Model Release Atlas</span></span><span class="catalog-date">资料整理于 <time id="updated" datetime="2026-11-08">2026.11.08</time></span><a href="#page-title">回到顶部 ↑</a></footer>
+  <dialog id="density-dialog" aria-labelledby="density-title" aria-describedby="density-help">
+    <figure class="density" aria-labelledby="density-title">
+      <figcaption class="chart-top">
+        <span id="density-title">逐月发布热图</span>
+        <span class="range" id="chart-range"></span>
+        <form method="dialog"><button aria-label="关闭逐月发布热图" class="close">×</button></form>
+      </figcaption>
+      <div id="matrix" role="group" aria-label="逐月发布热图，方向键切换月份，回车筛选"></div>
+      <div class="chart-bottom">
+        <span id="density-help">选择月份，查看当月记录</span>
+        <label class="month-picker"><select id="month-picker" aria-label="从列表选择月份"><option value="">按月份查看</option></select></label>
+        <span class="scale" aria-label="每月收录记录从少到多"><span>少</span><i data-level="0"></i><i data-level="1"></i><i data-level="2"></i><i data-level="3"></i><i data-level="4"></i><i data-level="5"></i><span>多</span></span>
+      </div>
+    </figure>
+  </dialog>
   <dialog id="about" aria-labelledby="about-title">
     <div class="dialog-head"><h2 id="about-title">收录说明</h2><form method="dialog"><button aria-label="关闭收录说明" class="close">×</button></form></div>
     <h3>一条记录代表什么？</h3>
