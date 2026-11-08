@@ -33,8 +33,10 @@ jobs:
       - id: site
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         run: |
-          mkdir -p "$RUNNER_TEMP/site"
-          cp -r index.html assets data .nojekyll "$RUNNER_TEMP/site/"
+          mkdir -p "$RUNNER_TEMP/site/assets" "$RUNNER_TEMP/site/data"
+          cp index.html .nojekyll "$RUNNER_TEMP/site/"
+          cp assets/atlas.css assets/atlas.js assets/mark.png "$RUNNER_TEMP/site/assets/"
+          cp data/releases.json "$RUNNER_TEMP/site/data/"
           echo "data_sha=$(sha256sum data/releases.json | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
           echo "index_sha=$(sha256sum index.html | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0

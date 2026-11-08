@@ -125,20 +125,6 @@ def render_date(html, stamp):
 
 def check_site(rows):
     validate(rows)
-    # Pages copies these directories in full. Review new files before distributing them.
-    public_files = {"assets/atlas.css", "assets/atlas.js", "assets/mark.png", "data/releases.json"}
-    packaged = set()
-    for directory in ("assets", "data"):
-        root = ROOT / directory
-        if root.is_symlink():
-            raise ValueError(f"网页资源目录不能是符号链接：{directory}")
-        for path in root.rglob("*"):
-            if path.is_symlink():
-                raise ValueError(f"网页资源不能是符号链接：{path.relative_to(ROOT)}")
-            if path.is_file():
-                packaged.add(path.relative_to(ROOT).as_posix())
-    if packaged != public_files:
-        raise ValueError("网页发布文件清单不匹配：" + "、".join(sorted(packaged ^ public_files)))
     html = HOME_PAGE.read_text("utf-8")
     stamps = STAMP.findall(html)
     if len(stamps) != 1:
