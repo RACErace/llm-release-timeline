@@ -5514,6 +5514,16 @@
     "source": "OpenAI API 更新记录"
   },
   {
+    "date": "2026-05-07",
+    "org": "University of Cambridge / Radboud University",
+    "name": "CoBit",
+    "kind": "研究公开",
+    "note": "提出连续比特流扩散语言模型 CoBit：将词元编码为定宽比特，用高斯扩散并行去噪生成，训练 130M（CoBit-S）与 462M（CoBit-M）两档模型，在 LM1B、OpenWebText 上报告生成困惑度，并公开代码。",
+    "url": "https://arxiv.org/abs/2605.07013",
+    "source": "作者论文 · arXiv",
+    "url2": "https://github.com/GBATZOLIS/BitstreamDiffusion"
+  },
+  {
     "date": "2026-05-09",
     "org": "Baidu",
     "name": "ERNIE 5.1",
