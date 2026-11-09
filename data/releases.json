@@ -5536,9 +5536,10 @@
     "org": "OpenBMB",
     "name": "MiniCPM-V 4.6",
     "kind": "开放权重",
-    "note": "1.3B 参数模型采用可切换的视觉词元压缩比例，面向设备端部署。",
+    "note": "OpenBMB 同时开放 1.3B 参数的常规版与长思考版（Thinking）。两者均支持 4 倍或 16 倍视觉词元压缩，面向端侧图像与视频理解。",
     "url": "https://github.com/OpenBMB/MiniCPM-V/blob/main/docs/changelog_en.md",
-    "source": "OpenBMB 多模态发布日志"
+    "source": "OpenBMB 多模态发布日志",
+    "url2": "https://github.com/OpenBMB/MiniCPM-o/blob/9bddd8e80cd03085053e418ce9bef1f9f5fbb333/README.md"
   },
   {
     "date": "2026-05-19",
@@ -5576,6 +5577,16 @@
     "note": "采用混合专家架构，将视觉输入、推理、翻译与智能体能力纳入同一模型。",
     "url": "https://docs.cohere.com/v2/changelog/command-a-plus-05-2026",
     "source": "Cohere 发布公告"
+  },
+  {
+    "date": "2026-05-25",
+    "org": "OpenBMB",
+    "name": "MiniCPM5-1B-Base / MiniCPM5-1B-SFT",
+    "kind": "开放权重",
+    "note": "OpenBMB 在项目文档中公布了预训练基础权重和监督微调权重的下载链接，两套检查点均可从 Hugging Face 和 ModelScope 获取。",
+    "url": "https://github.com/OpenBMB/MiniCPM/blob/e618b095685718b6d6997a967cfbc0490f9622c6/README.md",
+    "source": "OpenBMB 项目发布说明",
+    "url2": "https://github.com/OpenBMB/MiniCPM/pull/348"
   },
   {
     "date": "2026-05-28",
