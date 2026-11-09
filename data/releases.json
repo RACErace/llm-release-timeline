@@ -5995,6 +5995,16 @@
     "source": "官方原文"
   },
   {
+    "date": "2026-08-13",
+    "org": "MPI-IS / ELLIS Institute Tübingen / ETH Zürich",
+    "name": "LittleLearner",
+    "kind": "研究公开",
+    "note": "论文初版报告了在 880 亿词元的 LittleCurriculum 语料上训练的 0.6B、1.3B 和 5B 语言模型，并用相同规模的未过滤语料对照模型评估小学课程范围内外的推理能力。",
+    "url": "https://arxiv.org/abs/2608.13545v1",
+    "source": "作者论文初版",
+    "url2": "https://arxiv.org/html/2608.13545v1#S4.SS1"
+  },
+  {
     "date": "2026-08-14",
     "org": "Z.ai",
     "name": "GLM-5.3",
