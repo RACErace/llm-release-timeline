@@ -6584,5 +6584,14 @@
     "url": "https://openai.com/index/introducing-gpt-6-cyber/",
     "source": "官方原文",
     "stage": "定向受限发布（API / Codex）"
+  },
+  {
+    "date": "2026-11-06",
+    "org": "中国科学院计算技术研究所",
+    "name": "Chinese Decision Unified（0.8B/2B/4B）",
+    "kind": "研究公开",
+    "note": "在 10 月 decision-only 系列之外，v3 技术报告新增同时支持分类决策与带类型跨度抽取的 unified 系列，0.8B、2B、4B 三档各为单一权重文件（Qwen3.5 底座、合并 LoRA，两个读出头共享同一 backbone），权重与代码已公开。",
+    "url": "https://arxiv.org/abs/2610.23170",
+    "source": "作者技术报告 · arXiv"
   }
 ]
