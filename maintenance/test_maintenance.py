@@ -23,6 +23,51 @@ def weight(channel, name="Test-7B"):
 
 
 class CollectorTests(unittest.TestCase):
+    def test_hub_versions_and_quantized_repackaging(self):
+        source = {
+            "id": "hf",
+            "channel": "huggingface",
+            "org": "OpenBMB",
+            "owner": "openbmb",
+        }
+        record = {
+            "org": "OpenBMB",
+            "kind": "开放权重",
+            "name": "MiniCPM-V 4.5",
+            "date": "2025-08-26",
+        }
+
+        def hub(name):
+            return sources.hub_signal(
+                source,
+                {
+                    "id": "openbmb/" + name,
+                    "pipeline_tag": "text-generation",
+                    "siblings": [{"rfilename": "model.safetensors"}],
+                },
+            )
+
+        for suffix in ("-BNB", "-Thinking-BNB", "-bitsandbytes-4bit"):
+            self.assertIsNone(hub("MiniCPM-V-4.6" + suffix))
+        alias = hub("MiniCPM-V-4_5")
+        self.assertTrue(collector.already_catalogued(alias, [record]))
+        self.assertFalse(
+            collector.already_catalogued(alias, [dict(record, org="Other")])
+        )
+        self.assertFalse(
+            collector.already_catalogued(alias, [dict(record, kind="预览")])
+        )
+        for name in (
+            "MiniCPM-V-45",
+            "MiniCPM-V-4.5-Base",
+            "MiniCPM-V-4_5-Thinking",
+            "MiniCPM-V-4.5-SFT",
+        ):
+            other = hub(name)
+            self.assertIsNotNone(other)
+            self.assertFalse(collector.already_catalogued(other, [record]))
+            self.assertNotEqual(collector.event_id(other), collector.event_id(alias))
+
     def test_old_weight_on_second_page_of_first_incremental_scan(self):
         initial = "2025-02-02T12:00:00+00:00"
         state = {"sources": {"hf": {"checked": initial, "seen": []}}, "pending": {}}

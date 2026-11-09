@@ -28,13 +28,16 @@ FAMILY = re.compile(
 )
 
 
-def normalized(text):
-    return re.sub(r"[^\w.]+|_", "", unicodedata.normalize("NFKC", text).casefold())
+def normalized(text, *, hub=False):
+    text = unicodedata.normalize("NFKC", text).casefold()
+    if hub:
+        text = re.sub(r"(?<=\d)_(?=\d)", ".", text)
+    return re.sub(r"[^\w.]+|_", "", text)
 
 
 def model_name(row):
     if row.get("model"):
-        return normalized(row["model"])
+        return normalized(row["model"], hub=True)
     names = {normalized(n) for n in FAMILY.findall(row["name"])}
     return names.pop() if len(names) == 1 else ""
 
@@ -58,7 +61,7 @@ def already_catalogued(row, records):
             continue
         if row["date"] and row["date"] != record["date"]:
             continue
-        if model and model == normalized(record["name"]):
+        if model and model == normalized(record["name"], hub=bool(row.get("model"))):
             return True
         if (
             row["date"]

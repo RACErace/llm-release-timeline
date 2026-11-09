@@ -39,7 +39,8 @@ RETIRED = re.compile(
     re.IGNORECASE,
 )
 DERIVATIVE = re.compile(
-    r"(?:^|[-_/])(?:gguf|gptq|awq|mlx|lora|adapter)(?:[-_/]|$)", re.IGNORECASE
+    r"(?:^|[-_/])(?:gguf|gptq|awq|mlx|lora|adapter|bnb|bitsandbytes)(?:[-_/]|$)",
+    re.IGNORECASE,
 )
 PAPER_TOPIC = re.compile(
     r"\b(?:language model(?:s|ing)?|foundation models?|reasoning models?|"
