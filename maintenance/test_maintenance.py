@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 from typing import ClassVar
 from unittest.mock import Mock, patch
+from xml.etree import ElementTree as ET
 
 import catalog
 import collector
@@ -146,6 +147,241 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(list(sources.feed_items(source, b"<rss><channel/></rss>")), [])
         with self.assertRaises(ValueError):
             list(sources.feed_items(source, b"<html><body>login</body></html>"))
+
+    def test_paper_discovery_requires_a_model_claim_and_separates_all_feed_dates(self):
+        source = {"id": "arxiv-cl", "org": "", "discovery": True}
+        feed = ET.Element("rss")
+        for i, (title, announcement, abstract) in enumerate(
+            [
+                (
+                    "KLEAR: LLM Evaluation",
+                    "new",
+                    "We introduce KLEAR, a framework for comparing language models.",
+                ),
+                (
+                    "DUET: Inference for Language Models",
+                    "new",
+                    "We present DUET, a training-free framework for language models.",
+                ),
+                (
+                    "MemoryDojo: LLM Agent Memory",
+                    "cross",
+                    "We release a benchmark of open-weight language models.",
+                ),
+                (
+                    "Example-7B Technical Report",
+                    "new",
+                    "We train and release Example-7B, an open language model.",
+                ),
+                (
+                    "Example-2: A New Family",
+                    "cross",
+                    "Earlier language models have limitations. " * 30
+                    + "We present Example-2, a family of multilingual language models.",
+                ),
+                (
+                    "CoBit: Language Modeling with Bitstream Diffusion",
+                    "replace",
+                    "We introduce CoBit, a continuous diffusion language model that generates text.",
+                ),
+                (
+                    "LittleLearner: Language Models Under Controlled Exposure",
+                    "replace-cross",
+                    (
+                        "We introduce a curriculum. Training yields LittleLearner, a model with measured language competence. "
+                        "We release the curriculum and LittleLearner as a sandbox."
+                    ),
+                ),
+                (
+                    "ChainFlow",
+                    "cross",
+                    "We introduce a paradigm for faster LLMs. We open-source code and drafter models.",
+                ),
+            ]
+        ):
+            entry = ET.SubElement(feed, "item")
+            ET.SubElement(entry, "title").text = title
+            ET.SubElement(entry, "link").text = f"https://arxiv.org/abs/2611.0000{i}"
+            ET.SubElement(entry, "pubDate").text = "Mon, 09 Nov 2026 00:00:00 -0500"
+            ET.SubElement(
+                entry, "{http://arxiv.org/schemas/atom}announce_type"
+            ).text = announcement
+            ET.SubElement(
+                entry, "description"
+            ).text = f"Announce Type: {announcement}\nAbstract: {abstract}"
+        items = list(sources.feed_items(source, ET.tostring(feed)))
+        self.assertEqual(
+            [row["name"].split(":")[0] for row in items],
+            [
+                "Example-7B Technical Report",
+                "Example-2",
+                "CoBit",
+                "LittleLearner",
+            ],
+        )
+        self.assertEqual(
+            [row["arxiv"]["type"] for row in items],
+            ["new", "cross", "replace", "replace-cross"],
+        )
+        for row in items:
+            self.assertEqual(row["arxiv"]["date"], "2026-11-09")
+            self.assertEqual(row["date"], "")
+            body = collector.issue_body(collector.event_id(row), [row])
+            self.assertIn("公告日期 2026-11-09", body)
+            self.assertIn('"date": ""', body)
+
+    def test_old_pending_papers_are_rechecked_before_delivery(self):
+        source = {"id": "arxiv-cl", "org": ""}
+        papers = [
+            sources.signal(
+                source,
+                url,
+                title,
+                url,
+                "研究公开",
+                "2026-11-09",
+                "Announce Type: replace Abstract: " + "Introduction. " * 40,
+            )
+            for title, url in [
+                ("Example paper", "https://arxiv.org/abs/2601.12345"),
+                ("A survey", "https://arxiv.org/abs/2601.12346"),
+            ]
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "state.json"
+            state = collector.state_at(path)
+            for i, row in enumerate(papers):
+                state["pending"][str(i)] = {row["id"]: row}
+            collector.save(path, state)
+            with (
+                patch.object(
+                    collector, "arxiv_abstracts", side_effect=OSError("offline")
+                ),
+                patch.object(collector, "api") as api,
+            ):
+                self.assertTrue(collector.deliver(path, "owner/repo", 10))
+                self.assertEqual(api.call_count, 0)
+                self.assertEqual(collector.state_at(path)["pending"], state["pending"])
+            abstracts = {
+                papers[0]["url"]: (
+                    "Example paper",
+                    "We introduce Example, a new language model.",
+                ),
+                papers[1]["url"]: (
+                    "A survey",
+                    "We present a benchmark of language models.",
+                ),
+            }
+            with (
+                patch.object(collector, "arxiv_abstracts", return_value=abstracts),
+                patch.object(collector, "api", side_effect=[[], {"number": 43}]) as api,
+            ):
+                self.assertFalse(collector.deliver(path, "owner/repo", 10))
+                body = api.call_args.args[1]["body"]
+                self.assertIn("We introduce Example, a new language model.", body)
+                self.assertIn("公告类型 replace", body)
+                self.assertIn('"date": ""', body)
+                self.assertIn("<!-- atlas-candidate:0 -->", body)
+            saved = collector.state_at(path)
+            self.assertEqual(saved["pending"], {})
+            self.assertEqual(saved["delivered"], {"0": 43})
+
+    def test_material_revisions_can_open_new_issues_after_url_only_baseline(self):
+        source = {"id": "arxiv-cl", "org": "", "discovery": True}
+        url = "https://arxiv.org/abs/2601.12345"
+        state = {
+            "sources": {
+                "arxiv-cl": {
+                    "seen": [sources.key("arxiv-cl", url)],
+                    "checked": "2026-11-09",
+                }
+            },
+            "delivered": {"earlier-issue": 1},
+            "pending": {},
+        }
+
+        def accept(abstract, date, version):
+            row = sources.paper_signal(
+                source,
+                "Example Technical Report",
+                url + "v" + str(version),
+                abstract,
+                date,
+                "replace",
+                version,
+            )
+            self.assertEqual(row["url"], url)
+            return collector.accept_snapshot(state, source, {row["id"]: row}, date, [])
+
+        baseline = "We introduce Example, a 7B language model."
+        self.assertEqual(accept(baseline, "2026-11-09", 1), 0)
+        self.assertEqual(
+            accept(
+                "We present Example, a 7 billion parameter language model. It scores 99%.",
+                "2026-11-10",
+                2,
+            ),
+            0,
+        )
+        revised = "We introduce Example, a 7B language model. We release unified models at 7B and 13B."
+        self.assertEqual(accept(revised, "2026-11-11", 3), 1)
+        group, items = state["pending"].popitem()
+        self.assertEqual(
+            set(next(iter(items.values()))["arxiv"]["artifacts"]),
+            {"model", "name:example", "size:7b", "size:13b", "variant:unified"},
+        )
+        state["delivered"][group] = 2
+        self.assertEqual(accept(baseline, "2026-11-12", 4), 0)
+        self.assertEqual(accept(revised, "2026-11-13", 5), 0)
+        self.assertEqual(
+            accept(revised + " We release the model weights.", "2026-11-14", 6), 1
+        )
+        self.assertNotIn(group, state["pending"])
+
+    def test_first_post_upgrade_revision_compares_previous_full_abstract(self):
+        source = {"id": "arxiv-cl", "org": "", "discovery": True}
+        url = "https://arxiv.org/abs/2610.23170"
+        state = {
+            "sources": {
+                "arxiv-cl": {
+                    "checked": "2026-11-08",
+                    "seen": [sources.key("arxiv-cl", url)],
+                }
+            },
+            "pending": {},
+        }
+        row = sources.paper_signal(
+            source,
+            "Chinese Decision",
+            url,
+            "We present Chinese Decision, a family of language models. We release decision-only and unified models at 2B.",
+            "2026-11-09",
+            "replace",
+            3,
+        )
+        with (
+            patch.object(collector, "arxiv_abstracts", return_value={}),
+            self.assertRaisesRegex(ValueError, "previous arXiv revision"),
+        ):
+            collector.accept_snapshot(state, source, {row["id"]: row}, "2026-11-09", [])
+        self.assertEqual(state["sources"]["arxiv-cl"]["checked"], "2026-11-08")
+        with patch.object(
+            collector,
+            "arxiv_abstracts",
+            return_value={
+                url + "v2": (
+                    "Chinese Decision",
+                    "We present Chinese Decision, a family of language models. We release decision-only models at 2B.",
+                )
+            },
+        ) as fetch:
+            self.assertEqual(
+                collector.accept_snapshot(
+                    state, source, {row["id"]: row}, "2026-11-09", []
+                ),
+                1,
+            )
+            self.assertEqual(list(fetch.call_args.args[0]), [url + "v2"])
 
 
 class ReviewTests(unittest.TestCase):

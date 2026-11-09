@@ -11,7 +11,16 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from github_api import LABEL, api
-from sources import HERE, checked_model, key, read_source, registry
+from sources import (
+    HERE,
+    arxiv_abstracts,
+    arxiv_announcement,
+    checked_model,
+    key,
+    paper_signal,
+    read_source,
+    registry,
+)
 
 FAMILY = re.compile(
     r"\b(?:GPT[- ]?\d+(?:\.\d+)*|Claude[- ](?:Opus|Sonnet|Haiku|Fable)[- ]\d+(?:\.\d+)*|Gemini[- ]\d+(?:\.\d+)*|Kimi[- ]K\d+(?:\.\d+)*|DeepSeek[- ]V\d+(?:\.\d+)*|Qwen[- ]?\d+(?:\.\d+)*)(?:[- ](?:Pro|Flash|Cyber|Thinking|Highspeed|Lite|Base|Instant|Mini|[\d.]+[BMT]|\d{4}))*\b",
@@ -31,6 +40,10 @@ def model_name(row):
 
 
 def event_id(row):
+    if row["source"] == "arxiv-cl":
+        # A later revision can disclose another model or new weights after
+        # the Issue for the original paper has already been closed.
+        return row["id"]
     model = model_name(row)
     if not model:
         return key(row["org"], row["url"], row["name"], row["kind"])
@@ -83,31 +96,84 @@ def report(message):
             f.write(message + "\n\n")
 
 
+def previous_paper_artifacts(checkpoint, snapshot, seen):
+    artifacts = dict(checkpoint.get("paper_artifacts", {}))
+    requests = {}
+    for item in snapshot.values():
+        paper, url = item["arxiv"], item["url"]
+        if (
+            url not in artifacts
+            and key(item["source"], url) in seen
+            and paper["type"].startswith("replace")
+            and paper["version"] > 1
+            and paper["date"] > checkpoint["checked"][:10]
+        ):
+            # A paper last observed under the URL-only collector has returned
+            # on a later day. Compare the preceding version, even if its old
+            # Issue is already closed. A missing abstract must retry the scan.
+            requests[url + "v" + str(paper["version"] - 1)] = item
+    if requests:
+        previous = arxiv_abstracts(requests)
+        if requests.keys() - previous.keys():
+            raise ValueError("missing previous arXiv revision; retaining checkpoint")
+        for link, (title, abstract) in previous.items():
+            item = requests[link]
+            prior = paper_signal(
+                {"id": item["source"], "org": item["org"]},
+                title,
+                item["url"],
+                abstract,
+                "",
+                "",
+            )
+            artifacts[item["url"]] = prior["arxiv"]["artifacts"] if prior else []
+    return artifacts
+
+
 def accept_snapshot(state, source, snapshot, checked, records):
     old = state["sources"].get(source["id"])
     seen = set(old["seen"]) if old else set()
     baseline = old.get("baseline", old["checked"]) if old else checked
+    artifacts = (
+        previous_paper_artifacts(old, snapshot, seen)
+        if old and source.get("discovery")
+        else {}
+    )
     added = 0
-    if old:
-        for ident, item in snapshot.items():
-            if ident in seen:
+    for ident, item in snapshot.items():
+        if paper := item.get("arxiv"):
+            url = item["url"]
+            previous = artifacts.get(url)
+            facts = set(paper["artifacts"])
+            artifacts[url] = sorted(facts.union(previous or ()))
+            # Older checkpoints only know the URL. Establish their evidence
+            # baseline once; future replacements must add a disclosed fact.
+            if previous is None and key(source["id"], url) in seen:
                 continue
-            # A busy Hub may return older items on another page of the overlap window.
-            updated = item.get("upstream_updated")
-            if updated and datetime.fromisoformat(updated) <= datetime.fromisoformat(
-                baseline
-            ):
+            if previous is not None and facts.issubset(previous):
                 continue
-            if already_catalogued(item, records):
-                continue
-            group = event_id(item)
-            state["pending"].setdefault(group, {})[ident] = item
-            added += 1
+            if previous is not None:
+                paper["added_artifacts"] = sorted(facts.difference(previous))
+        if not old or ident in seen:
+            continue
+        # A busy Hub may return older items on another page of the overlap window.
+        updated = item.get("upstream_updated")
+        if updated and datetime.fromisoformat(updated) <= datetime.fromisoformat(
+            baseline
+        ):
+            continue
+        if already_catalogued(item, records):
+            continue
+        group = event_id(item)
+        state["pending"].setdefault(group, {})[ident] = item
+        added += 1
     state["sources"][source["id"]] = {
         "checked": checked,
         "baseline": baseline,
         "seen": sorted(seen | snapshot.keys()),
     }
+    if source.get("discovery"):
+        state["sources"][source["id"]]["paper_artifacts"] = artifacts
     return added
 
 
@@ -121,10 +187,12 @@ def scan(path):
     with ThreadPoolExecutor(max_workers=6) as pool:
         jobs = {}
         for source in sources:
-            since = state["sources"].get(source["id"], {}).get("checked")
+            checkpoint = state["sources"].get(source["id"], {})
+            since = checkpoint.get("checked")
             if (
                 since
                 and source.get("daily")
+                and (not source.get("discovery") or "paper_artifacts" in checkpoint)
                 and (since[:10] == started[:10] or started[11:13] < "04")
             ):
                 continue
@@ -172,7 +240,25 @@ def safe_text(value):
 
 
 def evidence_text(item):
-    return f"- {safe_text(item['source'])} · {safe_text(item['name'])}\n  <{item['url'].replace('>', '%3E').replace('<', '%3C')}>\n  <!-- atlas-evidence:{item['id']} -->"
+    announcement = ""
+    if paper := item.get("arxiv"):
+        announcement = f"\n  arXiv 公告类型 {safe_text(paper['type']) or '未标明'}，公告日期 {safe_text(paper['date']) or '待核对'}。模型事件日期请另行核实。"
+        if paper.get("version"):
+            announcement += f" [当次论文版本]({item['url']}v{paper['version']})"
+        if changes := paper.get("added_artifacts"):
+            labels = {
+                "model": "模型披露",
+                "open-weights": "开放权重",
+                "name": "名称",
+                "size": "参数量",
+                "variant": "变体",
+            }
+            facts = []
+            for fact in changes:
+                kind, _, value = fact.partition(":")
+                facts.append((labels[kind] + " " + safe_text(value)).strip())
+            announcement += " 本次摘要新增的核验线索：" + "、".join(facts) + "。"
+    return f"- {safe_text(item['source'])} · {safe_text(item['name'])}\n  <{item['url'].replace('>', '%3E').replace('<', '%3C')}>{announcement}\n  <!-- atlas-evidence:{item['id']} -->"
 
 
 def issue_body(group, items):
@@ -198,11 +284,93 @@ def issue_body(group, items):
     )
 
 
+def legacy_paper(item):
+    return item["source"] == "arxiv-cl" and "arxiv" not in item
+
+
+def refresh_pending_papers(state):
+    legacy = [
+        item
+        for group in state["pending"].values()
+        for item in group.values()
+        if legacy_paper(item)
+    ]
+    if not legacy:
+        return False
+    revisions = {}
+    for item in legacy:
+        paper_id = item["url"].partition("/abs/")[2]
+        version = re.search(
+            r"arXiv:" + re.escape(paper_id) + r"v(\d+)\b", item["excerpt"]
+        )
+        number = int(version[1]) if version else 0
+        revisions[item["id"]] = (item["url"] + (f"v{number}" if number else ""), number)
+    try:
+        urls = {link for link, _ in revisions.values()}
+        papers = arxiv_abstracts(sorted(urls))
+    except Exception as exc:  # noqa: BLE001 - keep old evidence for the next run when arXiv is unavailable.
+        report(f"arXiv 摘要暂不可用，旧候选留待重试：{exc!s}")
+        return True
+    refreshed = removed = 0
+    for group, items in list(state["pending"].items()):
+        for ident, item in list(items.items()):
+            if not legacy_paper(item):
+                continue
+            link, version = revisions[ident]
+            if link not in papers:
+                continue
+            title, abstract = papers[link]
+            updated = paper_signal(
+                {"id": item["source"], "org": item["org"]},
+                title,
+                item["url"],
+                abstract,
+                item["date"],
+                arxiv_announcement(item["excerpt"]),
+                version,
+            )
+            if updated:
+                # Retain existing Issue/evidence markers across interrupted
+                # legacy deliveries, including a remote write before save().
+                updated["id"] = ident
+                items[ident] = updated
+                checkpoint = state["sources"].get(item["source"])
+                if checkpoint and "paper_artifacts" in checkpoint:
+                    previous = checkpoint["paper_artifacts"].get(updated["url"], [])
+                    checkpoint["paper_artifacts"][updated["url"]] = sorted(
+                        set(previous).union(updated["arxiv"]["artifacts"])
+                    )
+                refreshed += 1
+            else:
+                del items[ident]
+                removed += 1
+        if not items:
+            del state["pending"][group]
+    missing = len(urls - papers.keys())
+    report(
+        f"旧 arXiv 线索重新核对：保留 {refreshed} 条模型研究，过滤 {removed} 条，缺少摘要 {missing} 条。"
+    )
+    return missing > 0
+
+
 def deliver(path, repo, limit):
     state = state_at(path)
-    if not state["pending"]:
-        report("没有待投递的候选。")
-        return False
+    incomplete = False
+    if any(
+        legacy_paper(item)
+        for group in state["pending"].values()
+        for item in group.values()
+    ):
+        incomplete = refresh_pending_papers(state)
+        save(path, state)
+    ready = [
+        (group, items)
+        for group, items in state["pending"].items()
+        if not any(legacy_paper(item) for item in items.values())
+    ]
+    if not ready:
+        report("没有可投递的候选。")
+        return incomplete
     endpoint = "repos/" + repo + "/issues"
     # Include closed and unlabelled Issues so a retry after a remote write is idempotent.
     issues = api(endpoint + "?state=all&per_page=100", paginate=True)
@@ -218,7 +386,7 @@ def deliver(path, repo, limit):
         ):
             existing[match[1]] = issue
     count = 0
-    for group, candidates in list(state["pending"].items())[:limit]:
+    for group, candidates in ready[:limit]:
         items = list(candidates.values())
         receipt = state["delivered"].get(group)
         issue = existing.get(group)
@@ -269,7 +437,7 @@ def deliver(path, repo, limit):
     report(
         f"已核对并投递 {count} 组候选，剩余 {len(state['pending'])} 组随下次运行处理。"
     )
-    return False
+    return incomplete
 
 
 if __name__ == "__main__":

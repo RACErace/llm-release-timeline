@@ -4,6 +4,7 @@ import hashlib
 import json
 import re
 import threading
+import time
 from datetime import datetime, timedelta
 from email.utils import parsedate_to_datetime
 from pathlib import Path
@@ -40,6 +41,215 @@ RETIRED = re.compile(
 DERIVATIVE = re.compile(
     r"(?:^|[-_/])(?:gguf|gptq|awq|mlx|lora|adapter)(?:[-_/]|$)", re.IGNORECASE
 )
+PAPER_TOPIC = re.compile(
+    r"\b(?:language model(?:s|ing)?|foundation models?|reasoning models?|"
+    r"(?:vision[- ]language|multimodal) models?|(?:[msv]?llm|[vs]lm)s?)\b",
+    re.IGNORECASE,
+)
+AUTHOR_CLAIM = re.compile(
+    r"\b(?:we (?:also )?(?:(?:train|pretrain|develop) and )?"
+    r"(?:introduce|present|propose|release|open[- ]source|develop|pretrain)|"
+    r"this (?:paper|work|report) (?:introduces|presents|proposes|releases))\s+",
+    re.IGNORECASE,
+)
+# Inspect what the authors introduce, before its purpose, inputs or comparisons.
+OBJECT_END = re.compile(
+    r"[;:!?]|\.(?=\s|$)|\b(?:for|using|via|based on|through|to|from|with|"
+    r"across|over|on|by|as|in|where|how|which|that)\b",
+    re.IGNORECASE,
+)
+MODEL_OBJECT = re.compile(
+    r"\b(?:models?|(?:[msv]?llm|[vs]lm)s?|checkpoints?|weights)\b", re.IGNORECASE
+)
+DRAFTER = re.compile(
+    r"\b(?:draft|drafter)\s+(?:models?|checkpoints?|weights)\b", re.IGNORECASE
+)
+MODEL_SIZE = re.compile(
+    r"(?<![\w.])(\d+(?:\.\d+)?)\s*[- ]?(billion|million|trillion|[bmt])\b",
+    re.IGNORECASE,
+)
+# A variant name is evidence when the authors use it in their own release
+# claim. Benchmark scores, baselines, prose edits and version numbers aren't.
+VARIANT = re.compile(
+    r"(?<![-\w])(?:base|instruct(?:ion)?[- ]tuned|instruct|chat|unified|decision-only|distilled)\b",
+    re.IGNORECASE,
+)
+NAMED_ARTIFACT = re.compile(r"\b[A-Z][\w]*(?:[-.][\w]+)+\b")
+INTRODUCED_NAME = re.compile(
+    r"([A-Z][\w.-]*(?: [A-Z][\w.-]*){0,3}),\s+(?:a|an|our|the)\s", re.ASCII
+)
+NON_MODEL_OBJECT = re.compile(
+    r"\b(?:benchmarks?|datasets?|corpora|corpus|frameworks?|methods?|metrics?|suites?|"
+    r"surveys?|evaluations?|strateg(?:y|ies)|algorithms?|analys(?:is|es)|"
+    r"protocols?|pipelines?|toolkits?|techniques?|approaches?|agents?|taxonom(?:y|ies))\b",
+    re.IGNORECASE,
+)
+ARXIV_LINK = re.compile(
+    r"https?://arxiv\.org/abs/(\d{4}\.\d{4,5}|[a-z-]+(?:\.[A-Z]+)?/\d{7})(v\d+)?"
+)
+
+
+def model_paper_claim(title, abstract):
+    """Return the authors' model disclosure, to include as evidence in the Issue."""
+    if not PAPER_TOPIC.search(title + " " + abstract) and not MODEL.search(title):
+        return ""
+    name, colon, _ = title.partition(":")
+    # Some papers release multiple artifacts together and describe the named
+    # model elsewhere in the abstract (e.g. a corpus and its trained model).
+    named_model = (
+        colon
+        and len(name.split()) <= 6
+        and re.search(
+            re.escape(name) + r",\s+(?:an?|our|the)\s+(?:[\w-]+\s+){0,5}model\b"
+            r"(?=[,.]|\s+(?:with|which|that|trained|for)\b)",
+            abstract,
+            re.IGNORECASE,
+        )
+    )
+    for claim in AUTHOR_CLAIM.finditer(abstract):
+        tail = abstract[claim.end() :]
+        obj = OBJECT_END.split(tail, maxsplit=1)[0]
+        if (
+            MODEL_OBJECT.search(DRAFTER.sub("", obj))
+            and not NON_MODEL_OBJECT.search(obj)
+        ) or (
+            named_model
+            and re.search(r"(?<!\w)" + re.escape(name) + r"(?!\w)", obj, re.IGNORECASE)
+        ):
+            return (
+                abstract[claim.start() : claim.end()]
+                + re.split(r"(?<=[.!?])\s+", tail, maxsplit=1)[0]
+            )
+    return ""
+
+
+def arxiv_announcement(text):
+    match = re.search(r"\bAnnounce Type:\s*([\w-]+)", text)
+    return match[1] if match else ""
+
+
+def paper_sizes(sentence, model_claim):
+    """Parameter counts for the authors' models, excluding training data and baselines."""
+    own = re.split(
+        r"\b(?:outperforms?|than|against|compared|versus)\b",
+        sentence,
+        maxsplit=1,
+        flags=re.IGNORECASE,
+    )[0]
+    specifications = re.split(
+        r"\b(?:trained|evaluated)\b", own, maxsplit=1, flags=re.IGNORECASE
+    )[0]
+    reported = re.search(
+        r"\bwe report\b.{0,75}\b(?:completed|preliminary|trained)\b.{0,50}\b(?:members?|checkpoints?|models?)\b",
+        own,
+        re.IGNORECASE,
+    )
+    for match in MODEL_SIZE.finditer(own):
+        after = own[match.end() :]
+        if re.match(
+            r"[- ]*(?:tokens?|words?|examples?|decisions?|rows?)\b",
+            after,
+            re.IGNORECASE,
+        ):
+            continue
+        in_specifications = (model_claim or reported) and match.start() < len(
+            specifications
+        )
+        reported_member = reported and re.match(
+            r"[- ]*(?:models?|checkpoints?|backbones?)\b", after, re.IGNORECASE
+        )
+        explicit_count = re.match(
+            r"[- ]*parameters?\b", after, re.IGNORECASE
+        ) and re.search(
+            r"\b(?:our|training|scaling to)\b|\w[-.]\w+\s*\($",
+            own[: match.start()],
+            re.IGNORECASE,
+        )
+        if in_specifications or reported_member or explicit_count:
+            number = match[1].rstrip("0").rstrip(".") if "." in match[1] else match[1]
+            yield "size:" + number + match[2][0].lower()
+
+
+def paper_artifacts(abstract):
+    """Facts about the introduced artifacts, independent of how a revision is announced."""
+    facts = {"model"}
+    for sentence in re.split(r"(?<=[.!?])\s+", abstract):
+        claim = AUTHOR_CLAIM.search(sentence)
+        model_claim = False
+        if claim:
+            obj = OBJECT_END.split(sentence[claim.end() :], maxsplit=1)[0]
+            if MODEL_OBJECT.search(obj) and not NON_MODEL_OBJECT.search(obj):
+                model_claim = True
+                facts.update(
+                    "variant:" + word.casefold() for word in VARIANT.findall(obj)
+                )
+                names = obj.partition(",")[0].partition("(")[0]
+                facts.update(
+                    "name:" + word.casefold() for word in NAMED_ARTIFACT.findall(names)
+                )
+                if named := INTRODUCED_NAME.match(obj):
+                    facts.add("name:" + named[1].casefold())
+                if re.search(
+                    r"\b(?:release|open[- ]source)\b", claim[0], re.IGNORECASE
+                ) and re.search(r"\b(?:weights|checkpoints?)\b", obj, re.IGNORECASE):
+                    facts.add("open-weights")
+        facts.update(paper_sizes(sentence, model_claim))
+    return sorted(facts)
+
+
+def paper_signal(source, title, url, abstract, announced, announcement, version=0):
+    claim = model_paper_claim(title, abstract)
+    if not claim:
+        return None
+    match = ARXIV_LINK.fullmatch(url)
+    if not match:
+        raise ValueError("expected an arXiv abstract link")
+    url = "https://arxiv.org/abs/" + match[1]
+    facts = paper_artifacts(abstract)
+    item = signal(source, key(url, *facts), title[:145], url, "研究公开", excerpt=claim)
+    # RSS pubDate describes this feed announcement, including cross-lists and
+    # replacements. Even a first paper announcement need not date the model.
+    item["arxiv"] = {
+        "type": announcement,
+        "date": announced,
+        "artifacts": facts,
+        "version": version,
+    }
+    return item
+
+
+def arxiv_abstracts(urls):
+    """Read full author abstracts, preserving any explicitly requested revision."""
+    identifiers = {}
+    for url in urls:
+        match = ARXIV_LINK.fullmatch(url)
+        if not match:
+            raise ValueError("expected an arXiv abstract link")
+        identifiers[match[1] + (match[2] or "")] = url
+    result = {}
+    ids = list(identifiers)
+    for start in range(0, len(ids), 100):
+        if start:
+            time.sleep(3)
+        batch = ids[start : start + 100]
+        response = get(
+            "https://export.arxiv.org/api/query",
+            params={
+                "id_list": ",".join(batch),
+                "max_results": len(batch),
+            },
+        )
+        for entry in ET.fromstring(response.content).findall("{*}entry"):
+            match = ARXIV_LINK.fullmatch(entry.findtext("{*}id", ""))
+            title, abstract = (
+                entry.findtext("{*}title", ""),
+                entry.findtext("{*}summary", ""),
+            )
+            if match and title.strip() and abstract.strip():
+                for ident in (match[1], match[1] + (match[2] or "")):
+                    if ident in batch:
+                        result[identifiers[ident]] = (clean(title), clean(abstract))
+    return result
 
 
 def key(*parts):
@@ -164,6 +374,27 @@ def feed_items(source, raw):
             )
             or ""
         )
+        if source.get("discovery"):
+            description = plain(body)
+            abstract = description.partition("Abstract:")[2] or description
+            announcement = node.findtext("{*}announce_type") or arxiv_announcement(
+                description
+            )
+            guid = node.findtext("{*}guid", "").strip()
+            version = re.search(r"v(\d+)$", guid) or re.match(
+                r"arXiv:\S+?v(\d+)\s", description
+            )
+            if paper := paper_signal(
+                source,
+                title,
+                url,
+                abstract,
+                date,
+                announcement,
+                int(version[1]) if version else 0,
+            ):
+                yield paper
+            continue
         segments = [title]
         if source["id"] in {"claude", "vertex"}:
             doc = BeautifulSoup(body, "html.parser")
@@ -180,9 +411,7 @@ def feed_items(source, raw):
                 and not re.search(source["include"], text, re.IGNORECASE)
             ):
                 continue
-            if RETIRED.search(part) or (
-                not source.get("discovery") and not LAUNCH.search(text)
-            ):
+            if RETIRED.search(part) or not LAUNCH.search(text):
                 continue
             if source["id"] in {"claude", "vertex"} and not re.search(
                 r"(?:launch|releas|introduc|announc)\w*\s+(?:the\s+)?(?:Claude|Gemini|Gemma)\b|"
@@ -191,18 +420,7 @@ def feed_items(source, raw):
                 re.IGNORECASE,
             ):
                 continue
-            if source.get("discovery") and not (
-                re.search(
-                    r"language model|\bLLM\b|foundation model", title, re.IGNORECASE
-                )
-                and re.search(
-                    r"we (?:introduce|release|present)|open[- ]weight",
-                    text,
-                    re.IGNORECASE,
-                )
-            ):
-                continue
-            kind = "研究公开" if source.get("discovery") else guess_kind(part)
+            kind = guess_kind(part)
             # Daily notes can add another release to an already published item.
             ref = url + ("|" + part[:180] if part != title else "")
             yield signal(source, ref, part[:145], url, kind, date, text)
