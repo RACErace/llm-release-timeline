@@ -5995,6 +5995,16 @@
     "source": "官方原文"
   },
   {
+    "date": "2026-08-13",
+    "kind": "开放权重",
+    "name": "LittleLearner",
+    "note": "MPI-IS、ELLIS Institute Tübingen 与 ETH Zürich 用 88B 词元的 K–5 课程语料 LittleCurriculum 从头训练 0.6B/1.3B/5B 三档 LittleLearner（含 chatty 对话版与匹配的未过滤对照），权重以自定义许可在 Hugging Face 开放，定位为学术研究沙盒。",
+    "org": "MPI-IS / ELLIS Institute Tübingen / ETH Zürich",
+    "source": "作者论文与项目主页",
+    "url": "https://arxiv.org/abs/2608.13545",
+    "url2": "https://huggingface.co/littlelearner/littlelearner-5b-base"
+  },
+  {
     "date": "2026-08-14",
     "org": "Z.ai",
     "name": "GLM-5.3",
