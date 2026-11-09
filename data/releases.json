@@ -5518,10 +5518,9 @@
     "org": "University of Cambridge / Radboud University",
     "name": "CoBit",
     "kind": "研究公开",
-    "note": "提出连续比特流扩散语言模型 CoBit：将词元编码为定宽比特，用高斯扩散并行去噪生成，训练 130M（CoBit-S）与 462M（CoBit-M）两档模型，在 LM1B、OpenWebText 上报告生成困惑度，并公开代码。",
-    "url": "https://arxiv.org/abs/2605.07013",
-    "source": "作者论文 · arXiv",
-    "url2": "https://github.com/GBATZOLIS/BitstreamDiffusion"
+    "note": "论文首版公开了 130M 参数的连续比特流扩散语言模型，将词元编码为定宽比特，并在 LM1B 和 OpenWebText 上报告了生成困惑度。",
+    "url": "https://arxiv.org/abs/2605.07013v1",
+    "source": "作者论文 · arXiv v1"
   },
   {
     "date": "2026-05-09",
@@ -5698,6 +5697,15 @@
     "url": "https://www.kimi.com/code/docs/en/kimi-code/whats-new.html",
     "source": "更新日志",
     "stage": "模型发布 · 开放权重 · Kimi Code 可用"
+  },
+  {
+    "date": "2026-06-15",
+    "org": "University of Cambridge / Radboud University",
+    "name": "CoBit-M",
+    "kind": "研究公开",
+    "note": "论文第二版将这组模型命名为 CoBit，新增 462M 参数的 CoBit-M，并报告它在 OpenWebText 上相较 130M 参数的 CoBit-S 的改进。",
+    "url": "https://arxiv.org/abs/2605.07013v2",
+    "source": "作者论文 · arXiv v2"
   },
   {
     "date": "2026-06-16",
