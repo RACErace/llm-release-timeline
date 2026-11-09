@@ -6432,6 +6432,15 @@
     "url2": "https://huggingface.co/inception42/Jais-3-3.7B"
   },
   {
+    "date": "2026-10-16",
+    "org": "中国科学院计算技术研究所",
+    "name": "Chinese Decision 0.8B",
+    "kind": "研究公开",
+    "note": "论文初版报告了已完成训练的 0.8B 中文决策模型与仍在训练中的 2B 检查点。模型用一次前向计算给出布尔、分类或有序选项的概率。",
+    "url": "https://arxiv.org/abs/2610.23170v1",
+    "source": "作者论文初版"
+  },
+  {
     "date": "2026-10-17",
     "org": "DeepSeek",
     "name": "DeepSeek-V4.1-Flash-1017",
@@ -6469,6 +6478,15 @@
     "url": "https://www.kimi.com/code/docs/en/kimi-code/whats-new.html",
     "source": "更新日志",
     "stage": "Kimi Code 全量可用"
+  },
+  {
+    "date": "2026-10-23",
+    "org": "中国科学院计算技术研究所",
+    "name": "Chinese Decision 2B / 4B",
+    "kind": "研究公开",
+    "note": "论文第二版报告了完成训练的 2B 和新增的 4B 决策模型，与 0.8B 版本均使用相同的 1,304.8 万条决策训练数据。",
+    "url": "https://arxiv.org/abs/2610.23170v2",
+    "source": "作者论文第二版"
   },
   {
     "date": "2026-10-24",
@@ -6600,7 +6618,7 @@
     "name": "Chinese Decision Unified（0.8B/2B/4B）",
     "kind": "研究公开",
     "note": "在 10 月 decision-only 系列之外，v3 技术报告新增同时支持分类决策与带类型跨度抽取的 unified 系列，0.8B、2B、4B 三档各为单一权重文件（Qwen3.5 底座、合并 LoRA，两个读出头共享同一 backbone），权重与代码已公开。",
-    "url": "https://arxiv.org/abs/2610.23170",
-    "source": "作者技术报告 · arXiv"
+    "url": "https://arxiv.org/abs/2610.23170v3",
+    "source": "作者论文第三版"
   }
 ]
