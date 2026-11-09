@@ -5589,6 +5589,15 @@
     "url2": "https://github.com/OpenBMB/MiniCPM/pull/348"
   },
   {
+    "date": "2026-05-26",
+    "kind": "研究公开",
+    "name": "DunbaaBERT",
+    "note": "从零训练的乌尔都语 RoBERTa-base 系列，Byte-BPE 词表为 32k/52k/96k 三档，基于 17GB 去重乌尔都语语料，模型以 MIT 许可发布。",
+    "org": "National Institute of Informatics / Technical University of Munich",
+    "source": "作者论文 · arXiv v1",
+    "url": "https://arxiv.org/abs/2605.26935v1"
+  },
+  {
     "date": "2026-05-28",
     "org": "Anthropic",
     "name": "Claude Opus 4.8",
