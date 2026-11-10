@@ -183,7 +183,7 @@ class CollectorTests(unittest.TestCase):
             "owner": "official",
             "channel": "huggingface",
         }
-        with patch.object(sources, "get", side_effect=[first, last]):
+        with patch.object(sources, "request", side_effect=[first, last]):
             rows = sources.read_source(source, "2025-01-04T00:00:00+00:00")
         self.assertEqual({r["name"] for r in rows.values()}, {"First", "Second"})
 

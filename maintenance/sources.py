@@ -5,7 +5,7 @@ import json
 import re
 import threading
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import quote, urljoin, urlsplit
@@ -17,6 +17,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 from anthropic_releases import release as anthropic_release
+from model_hubs import huggingface_models, modelscope_models
 
 HERE = Path(__file__).resolve().parent
 LOCAL = threading.local()
@@ -286,7 +287,7 @@ def utc_date(value):
     return d.date().isoformat()
 
 
-def get(url, **kwargs):
+def request(method, url, **kwargs):
     if not hasattr(LOCAL, "session"):
         session = requests.Session()
         session.headers["User-Agent"] = (
@@ -296,13 +297,18 @@ def get(url, **kwargs):
             total=2,
             backoff_factor=0.5,
             status_forcelist=(429, 500, 502, 503, 504),
+            raise_on_status=False,
             respect_retry_after_header=False,
         )
         session.mount("https://", HTTPAdapter(max_retries=retries))
         LOCAL.session = session
-    response = LOCAL.session.get(url, timeout=(8, 22), **kwargs)
+    response = LOCAL.session.request(method, url, timeout=(8, 22), **kwargs)
     response.raise_for_status()
     return response
+
+
+def get(url, **kwargs):
+    return request("GET", url, **kwargs)
 
 
 def registry():
@@ -602,61 +608,14 @@ def checked_model(repo):
 
 
 def hub_items(source, since):
-    hf = source["channel"] == "huggingface"
-    owner = source["owner"]
-    url = (
-        "https://huggingface.co/api/models"
-        if hf
-        else "https://modelscope.cn/openapi/v1/models"
+    listing = (
+        huggingface_models if source["channel"] == "huggingface" else modelscope_models
     )
-    params = (
-        {
-            "author": owner,
-            "sort": "lastModified",
-            "direction": -1,
-            "limit": 50,
-            "full": "true",
-        }
-        if hf
-        else {
-            "owner": owner,
-            "sort": "last_modified",
-            "page_number": 1,
-            "page_size": 50,
-        }
-    )
-    # Revisit an overlap after outages, and paginate until the previous successful window.
-    cutoff = datetime.fromisoformat(since) - timedelta(hours=24) if since else None
-    while True:
-        response = get(url, params=params)
-        data = response.json()
-        rows = data if hf else data["data"]["models"]
-        if not isinstance(rows, list) or (not rows and not since):
-            raise ValueError("expected a non-empty initial public organization listing")
-        for row in rows:
-            updated = row["lastModified" if hf else "last_modified"]
-            if cutoff and datetime.fromisoformat(updated) < cutoff:
-                return
-            item = hub_signal(source, row)
-            if item:
-                item["upstream_updated"] = updated
-                yield item
-        if not since:
-            return
-        if hf:
-            url = response.links.get("next", {}).get("url")
-            if not url:
-                return
-            if urlsplit(url).netloc != "huggingface.co":
-                raise ValueError("invalid pagination host")
-            params = None
-        else:
-            if (
-                params["page_number"] * params["page_size"]
-                >= data["data"]["total_count"]
-            ):
-                return
-            params["page_number"] += 1
+    for row, updated in listing(source["owner"], since, request):
+        item = hub_signal(source, row)
+        if item:
+            item["upstream_updated"] = updated
+            yield item
 
 
 def read_source(source, since):
