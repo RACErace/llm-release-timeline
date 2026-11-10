@@ -51,6 +51,40 @@ class MetaResearchTests(unittest.TestCase):
         )
         self.assertEqual(len(snapshot), 2)
 
+    def test_verified_access_stage_covers_same_meta_announcement(self):
+        title = "Introducing Our Smallest, Most Efficient Model: Muse&nbsp;Ember"
+        row = next(iter(self.snapshot(card("/blog/muse-ember", title)).values()))
+        record = {
+            "org": "Meta",
+            "name": "Muse Ember",
+            "date": "2026-11-09",
+            "kind": "开放 API",
+            "url": "https://research.meta.ai/blog/muse-ember",
+        }
+        for kind in ("开放 API", "开放权重", "受限开放"):
+            with self.subTest(kind=kind):
+                self.assertTrue(collector.already_catalogued(row, [dict(record, kind=kind)]))
+        secondary = dict(record, url="https://dev.meta.ai/docs/muse-ember", url2=row["url"])
+        self.assertTrue(collector.already_catalogued(row, [secondary]))
+        for field, value in (
+            ("org", "Another Team"),
+            ("date", "2026-11-10"),
+            ("url", row["url"] + "-api"),
+            ("name", "Muse Emb"),
+            ("name", "Muse Ember Pro"),
+            ("kind", "预览"),
+        ):
+            with self.subTest(field=field, value=value):
+                self.assertFalse(collector.already_catalogued(row, [dict(record, **{field: value})]))
+        for suffix in ("s", " Pro", "-Mini", " 1.1"):
+            with self.subTest(suffix=suffix):
+                self.assertFalse(collector.already_catalogued(dict(row, name=row["name"] + suffix), [record]))
+        old = dict(record, name="Muse Spark 1.1")
+        new = dict(row, name="Introducing Muse Spark 1.10")
+        self.assertFalse(collector.already_catalogued(new, [old]))
+        self.assertFalse(collector.already_catalogued(dict(row, source="another"), [record]))
+        self.assertFalse(collector.already_catalogued(dict(row, kind="开放权重"), [record]))
+
     def test_first_scan_queues_only_uncatalogued_launches_in_bootstrap_window(self):
         def launch(model, date):
             return card(f"/blog/muse-{model.lower()}", f"Introducing Muse {model}", date)

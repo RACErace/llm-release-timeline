@@ -70,6 +70,23 @@ def already_catalogued(row, records):
         if record["org"] != row["org"]:
             continue
         name, kind = record["name"], record["kind"]
+        if row["source"] == "meta-research" and row["kind"] == "发布":
+            # The index headline often omits the access stage verified from the article.
+            # Require the same dated announcement and the complete model name.
+            if (
+                kind in {"发布", "开放 API", "开放权重", "受限开放"}
+                and row["date"]
+                and row["date"] == record["date"]
+                and row["url"] in (record["url"], record.get("url2"))
+                and re.search(
+                    r"(?<![\w-])" + re.escape(unicodedata.normalize("NFKC", name))
+                    + r"(?=\s*(?:$|[:,;!?()–—]|\.(?!\d))|\s+(?:and|is|are|for|from|in|on|with|now)\b)",
+                    unicodedata.normalize("NFKC", row["name"]),
+                    re.I,
+                )
+            ):
+                return True
+            continue
         if row["source"] in {"claude", "claude-news"}:
             # Earlier announcements used "Claude 3.5 Sonnet" and grouped
             # "Claude 4：Opus 4 / Sonnet 4" on the same catalog row.
