@@ -6659,5 +6659,14 @@
     "org": "Meta",
     "source": "Meta 发布公告",
     "url": "https://research.meta.ai/blog/muse-ember"
+  },
+  {
+    "date": "2026-11-10",
+    "kind": "开放 API",
+    "name": "Gemini 4 Carbon（广泛开放）",
+    "note": "此前仅限于美国政府与可信网络防御伙伴试用的 Carbon 转向广泛开放：开发者可在 Gemini API 付费层（AI Studio、Android Studio）使用，Google AI Ultra 订阅者可在 AI Studio、Antigravity 及 Gemini 应用与搜索 AI 模式中使用；介绍期价格每百万词元输入 2、输出 10 美元。",
+    "org": "Google",
+    "source": "官方原文",
+    "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-carbon-now-available/"
   }
 ]
