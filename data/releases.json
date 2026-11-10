@@ -6640,5 +6640,15 @@
     "url": "https://www.anthropic.com/claude-fable-and-mythos-5-2",
     "source": "官方原文",
     "stage": "Fable 普遍可用，Mythos 限定访问"
+  },
+  {
+    "date": "2026-11-09",
+    "org": "美团",
+    "name": "LongCat-2.5 / LongCat-2.5-W4A4",
+    "kind": "开放权重",
+    "note": "美团按 MIT 许可开放 LongCat-2.5 的 BF16 权重和 W4A4 量化权重。W4A4 将混合专家层的专家权重与激活量化至 4 位。",
+    "url": "https://x.com/Meituan_LongCat/status/2119793531393040462",
+    "source": "美团 LongCat 权重发布公告",
+    "url2": "https://huggingface.co/meituan-longcat/LongCat-2.5-W4A4"
   }
 ]
