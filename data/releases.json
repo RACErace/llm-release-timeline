@@ -6650,5 +6650,14 @@
     "url": "https://x.com/Meituan_LongCat/status/2119793531393040462",
     "source": "美团 LongCat 权重发布公告",
     "url2": "https://huggingface.co/meituan-longcat/LongCat-2.5-W4A4"
+  },
+  {
+    "date": "2026-11-09",
+    "kind": "开放 API",
+    "name": "Muse Ember",
+    "note": "Meta 推出其最小、最高效的模型，面向智能体高频任务（工具调用、代码子任务、路由、抽取与长文档解析）；原生多模态（文本、图像、音频、视频），支持 1M 上下文与最高 512K 输出，已在 Meta Model API 上线，定价每百万词元输入 0.10、输出 0.50 美元。",
+    "org": "Meta",
+    "source": "Meta 发布公告",
+    "url": "https://research.meta.ai/blog/muse-ember"
   }
 ]
