@@ -7,9 +7,10 @@ import re
 import sys
 import unicodedata
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+from anthropic_releases import catalog_name as anthropic_catalog_name
 from github_api import LABEL, api
 from sources import (
     HERE,
@@ -42,6 +43,15 @@ def model_name(row):
     return names.pop() if len(names) == 1 else ""
 
 
+def claude_launch(row):
+    # Newsroom and Platform Docs can post the same version on different days.
+    return (
+        row["source"] in {"claude", "claude-news"}
+        and row.get("model")
+        and row["kind"] in {"发布", "预览"}
+    )
+
+
 def event_id(row):
     if row["source"] == "arxiv-cl":
         # A later revision can disclose another model or new weights after
@@ -50,21 +60,31 @@ def event_id(row):
     model = model_name(row)
     if not model:
         return key(row["org"], row["url"], row["name"], row["kind"])
-    when = "" if row["kind"] in {"开放权重", "受限开放"} else row["date"]
+    when = "" if row["kind"] in {"开放权重", "受限开放"} or claude_launch(row) else row["date"]
     return key(row["org"], model, row["kind"], when)
 
 
 def already_catalogued(row, records):
     model = model_name(row)
     for record in records:
-        if record["org"] != row["org"] or record["kind"] != row["kind"]:
+        if record["org"] != row["org"]:
             continue
-        if row["date"] and row["date"] != record["date"]:
+        name, kind = record["name"], record["kind"]
+        if row["source"] in {"claude", "claude-news"}:
+            # Earlier announcements used "Claude 3.5 Sonnet" and grouped
+            # "Claude 4：Opus 4 / Sonnet 4" on the same catalog row.
+            name = anthropic_catalog_name(name)
+            if kind == "发布" and name.endswith("（更新版）"):
+                name, kind = name.removesuffix("（更新版）"), "版本更新"
+        if kind != row["kind"]:
             continue
-        if model and model == normalized(record["name"], hub=bool(row.get("model"))):
+        if row["date"] and row["date"] != record["date"] and not claude_launch(row):
+            continue
+        if model and model == normalized(name, hub=bool(row.get("model"))):
             return True
         if (
             row["date"]
+            and row["date"] == record["date"]
             and row["url"] in (record["url"], record.get("url2"))
             and normalized(record["name"]) in normalized(row["name"])
         ):
@@ -134,9 +154,19 @@ def previous_paper_artifacts(checkpoint, snapshot, seen):
 
 
 def accept_snapshot(state, source, snapshot, checked, records):
+    if "bootstrap_days" in source:
+        # An announcement dated in the future may be visible on the index early.
+        # Leave it out of seen until its publication day.
+        snapshot = {k: row for k, row in snapshot.items() if row["date"] <= checked[:10]}
     old = state["sources"].get(source["id"])
     seen = set(old["seen"]) if old else set()
     baseline = old.get("baseline", old["checked"]) if old else checked
+    # New publisher indexes may already contain yesterday's launch. Opt in only
+    # for sources with publisher-supplied dates; baseline older entries silently.
+    bootstrap_from = None
+    if not old and "bootstrap_days" in source:
+        today = datetime.fromisoformat(checked).date()
+        bootstrap_from = (today - timedelta(days=source["bootstrap_days"])).isoformat()
     artifacts = (
         previous_paper_artifacts(old, snapshot, seen)
         if old and source.get("discovery")
@@ -157,7 +187,11 @@ def accept_snapshot(state, source, snapshot, checked, records):
                 continue
             if previous is not None:
                 paper["added_artifacts"] = sorted(facts.difference(previous))
-        if not old or ident in seen:
+        if ident in seen:
+            continue
+        if not old and not (
+            bootstrap_from and bootstrap_from <= item["date"] <= checked[:10]
+        ):
             continue
         # A busy Hub may return older items on another page of the overlap window.
         updated = item.get("upstream_updated")
@@ -273,7 +307,11 @@ def issue_body(group, items):
         "kind": first["kind"],
         "note": "",
         "url": first["url"],
-        "source": "官方模型仓库" if first.get("model") else "发布方原文",
+        "source": (
+            "官方模型仓库"
+            if first["source"].startswith(("huggingface:", "modelscope:"))
+            else "发布方原文"
+        ),
     }
     excerpt = safe_text(first["excerpt"])
     return (

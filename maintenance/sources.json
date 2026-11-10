@@ -76,9 +76,11 @@
     {"id":"arxiv-cl","org":"","url":"https://rss.arxiv.org/rss/cs.CL","daily":true,"discovery":true}
   ],
   "pages": [
+    {"id":"claude-news","org":"Anthropic","url":"https://www.anthropic.com/news","bootstrap_days":3},
     {"id":"deepseek","org":"DeepSeek","url":"https://api-docs.deepseek.com/updates/","type":"headings","select":"article h3","include":"DeepSeek|Coder|Reasoner"},
     {"id":"bailian","org":"Alibaba","url":"https://help.aliyun.com/zh/model-studio/newly-released-models","select":"h4","include":"^(qwen|千问|qvq|qwq)","kind":"开放 API"},
     {"id":"xai","org":"xAI","url":"https://docs.x.ai/developers/release-notes","type":"headings","select":"main h3","include":"Grok"},
+    {"id":"meta-research","org":"Meta","url":"https://research.meta.ai/","bootstrap_days":1},
     {"id":"mercury","org":"Inception Labs","url":"https://www.inceptionlabs.ai/blog","type":"links","select":"a[href*='/blog/']","include":"Mercury"},
     {"id":"spark","org":"科大讯飞","url":"https://www.xfyun.cn/doc/spark/Web.html","select":"main p","include":"^公告说明.*(?:X[0-9]|星火|Spark)","kind":"版本更新"},
     {"id":"kimi","org":"Moonshot","url":"https://www.kimi.com/code/docs/en/kimi-code/whats-new.html","select":".vp-doc p","include":"(?:launch|release|availab|rolled out|introduc|上线|发布).{0,85}\\bK[0-9]|\\bK[0-9].{0,85}(?:availab|rolled out|release|launch|上线|发布)"}

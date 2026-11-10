@@ -16,6 +16,8 @@ from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
+from anthropic_releases import release as anthropic_release
+
 HERE = Path(__file__).resolve().parent
 LOCAL = threading.local()
 LANGUAGE_TASKS = {
@@ -87,6 +89,10 @@ NON_MODEL_OBJECT = re.compile(
 )
 ARXIV_LINK = re.compile(
     r"https?://arxiv\.org/abs/(\d{4}\.\d{4,5}|[a-z-]+(?:\.[A-Z]+)?/\d{7})(v\d+)?"
+)
+# Muse is also the name of an app, a coding client and several media models.
+META_MODEL = re.compile(
+    r"\b(?:Llama|Muse\s+(?!(?:Code|Image|Video|Voice|Models?)\b)[A-Z][\w-]*)\b"
 )
 
 
@@ -404,6 +410,14 @@ def feed_items(source, raw):
                 for n in doc.select("li, p")
                 if not n.find_parent("li")
             ]
+        if source["id"] == "claude":
+            for part in segments or [plain(body), title]:
+                if launch := anthropic_release(part):
+                    name, kind = launch
+                    # Preserve evidence IDs stored by the original RSS reader.
+                    ref = url + ("|" + part[:180] if part != title else "")
+                    yield signal(source, ref, name or part[:145], url, kind, date, part, model=name)
+            continue
         brief = plain(body)[:650] if len(segments) == 1 and segments[0] == title else ""
         for part in segments:
             text = clean(part + " " + brief)
@@ -414,7 +428,7 @@ def feed_items(source, raw):
                 continue
             if RETIRED.search(part) or not LAUNCH.search(text):
                 continue
-            if source["id"] in {"claude", "vertex"} and not re.search(
+            if source["id"] == "vertex" and not re.search(
                 r"(?:launch|releas|introduc|announc)\w*\s+(?:the\s+)?(?:Claude|Gemini|Gemma)\b|"
                 r"\b(?:Claude (?:Opus|Haiku|Sonnet|Fable)|Gemini|Gemma)\b[^.!?]{0,60}\b(?:available|launched|released|rollout)",
                 part,
@@ -427,8 +441,67 @@ def feed_items(source, raw):
             yield signal(source, ref, part[:145], url, kind, date, text)
 
 
+def meta_research_items(source, soup):
+    cards = soup.select("article a[href*='/blog/']")
+    if not cards:
+        raise ValueError("missing Meta AI Research blog cards")
+    for card in cards:
+        link = urlsplit(urljoin(source["url"], card["href"]))
+        if link.scheme != "https" or link.netloc not in {
+            "research.meta.ai",
+            "ai.meta.com",
+        }:
+            continue
+        heading = card.select_one("h2, h3")
+        if not heading:
+            raise ValueError("missing Meta AI Research article heading")
+        title = clean(heading.get_text(" ", strip=True))
+        if not META_MODEL.search(title) or RETIRED.search(title):
+            continue
+        if not (
+            LAUNCH.search(title)
+            or re.match(r"^(?:Muse|Llama)\b[^:]+:.*\bmodel\b", title, re.I)
+        ):
+            continue
+        stamp = card.select_one("time[datetime]")
+        date = utc_date(stamp["datetime"]) if stamp else ""
+        if not date:
+            raise ValueError("missing Meta AI Research publication date: " + link.path)
+        url = link._replace(query="", fragment="").geturl()
+        kind = guess_kind(title.replace("‑", "-"))
+        yield signal(source, url.rstrip("/"), title, url, kind, date, title)
+
+
 def page_items(source, raw):
     soup = BeautifulSoup(raw, "html.parser")
+    if source["id"] == "claude-news":
+        cards = soup.select("li[data-listing-row]")
+        if not cards:
+            raise ValueError("missing Anthropic newsroom article list")
+        for card in cards:
+            heading = card.select_one("a[href] h3")
+            if not heading:
+                raise ValueError("missing Anthropic newsroom headline")
+            title = clean(heading.get_text(" ", strip=True))
+            if launch := anthropic_release(title):
+                name, kind = launch
+                url = urljoin(source["url"], heading.find_parent("a")["href"])
+                if urlsplit(url).hostname not in {"anthropic.com", "www.anthropic.com"}:
+                    continue
+                stamp = card.find("time")
+                if not stamp:
+                    raise ValueError("missing Anthropic newsroom publication date: " + url)
+                date = (
+                    utc_date(stamp["datetime"]) if stamp.get("datetime")
+                    else datetime.strptime(stamp.get_text(strip=True), "%b %d, %Y").date().isoformat()
+                )
+                if not date:
+                    raise ValueError("invalid Anthropic newsroom publication date: " + url)
+                yield signal(source, url, name or title, url, kind, date, title, model=name)
+        return
+    if source["id"] == "meta-research":
+        yield from meta_research_items(source, soup)
+        return
     nodes = soup.select(source["select"])
     if not nodes:
         raise ValueError("missing expected page section: " + source["select"])
