@@ -6630,5 +6630,15 @@
     "note": "在 10 月 decision-only 系列之外，v3 技术报告新增同时支持分类决策与带类型跨度抽取的 unified 系列，0.8B、2B、4B 三档各为单一权重文件（Qwen3.5 底座、合并 LoRA，两个读出头共享同一 backbone），权重与代码已公开。",
     "url": "https://arxiv.org/abs/2610.23170v3",
     "source": "作者论文第三版"
+  },
+  {
+    "date": "2026-11-09",
+    "org": "Anthropic",
+    "name": "Claude Fable 5.2 / Mythos 5.2",
+    "kind": "发布",
+    "note": "两者基于同一底层模型：Fable 5.2 向所有用户开放（含网络安全与生物领域防护），Mythos 5.2 仅限通过 Anthropic 验证计划（生命科学、网络安全）的组织使用；均支持 1M 上下文、128k 最大输出，自适应思考常开，输入/输出价格为每百万词元 8/40 美元。",
+    "url": "https://www.anthropic.com/claude-fable-and-mythos-5-2",
+    "source": "官方原文",
+    "stage": "Fable 普遍可用，Mythos 限定访问"
   }
 ]
