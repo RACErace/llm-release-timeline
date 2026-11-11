@@ -6632,6 +6632,15 @@
     "source": "作者论文第三版"
   },
   {
+    "date": "2026-11-06",
+    "kind": "研究公开",
+    "name": "LexisLM-500M / LexisLM-1B",
+    "note": "两个仅用希腊语从零训练的 decoder-only 模型（502M 与 1.09B），采用 32k 字节级 BPE 词表与 22B 词元希腊语语料（希腊语维基百科 + FineWeb2），并在 EuroAlpaca-Greek 上做指令微调；论文称发布内容为模型权重，Hugging Face 上已有基座与 Instruct 版本。",
+    "org": "National and Kapodistrian University of Athens / lightsaber.gr",
+    "source": "作者论文 v1",
+    "url": "https://arxiv.org/abs/2611.10209v1"
+  },
+  {
     "date": "2026-11-09",
     "org": "Anthropic",
     "name": "Claude Fable 5.2 / Mythos 5.2",
