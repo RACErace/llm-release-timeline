@@ -5885,6 +5885,15 @@
     "source": "Kimi K3 官方开放日"
   },
   {
+    "date": "2026-07-27",
+    "kind": "研究公开",
+    "name": "ClinFusion",
+    "note": "以视觉为中心的医疗多模态大模型，提供 ClinFusion-8B/32B（基于 Qwen3-VL），用级联且 2D/3D 融合的组合视觉编码器统一医学影像理解，并提出 MedIF-Bench 与区域（RoI）对齐的报告评估方法；论文附代码与模型链接。",
+    "org": "Alibaba DAMO Academy / Hupan Lab / Zhejiang University / Tsinghua University",
+    "source": "作者论文 v1",
+    "url": "https://arxiv.org/abs/2607.24743v1"
+  },
+  {
     "date": "2026-07-29",
     "org": "xAI",
     "name": "Grok Voice 2.0",
