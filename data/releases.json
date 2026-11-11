@@ -6386,6 +6386,16 @@
     "source": "官方原文"
   },
   {
+    "date": "2026-10-07",
+    "kind": "开放权重",
+    "name": "d1-3B",
+    "note": "Liquid AI 开放 d1 决策模型系列：d1-3B 为 3.12B 参数的多模态决策模型（基于 LFM2.5-VL-3B，32K 上下文），不生成 token，一次前向返回校准的 Noul/Choice/Score 概率，Decision Index v0.2.1 公开集得 48.57；同批还发布 d1-omni-600M，采 LFM 开放许可 v1.0。",
+    "org": "Liquid AI",
+    "source": "Liquid AI 发布公告",
+    "url": "https://www.liquid.ai/blog/d1-open",
+    "url2": "https://huggingface.co/LiquidAI/d1-3B"
+  },
+  {
     "date": "2026-10-12",
     "org": "Meta",
     "name": "Muse Wonder / Muse Wonder Full",
