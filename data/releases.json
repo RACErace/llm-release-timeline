@@ -5089,6 +5089,16 @@
     "source": "Inception Labs 发布公告"
   },
   {
+    "date": "2026-02-24",
+    "kind": "开放权重",
+    "name": "LFM2-24B-A2B",
+    "note": "Liquid AI 发布 LFM2 系列最大的稀疏 MoE 模型：24B 总参数、每词元约 2.3B 激活（64 专家、top-4 路由），混合门控短卷积与 GQA 主干（40 层中 10 层注意力），可在 32GB 内存设备上运行；官方称此次为早期检查点并已开放权重，首日支持 llama.cpp/vLLM/SGLang。",
+    "org": "Liquid AI",
+    "source": "Liquid AI 发布公告",
+    "url": "https://www.liquid.ai/blog/lfm2-24b-a2b",
+    "url2": "https://huggingface.co/LiquidAI/LFM2-24B-A2B"
+  },
+  {
     "date": "2026-03-03",
     "org": "Google",
     "name": "Gemini 3.1 Flash-Lite",
