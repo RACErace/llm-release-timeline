@@ -4783,6 +4783,15 @@
     "source": "TII 发布公告"
   },
   {
+    "date": "2026-01-06",
+    "kind": "研究公开",
+    "name": "ChemBART",
+    "note": "基于 BART-large（约 0.4B 参数）的化学语言模型，在 SMILES 反应式上做掩填预训练，统一支持前体/试剂生成、温度—收率回归、分子性质分类，以及结合 MCTS 的多步合成规划，并有湿实验验证的路线与收率提升。",
+    "org": "Nanjing University",
+    "source": "作者论文 v1",
+    "url": "https://arxiv.org/abs/2601.02915v1"
+  },
+  {
     "date": "2026-01-08",
     "org": "AI21 Labs",
     "name": "Jamba2",
