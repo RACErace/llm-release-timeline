@@ -6686,5 +6686,14 @@
     "org": "Google",
     "source": "官方原文",
     "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-carbon-now-available/"
+  },
+  {
+    "date": "2026-11-11",
+    "kind": "预览",
+    "name": "Qwen4-Max-Preview",
+    "note": "通义千问新一代旗舰多模态模型预览版：文本、图片与视频输入及深度思考（默认开启，可选 low/medium/xhigh），1M 上下文、最大输出 393,216 词元，支持工具调用与结构化输出并兼容 OpenAI/Anthropic API；当前仅通过 Token Plan 提供，预览期为 2026-11-11 至 11-25（UTC+8）。",
+    "org": "Alibaba",
+    "source": "阿里云百炼文档",
+    "url": "https://help.aliyun.com/zh/model-studio/qwen4-max-preview"
   }
 ]
