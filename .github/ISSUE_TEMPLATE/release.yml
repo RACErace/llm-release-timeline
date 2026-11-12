@@ -1,5 +1,5 @@
 name: 补充模型发布记录
-description: 提交有一手来源的模型发布事件。
+description: 提交有一手来源的大语言基模型发布事件。
 title: "待核实 · "
 labels: [release-candidate]
 body:
@@ -7,7 +7,7 @@ body:
     id: record
     attributes:
       label: 发布记录
-      description: 核对原始公告或权重页面，填写日期、事件类型和中文说明；同一模型的不同发布阶段可分别提交。
+      description: 请附发布方公告、开发者日志或官方模型卡，并说明发布的是哪个基模型。若同一模型分阶段开放，请写明本次事件及日期。
       render: json
       value: |
         {

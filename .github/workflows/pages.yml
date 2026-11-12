@@ -18,15 +18,18 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          fetch-depth: 2
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.13'
           cache: pip
           cache-dependency-path: maintenance/requirements.txt
       - name: 校验数据、采集规则与网页脚本
+        env:
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
         run: |
           python -m pip install -r maintenance/requirements.txt
-          python maintenance/catalog.py check
+          python maintenance/catalog.py check --base-commit "$PR_BASE"
           python -m unittest discover -s maintenance -p 'test_*.py'
           node --check assets/atlas.js
           bash -n maintenance/run-collector.sh

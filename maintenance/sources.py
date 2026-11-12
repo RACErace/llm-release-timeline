@@ -4,7 +4,6 @@ import hashlib
 import json
 import re
 import threading
-import time
 from datetime import datetime
 from email.utils import parsedate_to_datetime
 from pathlib import Path
@@ -17,18 +16,11 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 from anthropic_releases import release as anthropic_release
-from model_hubs import huggingface_models, modelscope_models
+from model_hubs import huggingface_models, legacy_model, modelscope_models
+from model_scope import announcement_in_scope, base_training_evidence, hub_metadata_in_scope
 
 HERE = Path(__file__).resolve().parent
 LOCAL = threading.local()
-LANGUAGE_TASKS = {
-    "text-generation",
-    "text2text-generation",
-    "image-text-to-text",
-    "any-to-any",
-    "visual-question-answering",
-    "audio-text-to-text",
-}
 MODEL = re.compile(
     r"\b(?:GPT[- .]?\d|o[134]\b|Claude|Gemini|Gemma|Grok|Qwen|Kimi[- ]?K\d|DeepSeek|Nova|Titan|DBRX|Dolly|Jamba|Mercury|tsuzumi|Latam[- ]?GPT|LLMs?\b|(?:language|foundation|reasoning) models?\b)|大模型|语言模型|千问|星火|modelo de lenguaje",
     re.IGNORECASE,
@@ -41,223 +33,10 @@ RETIRED = re.compile(
     r"deprecat|retir(?:e|ed|ement)|end of life|shut(?:ting)? down|price only|下线|下架",
     re.IGNORECASE,
 )
-DERIVATIVE = re.compile(
-    r"(?:^|[-_/])(?:gguf|gptq|awq|mlx|lora|adapter|bnb|bitsandbytes)(?:[-_/]|$)",
-    re.IGNORECASE,
-)
-PAPER_TOPIC = re.compile(
-    r"\b(?:language model(?:s|ing)?|foundation models?|reasoning models?|"
-    r"(?:vision[- ]language|multimodal) models?|(?:[msv]?llm|[vs]lm)s?)\b",
-    re.IGNORECASE,
-)
-AUTHOR_CLAIM = re.compile(
-    r"\b(?:we (?:also )?(?:(?:train|pretrain|develop) and )?"
-    r"(?:introduce|present|propose|release|open[- ]source|develop|pretrain)|"
-    r"this (?:paper|work|report) (?:introduces|presents|proposes|releases))\s+",
-    re.IGNORECASE,
-)
-# Inspect what the authors introduce, before its purpose, inputs or comparisons.
-OBJECT_END = re.compile(
-    r"[;:!?]|\.(?=\s|$)|\b(?:for|using|via|based on|through|to|from|with|"
-    r"across|over|on|by|as|in|where|how|which|that)\b",
-    re.IGNORECASE,
-)
-MODEL_OBJECT = re.compile(
-    r"\b(?:models?|(?:[msv]?llm|[vs]lm)s?|checkpoints?|weights)\b", re.IGNORECASE
-)
-DRAFTER = re.compile(
-    r"\b(?:draft|drafter)\s+(?:models?|checkpoints?|weights)\b", re.IGNORECASE
-)
-MODEL_SIZE = re.compile(
-    r"(?<![\w.])(\d+(?:\.\d+)?)\s*[- ]?(billion|million|trillion|[bmt])\b",
-    re.IGNORECASE,
-)
-# A variant name is evidence when the authors use it in their own release
-# claim. Benchmark scores, baselines, prose edits and version numbers aren't.
-VARIANT = re.compile(
-    r"(?<![-\w])(?:base|instruct(?:ion)?[- ]tuned|instruct|chat|unified|decision-only|distilled)\b",
-    re.IGNORECASE,
-)
-NAMED_ARTIFACT = re.compile(r"\b[A-Z][\w]*(?:[-.][\w]+)+\b")
-INTRODUCED_NAME = re.compile(
-    r"([A-Z][\w.-]*(?: [A-Z][\w.-]*){0,3}),\s+(?:a|an|our|the)\s", re.ASCII
-)
-NON_MODEL_OBJECT = re.compile(
-    r"\b(?:benchmarks?|datasets?|corpora|corpus|frameworks?|methods?|metrics?|suites?|"
-    r"surveys?|evaluations?|strateg(?:y|ies)|algorithms?|analys(?:is|es)|"
-    r"protocols?|pipelines?|toolkits?|techniques?|approaches?|agents?|taxonom(?:y|ies))\b",
-    re.IGNORECASE,
-)
-ARXIV_LINK = re.compile(
-    r"https?://arxiv\.org/abs/(\d{4}\.\d{4,5}|[a-z-]+(?:\.[A-Z]+)?/\d{7})(v\d+)?"
-)
 # Muse is also the name of an app, a coding client and several media models.
 META_MODEL = re.compile(
     r"\b(?:Llama|Muse\s+(?!(?:Code|Image|Video|Voice|Models?)\b)[A-Z][\w-]*)\b"
 )
-
-
-def model_paper_claim(title, abstract):
-    """Return the authors' model disclosure, to include as evidence in the Issue."""
-    if not PAPER_TOPIC.search(title + " " + abstract) and not MODEL.search(title):
-        return ""
-    name, colon, _ = title.partition(":")
-    # Some papers release multiple artifacts together and describe the named
-    # model elsewhere in the abstract (e.g. a corpus and its trained model).
-    named_model = (
-        colon
-        and len(name.split()) <= 6
-        and re.search(
-            re.escape(name) + r",\s+(?:an?|our|the)\s+(?:[\w-]+\s+){0,5}model\b"
-            r"(?=[,.]|\s+(?:with|which|that|trained|for)\b)",
-            abstract,
-            re.IGNORECASE,
-        )
-    )
-    for claim in AUTHOR_CLAIM.finditer(abstract):
-        tail = abstract[claim.end() :]
-        obj = OBJECT_END.split(tail, maxsplit=1)[0]
-        if (
-            MODEL_OBJECT.search(DRAFTER.sub("", obj))
-            and not NON_MODEL_OBJECT.search(obj)
-        ) or (
-            named_model
-            and re.search(r"(?<!\w)" + re.escape(name) + r"(?!\w)", obj, re.IGNORECASE)
-        ):
-            return (
-                abstract[claim.start() : claim.end()]
-                + re.split(r"(?<=[.!?])\s+", tail, maxsplit=1)[0]
-            )
-    return ""
-
-
-def arxiv_announcement(text):
-    match = re.search(r"\bAnnounce Type:\s*([\w-]+)", text)
-    return match[1] if match else ""
-
-
-def paper_sizes(sentence, model_claim):
-    """Parameter counts for the authors' models, excluding training data and baselines."""
-    own = re.split(
-        r"\b(?:outperforms?|than|against|compared|versus)\b",
-        sentence,
-        maxsplit=1,
-        flags=re.IGNORECASE,
-    )[0]
-    specifications = re.split(
-        r"\b(?:trained|evaluated)\b", own, maxsplit=1, flags=re.IGNORECASE
-    )[0]
-    reported = re.search(
-        r"\bwe report\b.{0,75}\b(?:completed|preliminary|trained)\b.{0,50}\b(?:members?|checkpoints?|models?)\b",
-        own,
-        re.IGNORECASE,
-    )
-    for match in MODEL_SIZE.finditer(own):
-        after = own[match.end() :]
-        if re.match(
-            r"[- ]*(?:tokens?|words?|examples?|decisions?|rows?)\b",
-            after,
-            re.IGNORECASE,
-        ):
-            continue
-        in_specifications = (model_claim or reported) and match.start() < len(
-            specifications
-        )
-        reported_member = reported and re.match(
-            r"[- ]*(?:models?|checkpoints?|backbones?)\b", after, re.IGNORECASE
-        )
-        explicit_count = re.match(
-            r"[- ]*parameters?\b", after, re.IGNORECASE
-        ) and re.search(
-            r"\b(?:our|training|scaling to)\b|\w[-.]\w+\s*\($",
-            own[: match.start()],
-            re.IGNORECASE,
-        )
-        if in_specifications or reported_member or explicit_count:
-            number = match[1].rstrip("0").rstrip(".") if "." in match[1] else match[1]
-            yield "size:" + number + match[2][0].lower()
-
-
-def paper_artifacts(abstract):
-    """Facts about the introduced artifacts, independent of how a revision is announced."""
-    facts = {"model"}
-    for sentence in re.split(r"(?<=[.!?])\s+", abstract):
-        claim = AUTHOR_CLAIM.search(sentence)
-        model_claim = False
-        if claim:
-            obj = OBJECT_END.split(sentence[claim.end() :], maxsplit=1)[0]
-            if MODEL_OBJECT.search(obj) and not NON_MODEL_OBJECT.search(obj):
-                model_claim = True
-                facts.update(
-                    "variant:" + word.casefold() for word in VARIANT.findall(obj)
-                )
-                names = obj.partition(",")[0].partition("(")[0]
-                facts.update(
-                    "name:" + word.casefold() for word in NAMED_ARTIFACT.findall(names)
-                )
-                if named := INTRODUCED_NAME.match(obj):
-                    facts.add("name:" + named[1].casefold())
-                if re.search(
-                    r"\b(?:release|open[- ]source)\b", claim[0], re.IGNORECASE
-                ) and re.search(r"\b(?:weights|checkpoints?)\b", obj, re.IGNORECASE):
-                    facts.add("open-weights")
-        facts.update(paper_sizes(sentence, model_claim))
-    return sorted(facts)
-
-
-def paper_signal(source, title, url, abstract, announced, announcement, version=0):
-    claim = model_paper_claim(title, abstract)
-    if not claim:
-        return None
-    match = ARXIV_LINK.fullmatch(url)
-    if not match:
-        raise ValueError("expected an arXiv abstract link")
-    url = "https://arxiv.org/abs/" + match[1]
-    facts = paper_artifacts(abstract)
-    item = signal(source, key(url, *facts), title[:145], url, "研究公开", excerpt=claim)
-    # RSS pubDate describes this feed announcement, including cross-lists and
-    # replacements. Even a first paper announcement need not date the model.
-    item["arxiv"] = {
-        "type": announcement,
-        "date": announced,
-        "artifacts": facts,
-        "version": version,
-    }
-    return item
-
-
-def arxiv_abstracts(urls):
-    """Read full author abstracts, preserving any explicitly requested revision."""
-    identifiers = {}
-    for url in urls:
-        match = ARXIV_LINK.fullmatch(url)
-        if not match:
-            raise ValueError("expected an arXiv abstract link")
-        identifiers[match[1] + (match[2] or "")] = url
-    result = {}
-    ids = list(identifiers)
-    for start in range(0, len(ids), 100):
-        if start:
-            time.sleep(3)
-        batch = ids[start : start + 100]
-        response = get(
-            "https://export.arxiv.org/api/query",
-            params={
-                "id_list": ",".join(batch),
-                "max_results": len(batch),
-            },
-        )
-        for entry in ET.fromstring(response.content).findall("{*}entry"):
-            match = ARXIV_LINK.fullmatch(entry.findtext("{*}id", ""))
-            title, abstract = (
-                entry.findtext("{*}title", ""),
-                entry.findtext("{*}summary", ""),
-            )
-            if match and title.strip() and abstract.strip():
-                for ident in (match[1], match[1] + (match[2] or "")):
-                    if ident in batch:
-                        result[identifiers[ident]] = (clean(title), clean(abstract))
-    return result
 
 
 def key(*parts):
@@ -387,27 +166,6 @@ def feed_items(source, raw):
             )
             or ""
         )
-        if source.get("discovery"):
-            description = plain(body)
-            abstract = description.partition("Abstract:")[2] or description
-            announcement = node.findtext("{*}announce_type") or arxiv_announcement(
-                description
-            )
-            guid = node.findtext("{*}guid", "").strip()
-            version = re.search(r"v(\d+)$", guid) or re.match(
-                r"arXiv:\S+?v(\d+)\s", description
-            )
-            if paper := paper_signal(
-                source,
-                title,
-                url,
-                abstract,
-                date,
-                announcement,
-                int(version[1]) if version else 0,
-            ):
-                yield paper
-            continue
         segments = [title]
         if source["id"] in {"claude", "vertex"}:
             doc = BeautifulSoup(body, "html.parser")
@@ -549,12 +307,7 @@ def hub_signal(source, row):
         raise ValueError("upstream returned a different organization: " + repo)
     name = repo.split("/", 1)[1]
     tags = set(row.get("tags") or [])
-    tasks = ({row.get("pipeline_tag")} | tags) if hf else set(row.get("tasks") or [])
-    if not (
-        tasks & LANGUAGE_TASKS
-        or MODEL.search(name)
-        or re.search(r"openPangu|SenseNova", name, re.IGNORECASE)
-    ) or DERIVATIVE.search(name):
+    if not hub_metadata_in_scope(row):
         return None
     if hf:
         files = [f["rfilename"] for f in row.get("siblings", [])]
@@ -585,42 +338,85 @@ def hub_signal(source, row):
     )
 
 
-def checked_model(repo):
+def model_card(source, row):
+    repo = quote(row["id"], safe="/")
+    if source["channel"] == "huggingface":
+        url = "https://huggingface.co/" + repo
+        if row.get("gated"):
+            doc = BeautifulSoup(get(url).content, "html.parser").select_one(".model-card-content")
+            return doc.get_text("\n", strip=True) if doc else ""
+        revision = quote(row.get("sha") or "main", safe="")
+        card_url = f"{url}/raw/{revision}/README.md"
+    else:
+        card_url = f"https://modelscope.cn/models/{repo}/resolve/master/README.md"
+    try:
+        return get(card_url).content.decode("utf-8", errors="replace")
+    except requests.HTTPError as exc:
+        if exc.response is not None and exc.response.status_code in {401, 403, 404}:
+            return ""
+        raise
+
+
+def verify_hub_item(source, row, item):
+    evidence = base_training_evidence(row, model_card(source, row))
+    if not evidence:
+        return None
+    item["base_evidence"] = clean(evidence)
+    item["excerpt"] = "发布方模型卡中的预训练依据：" + item["base_evidence"]
+    return item
+
+
+def lookup_hub_model(repo, channel):
     if not re.fullmatch(r"[\w.-]+/[\w.-]+", repo):
-        raise ValueError("请填写官方 Hugging Face 模型标识，例如 组织/模型")
+        raise ValueError("请填写官方模型仓标识，例如 组织/模型")
     source = next(
         (
             s
             for s in registry()
-            if s["channel"] == "huggingface"
+            if s["channel"] == channel
             and s["owner"].casefold() == repo.split("/")[0].casefold()
         ),
         None,
     )
     if not source:
         raise ValueError("该发布方不在官方模型库清单内")
-    item = hub_signal(
-        source, get("https://huggingface.co/api/models/" + quote(repo)).json()
-    )
+    if channel == "huggingface":
+        row = get("https://huggingface.co/api/models/" + quote(repo)).json()
+    else:
+        payload = get("https://modelscope.cn/api/v1/models/" + quote(repo)).json()
+        row = legacy_model(payload["Data"])
+    if row["id"].casefold() != repo.casefold():
+        raise ValueError("模型仓返回的模型标识与请求不一致")
+    item = hub_signal(source, row)
+    return verify_hub_item(source, row, item) if item else None
+
+
+def checked_model(repo):
+    item = lookup_hub_model(repo, "huggingface")
     if not item:
-        raise ValueError("该仓库没有匹配的语言模型权重")
+        raise ValueError("该仓库缺少独立预训练语言基模型的权重或模型卡依据")
     return item
 
 
-def hub_items(source, since):
+def hub_items(source, since, seen):
     listing = (
         huggingface_models if source["channel"] == "huggingface" else modelscope_models
     )
     for row, updated in listing(source["owner"], since, request):
         item = hub_signal(source, row)
-        if item:
-            item["upstream_updated"] = updated
-            yield item
+        if not item or (seen is not None and item["id"] in seen):
+            continue
+        # The first scan only establishes an ID baseline. Verify previously
+        # unseen listings against the publisher's card before queueing them.
+        if (since or seen is None) and not verify_hub_item(source, row, item):
+            continue
+        item["upstream_updated"] = updated
+        yield item
 
 
-def read_source(source, since):
+def read_source(source, since, seen=None):
     if source["channel"] in {"huggingface", "modelscope"}:
-        rows = hub_items(source, since)
+        rows = hub_items(source, since, seen)
     else:
         response = get(source["url"])
         rows = (
@@ -628,4 +424,4 @@ def read_source(source, since):
             if source["channel"] == "feeds"
             else page_items(source, response.content)
         )
-    return {r["id"]: r for r in rows}
+    return {r["id"]: r for r in rows if announcement_in_scope(r.get("model") or r["name"])}

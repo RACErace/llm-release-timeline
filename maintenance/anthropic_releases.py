@@ -32,7 +32,8 @@ UPGRADE = re.compile(
     r"(?:was|has been) upgraded)\b", re.I
 )
 COMPANION = re.compile(
-    rf"(?:\balongside\s+|(?<=[.!?])\s+(?={NAME}\s*(?:\([^)]*\)\s*)?"
+    rf"(?:\balongside\s+|\bwe(?:['’]ve| have) also (?:launched|released) "
+    rf"(?={NAME}\s*(?:\(|[.,;!?]|$))|(?<=[.!?])\s+(?={NAME}\s*(?:\([^)]*\)\s*)?"
     rf"offers the same capabilities\b))(?P<name>{NAME})", re.I
 )
 PREVIEW = re.compile(

@@ -49,6 +49,11 @@ def http_error(status):
 
 
 class ModelScopeTests(unittest.TestCase):
+    def setUp(self):
+        self.enterContext(patch.object(
+            sources, "model_card", return_value="A language model trained from scratch.",
+        ))
+
     def test_healthy_openapi_uses_only_primary_listing(self):
         page = openapi_page([openapi_model("Example")], 1)
         with patch.object(sources, "request", return_value=page) as request:

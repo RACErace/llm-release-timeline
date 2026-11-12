@@ -93,6 +93,23 @@ class AnthropicTests(unittest.TestCase):
         self.assertEqual(group, collector.event_id(dict(news, date="2026-11-11")))
         self.assertNotEqual(group, collector.event_id(dict(rss, kind="开放 API")))
 
+    def test_restricted_companion_in_the_september_platform_note(self):
+        # The platform listed the two access tiers in separate sentences (#69).
+        title = (
+            "We’ve launched Claude Fable 5.1 (claude-fable-5-1), the successor to "
+            "Claude Fable 5. For Project Glasswing participants, we’ve also launched "
+            "Claude Mythos 5.1 (claude-mythos-5-1)."
+        )
+        name, kind = release(title)
+        record = {
+            "org": "Anthropic", "name": "Claude Fable 5.1 / Mythos 5.1",
+            "kind": "发布", "date": "2026-09-01",
+            "url": "https://www.anthropic.com/claude-fable-and-mythos-5-1",
+        }
+        item = dict(record, name=name, kind=kind, source="claude", model=name,
+                    url="https://platform.claude.com/docs/en/release-notes/overview#september-1-2026")
+        self.assertTrue(collector.already_catalogued(item, [record]))
+
     def test_deployed_state_and_catalog_do_not_reopen_issue_34(self):
         rss, news = self.feed(), self.newsroom()
         state = {

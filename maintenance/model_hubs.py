@@ -68,6 +68,8 @@ def legacy_model(row):
             "model_size"
         ),
         "gated": gated,
+        "base_model": row.get("BaseModel"),
+        "base_model_relation": row.get("BaseModelRelation"),
     }
 
 

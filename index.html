@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#f8f6ef">
-  <meta name="description" content="按日期、机构和发布阶段探索大语言模型的发展。从早期研究到开放权重与 API，每条记录都可追溯到来源。">
+  <meta name="description" content="按日期、机构和发布阶段查阅大语言基模型的预览、正式发布、API 上线和权重开放记录。">
   <title>模型年鉴 · 大模型发布年表</title>
   <link rel="icon" type="image/png" href="./assets/mark.png">
   <link rel="stylesheet" href="./assets/atlas.css?v=4">
@@ -75,13 +75,13 @@
   <dialog id="about" aria-labelledby="about-title">
     <div class="dialog-head"><h2 id="about-title">收录说明</h2><form method="dialog"><button aria-label="关闭收录说明" class="close">×</button></form></div>
     <h3>一条记录代表什么？</h3>
-    <p>一个有日期和出处的公开事件。一个模型可能先发表论文、再推出预览，之后才开放 API 或权重。筛选和标签按各条记录的主要事件归类，同时开放的渠道见条目说明。同日发布的多个规格可能合并在一条记录中。</p>
+    <p>一条记录对应一个基模型的一次公开事件。预览、正式发布、API 上线与权重开放可以发生在不同日期。同日发布的多个基础规格可能合并在一条记录中。</p>
     <h3>如何理解日期？</h3>
-    <p>优先采用发布方公告、更新日志、论文首版或官方权重仓库记录的日期。日期沿用来源的记法，特殊时区和分批开放情况见条目说明。只能确定月份或年份时，保留该精度。</p>
+    <p>日期以发布方公告、开发者日志或官方模型卡为据。早期基模型首次公开的日期也可追溯到作者当时发表的技术报告。只能确认到月份或年份时，保留该精度。</p>
     <h3>热图如何计数？</h3>
     <p>每格表示一个月内符合当前关键词、机构和事件类型的记录数。颜色由少到多分别代表 0、1、2–3、4–7、8–15、16 条及以上。仅精确到年份的记录列入档案和年度统计。</p>
     <h3>收录范围</h3>
-    <p>年表涵盖语言、多模态、推理和代码模型的公开研究与发布，也收录 Transformer 等基础架构的论文。仅评测已有模型或提出数据集、训练及推理技巧的论文不单独列入。论文后续版本新增的模型规格，按首次披露该规格的版本日期记录。</p>
+    <p>收录大语言基模型，包括原生多模态语言模型和通过 API 提供的闭源模型。基于已有权重适配、微调、合并、蒸馏或量化的版本，以及专用嵌入模型、评测和训练方法，均不单列。</p>
     <div class="dialog-links"><a id="data-link" href="./data/releases.json" target="_blank" rel="noopener">查看完整数据 ↗</a><a href="https://github.com/RACErace/llm-release-timeline/issues" target="_blank" rel="noopener noreferrer">提交补充或勘误 ↗</a></div>
   </dialog>
 </body>

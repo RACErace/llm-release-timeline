@@ -12,6 +12,8 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlencode, urlsplit
 
+from model_scope import check_new_record
+
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data/releases.json"
 HOME_PAGE = ROOT / "index.html"
@@ -91,6 +93,25 @@ def validate(rows):
         raise ValueError("记录应按日期升序排列")
 
 
+def validate_changes(previous, current):
+    before = {identity(row): row for row in previous}
+    after = {identity(row): row for row in current}
+    # A correction can retain an original historical citation. Match one old
+    # row to one edited row, allowing the name or the date to be corrected.
+    replaced = [row for key, row in before.items() if row != after.get(key)]
+    for key, row in after.items():
+        if row == before.get(key):
+            continue
+        original = next((
+            old for old in replaced
+            if all(old[field] == row[field] for field in ("org", "kind", "url"))
+            and (old["name"] == row["name"] or old["date"] == row["date"])
+        ), None)
+        check_new_record(row, historical_source=original is not None)
+        if original is not None:
+            replaced.remove(original)
+
+
 def reviewed_row(body):
     blocks = re.findall(
         r"^```json[ \t]*\r?\n(.*?)^```[ \t]*\r?$", body, re.MULTILINE | re.DOTALL
@@ -99,11 +120,13 @@ def reviewed_row(body):
         raise ValueError("Issue 正文应只包含一个 json 代码块")
     row = json.loads(blocks[0])
     check_record(row)
+    check_new_record(row)
     return row
 
 
 def incorporate(rows, row):
     check_record(row)
+    check_new_record(row)
     if any(identity(r) == identity(row) for r in rows):
         raise ValueError("年表中已有相同记录：" + row["name"])
     result = rows.copy()
@@ -217,9 +240,16 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("mode", choices=["check", "prepare"])
     parser.add_argument("--issue", type=int)
+    parser.add_argument("--base-commit", help="与此 Git 提交比较，检查新增或修订记录的收录范围")
     args = parser.parse_args()
     if args.mode == "check":
-        check_site(json.loads(DATA.read_text("utf-8")))
+        rows = json.loads(DATA.read_text("utf-8"))
+        check_site(rows)
+        if args.base_commit:
+            if not re.fullmatch(r"[0-9a-f]{40}", args.base_commit):
+                parser.error("--base-commit 需要完整的 Git 提交 SHA")
+            previous = json.loads(cmd("git", "show", args.base_commit + ":data/releases.json"))
+            validate_changes(previous, rows)
     elif not args.issue or args.issue < 1:
         parser.error("--issue must be a positive issue number")
     else:
