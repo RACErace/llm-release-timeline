@@ -6717,6 +6717,15 @@
     "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-carbon-now-available/"
   },
   {
+    "date": "2026-11-10",
+    "kind": "研究公开",
+    "name": "Walrus",
+    "note": "Sony 的 8B 语音—音频统一基础模型，以 Gemma 4 E4B 初始化且不改架构，核心是三阶段数据课程与任务/数据集加权；支持 ASR（含语码转换与多说话人）、语音/文本翻译、语音到语音翻译、TTS、情感识别、音频描述与通用音频理解，分商用数据版（CR）与全量数据版（R），论文报告在多语言与多说话人 ASR、语音翻译与音频理解基准上领先同规模开放语音模型。",
+    "org": "Sony Group Corporation",
+    "source": "作者论文 v1",
+    "url": "https://arxiv.org/abs/2611.13689v1"
+  },
+  {
     "date": "2026-11-11",
     "kind": "预览",
     "name": "Qwen4-Max-Preview",
