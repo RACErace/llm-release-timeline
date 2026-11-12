@@ -6232,5 +6232,14 @@
     "url": "https://ernie.baidu.com/zh/release/ernie-5-5-flash-preview/",
     "source": "百度文心发布公告",
     "url2": "https://ernie.baidu.com/release/ernie-5-5-flash-base"
+  },
+  {
+    "date": "2026-11-12",
+    "kind": "开放权重",
+    "name": "Granite 4.1 3B LLMON Preview",
+    "note": "IBM Granite 团队基于 Granite-4.1-3B-base 微调的 3B 指令模型，改用 LLMON（LLM Object Notation）组织提示：把系统策略、指令、数据、文档、工具定义与工具结果分块并标注可执行关系，训练指令/数据边界；Apache 2.0 开放权重，随 Granite Experiments 发布，另有 8B 版本。",
+    "org": "IBM",
+    "source": "官方模型卡",
+    "url": "https://huggingface.co/ibm-granite/granite-4.1-3b-llmon-preview"
   }
 ]
