@@ -6241,5 +6241,16 @@
     "org": "IBM",
     "source": "官方模型卡",
     "url": "https://huggingface.co/ibm-granite/granite-4.1-3b-llmon-preview"
+  },
+  {
+    "date": "2026-11-12",
+    "kind": "发布",
+    "name": "Gemini 4 Hydrogen",
+    "note": "Google 面向日常编码与智能体工作流的 Gemini 4 新成员，自 Gemini 4 Carbon 适配而来；1M 统一上下文（默认同步输出 64K，后台长解码可至 1M），支持文本、图像、音频与视频输入，提供 low/medium/high/xhigh 四档思考等级（默认 high）。经 Gemini API、AI Studio、Android Studio 付费层、Antigravity、Gemini 企业版，并向 Gemini 应用、Google 搜索全部用户推出。",
+    "org": "Google",
+    "source": "官方模型卡",
+    "stage": "Gemini API 与 AI Studio 普遍可用，应用与搜索向所有用户推送",
+    "url": "https://deepmind.google/models/model-cards/gemini-4-hydrogen/",
+    "url2": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/"
   }
 ]
