@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import collector
 import sources
-from model_scope import announcement_in_scope, base_training_evidence, check_new_record, hub_metadata_in_scope
+from model_scope import announcement_in_scope, hub_release_evidence, check_new_record, hub_metadata_in_scope
 
 
 HUB = {"id": "huggingface:org", "org": "Org", "owner": "org", "channel": "huggingface"}
@@ -16,6 +16,28 @@ MODEL = {
 
 
 class FoundationScopeTests(unittest.TestCase):
+    def test_publisher_versions_keep_the_original_hub_lineage(self):
+        version = dict(MODEL, id="org/Example-7B-Instruct", tags=[
+            "base_model:org/Example-7B", "base_model:finetune:org/Example-7B",
+        ])
+        self.assertTrue(hub_metadata_in_scope(version))
+        self.assertIn("org/Example-7B", hub_release_evidence(version, "Official model card."))
+        for tags in (
+            ["base_model:finetune:someone/Example-7B"],
+            ["base_model:quantized:org/Example-7B"],
+            ["base_model:org/Example-7B", "base_model:org/Example-13B"],
+        ):
+            self.assertFalse(hub_metadata_in_scope(dict(version, tags=tags)))
+
+        closed = {"date": "2026-11-11", "name": "Example Assistant", "org": "Org",
+                  "note": "基于 Atlas-7B 的官方通用预览。", "url": "https://publisher.example/releases/assistant"}
+        base = [{"name": "Atlas-7B", "org": "Org"}]
+        check_new_record(closed, catalogue=base)
+        with self.assertRaises(ValueError):
+            check_new_record(dict(closed, org="Outsider"), catalogue=base)
+        with self.assertRaises(ValueError):
+            check_new_record(dict(closed, note="基于 Atlas-7B，通过合并多个 LoRA 适配器得到。"), catalogue=base)
+
     def test_lineage_and_task_take_precedence_over_the_name_and_weight_files(self):
         for properties in [
             {"tags": ["base_model:finetune:Qwen/Qwen3.5"]},
@@ -24,7 +46,8 @@ class FoundationScopeTests(unittest.TestCase):
             {"pipeline_tag": "sentence-similarity"},
             {"pipeline_tag": "text-to-image"},
             {"siblings": MODEL["siblings"] + [{"rfilename": "adapter_config.json"}]},
-            {"id": "org/Qwen-7B-Chat"}, {"id": "org/Qwen-7B-Instruct-AWQ"},
+            {"id": "org/Qwen-7B-Chat", "cardData": {"base_model": "Qwen/Qwen-7B"}},
+            {"id": "org/Qwen-7B-Instruct-AWQ"},
         ]:
             with self.subTest(properties=properties):
                 self.assertIsNone(sources.hub_signal(HUB, dict(MODEL, **properties)))
@@ -38,17 +61,17 @@ class FoundationScopeTests(unittest.TestCase):
             "Training Stage: Pretraining & Post-training",
             "See our benchmark of other models.", "",
         ]:
-            self.assertFalse(base_training_evidence(MODEL, card))
-        self.assertFalse(base_training_evidence(
+            self.assertFalse(hub_release_evidence(MODEL, card))
+        self.assertFalse(hub_release_evidence(
             {"id": "org/Example"}, "A video diffusion model trained from scratch."
         ))
         quantized = dict(MODEL, config={"quantization_config": {"quant_method": "fp8"}})
-        self.assertFalse(base_training_evidence(quantized, "We quantized the base language model."))
-        self.assertTrue(base_training_evidence(
+        self.assertFalse(hub_release_evidence(quantized, "We quantized the base language model."))
+        self.assertTrue(hub_release_evidence(
             quantized, "A language model trained from scratch. We use FP8 mixed precision training."
         ))
-        self.assertTrue(base_training_evidence(MODEL, "A pretrained generative text model."))
-        self.assertTrue(base_training_evidence(
+        self.assertTrue(hub_release_evidence(MODEL, "A pretrained generative text model."))
+        self.assertTrue(hub_release_evidence(
             MODEL, "A causal decoder-only model trained on a causal language modeling task."
         ))
         self.assertTrue(hub_metadata_in_scope(MODEL))

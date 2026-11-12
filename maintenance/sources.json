@@ -75,6 +75,7 @@
     {"id":"cenia","org":"CENIA","url":"https://cenia.cl/feed/","include":"Latam[- ]?GPT|modelo de lenguaje"}
   ],
   "pages": [
+    {"id":"baidu-news","org":"Baidu","url":"https://ernie.baidu.com/zh/research/","bootstrap_days":3},
     {"id":"claude-news","org":"Anthropic","url":"https://www.anthropic.com/news","bootstrap_days":3},
     {"id":"deepseek","org":"DeepSeek","url":"https://api-docs.deepseek.com/updates/","type":"headings","select":"article h3","include":"DeepSeek|Coder|Reasoner"},
     {"id":"bailian","org":"Alibaba","url":"https://help.aliyun.com/zh/model-studio/newly-released-models","select":"h4","include":"^(qwen|千问|qvq|qwq)","kind":"开放 API"},

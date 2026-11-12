@@ -12,11 +12,11 @@ LANGUAGE_TASKS = {
 EXCLUDED_NAME = re.compile(
     r"(?<![a-z0-9])(?:adapters?|peft|lora|qlora|gguf|ggml|gptq|awq|mlx|bnb|"
     r"bitsandbytes|exl2|nvfp4|fp[48]|int[248]|[248][- ]?bit|q[2-8](?:_[a-z0-9]+)*|"
-    r"quantiz\w*|quantis\w*|distill\w*|merg(?:e|ed|ekit)|fine[- ]?tun\w*|instruct(?:ion[- ]tuned)?|"
-    r"sft|dpo|rlhf|rerank\w*|embeddings?|reward[- ]model|draft(?:er)?|"
+    r"quantiz\w*|quantis\w*|distill\w*|merg(?:e|ed|ekit)|fine[- ]?tun\w*|"
+    r"checkpoint[- ]?\d+|epoch[- ]?\d+|rerank\w*|embeddings?|reward[- ]model|draft(?:er)?|"
     r"asr|tts|ocr|text[- ]to[- ](?:image|video|speech)|image[- ](?:generation|edit)|"
-    r"speech[- ](?:recognition|synthesis)|chat)(?![a-z0-9])|"
-    r"(?<=[\dBb-])[-_]it(?:$|[-_])|微调(?:版|模型|权重)|量化(?:版|包|权重)|"
+    r"speech[- ](?:recognition|synthesis))(?![a-z0-9])|"
+    r"量化(?:版|包|权重)|"
     r"蒸馏(?:版|模型)|(?:合并|适配器)权重|向量模型|重排模型",
     re.I,
 )
@@ -73,24 +73,100 @@ def paper_url(url):
 
 
 def announcement_in_scope(title):
-    return not (excluded_name(title) or NON_RELEASE.search(title) or DERIVED_CLAIM.search(title))
+    return not (excluded_name(title) or NON_RELEASE.search(title) or REPACK.search(title)) and (
+        not DERIVED_CLAIM.search(title) or describes_own_family({"name": title}, title, ())
+    )
 
 
-def check_new_record(row, *, historical_source=False):
-    if not announcement_in_scope(row["name"]) or DERIVED_CLAIM.search(row["note"]):
-        raise ValueError("仅收录发布方的 LLM 基模型，请核对模型谱系与预训练依据")
+def family_name(name):
+    # Official repositories sometimes spell Llama as Meta-Llama in Hub metadata.
+    name = re.sub(r"^Meta-Llama", "Llama", normalized(name), flags=re.I)
+    match = re.match(r"[^\W\d_]+", name)
+    return match[0].casefold() if match else ""
+
+
+NAMED_PARENT = re.compile(
+    r"(?:基于|沿用|源自|采用|使用|初始化自|基础模型为|底座为|based on|derived from|fine[- ]?tuned from|built on)"
+    r"\s*(?:(?:其|此前发布的|the |our )\s*)*(?:[\w.-]+/)?(?P<family>[a-z]+)"
+    r"(?=[\s.\-]*\d|[\s-]+(?:base|模型|底座))", re.I,
+)
+PARENT_BACKBONE = re.compile(
+    r"(?P<family>[a-z]+)[ .-]*\d+[a-z0-9_.-]*\s*(?:为|作为)?\s*(?:底座|基座|骨干)",
+    re.I,
+)
+
+
+def describes_own_family(row, text, catalogue):
+    if catalogue is None:  # the prepare/merge preflight has not read the base tree yet
+        return True
+    family = family_name(row["name"])
+    parents = {
+        m["family"].casefold()
+        for pattern in (NAMED_PARENT, PARENT_BACKBONE) for m in pattern.finditer(text)
+    }
+    related = parents or {family}
+    known = {(family_name(r["name"]), r["org"]) for r in catalogue}
+    for parent in related:
+        owners = {org for name, org in known if name == parent}
+        if owners and row.get("org") not in owners:
+            return False
+        if not owners and not (parents and parent == family):
+            return False
+    return True
+
+
+REPACK = re.compile(
+    r"(?:合并.{0,16}(?:LoRA|适配器|权重)|(?:蒸馏|量化)(?:版|包|而成|得到))|"
+    r"\b(?:by merging|quantized (?:from|version of)|distilled from)\b", re.I,
+)
+
+
+def check_new_record(row, *, historical_source=False, catalogue=()):
+    text = row["name"] + "。" + row["note"]
+    if excluded_name(row["name"]) or NON_RELEASE.search(row["name"]) or REPACK.search(text) or (
+        DERIVED_CLAIM.search(text) and not describes_own_family(row, text, catalogue)
+    ):
+        raise ValueError("请核对是否为语言基模型或原开发方正式发布的同族版本")
     if not historical_source and all(paper_url(row[k]) for k in ("url", "url2") if row.get(k)):
         raise ValueError("新增记录须提供发布方公告、模型卡或官方模型仓，论文可作补充证据")
+
+
+def hub_parents(row):
+    parents = set()
+    relations = set()
+    for value in ((row.get("cardData") or {}).get("base_model"), row.get("base_model")):
+        if value:
+            parents.update([value] if isinstance(value, str) else value)
+    for tag in row.get("tags") or ():
+        if tag.startswith("base_model:"):
+            *kind, parent = tag.split(":")[1:]
+            parents.add(parent)
+            relations.update(kind)
+    if relation := row.get("base_model_relation"):
+        relations.add(relation)
+    return parents, {kind.casefold() for kind in relations}
+
+
+def own_hub_family(repo, parents):
+    owner, name = repo.split("/", 1)
+    family = family_name(name)
+    parent_names = set()
+    for parent in parents:
+        parent_owner, sep, parent_name = parent.partition("/")
+        if not sep or parent_owner.casefold() != owner.casefold() or family_name(parent_name) != family:
+            return False
+        parent_names.add(re.sub(r"^meta-llama", "llama", parent_name.casefold()))
+    return bool(family) and len(parent_names) == 1
 
 
 def hub_metadata_in_scope(row):
     if excluded_name(row["id"].split("/", 1)[-1]):
         return False
     tags = {t.casefold() for t in row.get("tags") or ()}
-    card = row.get("cardData") or {}
+    parents, relations = hub_parents(row)
     if (
-        card.get("base_model") or row.get("base_model") or row.get("base_model_relation")
-        or any(t.startswith("base_model:") for t in tags)
+        ((parents or relations) and not own_hub_family(row["id"], parents))
+        or relations - {"finetune", "fine-tune", "pretrain"}
         or {"peft", "adapter-transformers", "gguf", "mergekit", "quantized"} & tags
     ):
         return False
@@ -103,37 +179,59 @@ def hub_metadata_in_scope(row):
     )
 
 
-def base_training_evidence(row, card):
-    # A family card often also documents instruction-tuned siblings. The
-    # checkpoint's own training-stage field takes precedence over family prose.
-    if card.startswith("---") and re.search(r"^base_model\s*:", card.split("---", 2)[1], re.M):
+def documented_version(repo, card):
+    """Identify the named release on a shared publisher card that also lists siblings."""
+    owner, name = repo.split("/", 1)
+    family = family_name(name)
+    if not family:
         return ""
+    family_base = re.escape(family) + r"[-.\d\w]*[- ]base\b"
+    hub = r"https://(?:huggingface\.co/|modelscope\.cn/models/)"
+    own_base = re.search(hub + re.escape(owner) + "/" + family_base, card, re.I)
+    branded_release = (
+        family_name(owner) == family
+        and re.search(hub + re.escape(repo) + r"(?![\w.-])", card, re.I)
+        and re.search(r"\b(?:based on|trained from)\s+" + family_base, card, re.I)
+    )
+    if own_base or branded_release:
+        for line in card.splitlines():
+            if re.search(r"\bwe (?:introduce|present|release)\b", line, re.I) and re.search(
+                r"(?<![\w.-])" + re.escape(name) + r"(?![\w-]|\.\d)", line, re.I
+            ):
+                return line.strip()[:260]
+    return ""
+
+
+def hub_release_evidence(row, card):
+    tasks = {row.get("pipeline_tag")} | set(row.get("tasks") or ())
+    if not tasks.intersection(LANGUAGE_TASKS) and not re.search(
+        r"\b(?:language model(?:s|ing)?|LLMs?|causal decoder|next[- ]token)\b|语言模型", card, re.I
+    ):
+        return ""
+    launch = documented_version(row["id"], card)
     quant = (row.get("config") or {}).get("quantization_config")
     if quant:
         precision = str(quant.get("quant_method") or "")
-        if not re.fullmatch(r"fp[48]", precision, re.I) or not re.search(
+        if not re.fullmatch(r"fp[48]", precision, re.I):
+            return ""
+        if not launch and not re.search(
             r"\b" + precision + r"(?: mixed[- ]precision)? training\b|\btrained (?:natively )?in " + precision,
             card, re.I,
         ):
             return ""
-    # Shared release cards may describe an explicitly named base checkpoint
-    # and a post-trained sibling whose repository name has no "Instruct" suffix.
-    name = row["id"].split("/", 1)[1]
-    if re.search(re.escape(name) + r"[-_]base\b", card, re.I) and re.search(
-        r"post[- ]training|instruction[- ]tuning|chat model", card, re.I
-    ):
+    parents, _ = hub_parents(row)
+    if own_hub_family(row["id"], parents):
+        return row["id"] + "，发布方模型仓标明底座为 " + "、".join(sorted(parents))
+    if card.startswith("---") and re.search(r"^base_model\s*:", card.split("---", 2)[1], re.M):
         return ""
+    if launch:
+        return launch
     card = re.sub(r"```.*?(?:```|$)", "", card, flags=re.S)
     card = re.sub(r"\[([^\]]*)\]\([^)]+\)", r"\1", card).replace("**", "")
     stage = re.search(r"\bTraining Stage\s*:\s*([^\n|]+)", card, re.I)
     if stage and re.search(r"post[- ]?training|fine[- ]?tun|distill|align|reinforcement", stage[1], re.I):
         return ""
     if not stage and DERIVED_CLAIM.search(card):
-        return ""
-    tasks = {row.get("pipeline_tag")} | set(row.get("tasks") or ())
-    if not tasks.intersection(LANGUAGE_TASKS) and not re.search(
-        r"\b(?:language model(?:s|ing)?|LLMs?|causal decoder|next[- ]token)\b|语言模型", card, re.I
-    ):
         return ""
     for line in card.splitlines():
         if match := BASE_EVIDENCE.search(line):

@@ -107,7 +107,7 @@ def validate_changes(previous, current):
             if all(old[field] == row[field] for field in ("org", "kind", "url"))
             and (old["name"] == row["name"] or old["date"] == row["date"])
         ), None)
-        check_new_record(row, historical_source=original is not None)
+        check_new_record(row, historical_source=original is not None, catalogue=previous)
         if original is not None:
             replaced.remove(original)
 
@@ -120,13 +120,13 @@ def reviewed_row(body):
         raise ValueError("Issue 正文应只包含一个 json 代码块")
     row = json.loads(blocks[0])
     check_record(row)
-    check_new_record(row)
+    check_new_record(row, catalogue=None)
     return row
 
 
 def incorporate(rows, row):
     check_record(row)
-    check_new_record(row)
+    check_new_record(row, catalogue=rows)
     if any(identity(r) == identity(row) for r in rows):
         raise ValueError("年表中已有相同记录：" + row["name"])
     result = rows.copy()

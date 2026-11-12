@@ -326,6 +326,16 @@
     "source": "作者论文 · arXiv"
   },
   {
+    "date": "2021-07-07",
+    "org": "OpenAI",
+    "name": "Codex（早期代码模型）",
+    "kind": "研究公开",
+    "note": "面向代码的 GPT 模型。增强版本 API 于 2021-08-10 开始私测。",
+    "url": "https://arxiv.org/abs/2107.03374",
+    "source": "研究论文",
+    "url2": "https://openai.com/index/openai-codex/"
+  },
+  {
     "date": "2021-08-04",
     "org": "AI21 Labs",
     "name": "Jurassic-1",
@@ -333,6 +343,15 @@
     "note": "Jumbo 和 Large 两个自回归模型随 AI21 Studio 进入测试，开发者可用它们构建文本应用。",
     "url": "https://www.ai21.com/blog/announcing-ai21-studio-and-jurassic-1/",
     "source": "AI21 Labs 发布公告"
+  },
+  {
+    "date": "2021-08-10",
+    "org": "OpenAI",
+    "name": "Codex API（早期代码模型）",
+    "kind": "预览",
+    "note": "OpenAI 展示如何用自然语言指令生成代码，并开放 Codex API 私测申请。",
+    "url": "https://openai.com/index/openai-codex/",
+    "source": "OpenAI 开发者公告"
   },
   {
     "date": "2021-09-02",
@@ -416,6 +435,16 @@
     "source": "作者论文 · arXiv"
   },
   {
+    "date": "2022-01-27",
+    "org": "OpenAI",
+    "name": "InstructGPT",
+    "kind": "研究公开",
+    "note": "采用人类反馈强化学习，改善指令遵循。此日为正式研究公告。",
+    "url": "https://openai.com/index/instruction-following/",
+    "source": "官方原文",
+    "stage": "研究公布 · API 默认模型更新"
+  },
+  {
     "date": "2022-02-09",
     "org": "EleutherAI",
     "name": "GPT-NeoX-20B",
@@ -497,6 +526,35 @@
     "source": "清华 KEG 与智谱项目公告"
   },
   {
+    "date": "2022-08-05",
+    "org": "Meta",
+    "name": "BlenderBot 3",
+    "kind": "发布",
+    "note": "Meta 在自研 OPT-175B 上开发 BlenderBot 3，公开对话演示及研究用模型权重。",
+    "url": "https://ai.meta.com/blog/blenderbot-3-a-175b-parameter-publicly-available-chatbot-that-improves-its-skills-and-safety-over-time/",
+    "source": "Meta 发布公告"
+  },
+  {
+    "date": "2022-10-20",
+    "org": "Google",
+    "name": "Flan-T5",
+    "kind": "研究公开",
+    "note": "Google 发布采用广泛任务指令训练的 T5 家族版本，开放多种规模的 Flan-T5 权重。",
+    "url": "https://arxiv.org/abs/2210.11416",
+    "source": "原始论文 · arXiv",
+    "url2": "https://github.com/google-research/t5x/blob/main/docs/models.md"
+  },
+  {
+    "date": "2022-11-03",
+    "org": "BigScience",
+    "name": "BLOOMZ",
+    "kind": "研究公开",
+    "note": "BigScience 发布 BLOOM 家族的多语言指令版 BLOOMZ，并开放权重。",
+    "url": "https://arxiv.org/abs/2211.01786",
+    "source": "BLOOMZ 与 mT0 原始论文",
+    "url2": "https://huggingface.co/bigscience/bloomz"
+  },
+  {
     "date": "2022-11-16",
     "org": "Meta",
     "name": "Galactica",
@@ -504,6 +562,15 @@
     "note": "使用论文、参考资料和知识库训练科学语言模型，研究其生成科学文本和处理知识问答的表现。",
     "url": "https://arxiv.org/abs/2211.09085",
     "source": "Galactica 原始论文"
+  },
+  {
+    "date": "2022-11-30",
+    "org": "OpenAI",
+    "name": "ChatGPT（初始研究预览）",
+    "kind": "预览",
+    "note": "OpenAI 发布来自自家 GPT-3.5 家族的 ChatGPT 对话模型，向公众开放研究预览。",
+    "url": "https://openai.com/index/chatgpt/",
+    "source": "官方原文"
   },
   {
     "date": "2022-12-15",
@@ -546,7 +613,7 @@
     "org": "AI21 Labs",
     "name": "Jurassic-2",
     "kind": "开放 API",
-    "note": "AI21 在 Studio 开放 Large、Grande 和 Jumbo 三种规模的第二代自回归语言模型。",
+    "note": "以 Large、Grande 和 Jumbo 三种规模上线，并推出经过指令微调的版本。",
     "url": "https://www.ai21.com/blog/introducing-j2/",
     "source": "AI21 Labs 发布公告"
   },
@@ -578,6 +645,15 @@
     "url": "https://github.com/THUDM/ChatGLM-6B/blob/80e39ea335e5bde394c31d310aaf31c0fd6df8b8/README.md",
     "source": "智谱与清华模型发布记录",
     "url2": "https://ai.lib.tsinghua.edu.cn/node/91"
+  },
+  {
+    "date": "2023-03-16",
+    "org": "Baidu",
+    "name": "文心一言（ERNIE Bot）",
+    "kind": "预览",
+    "note": "百度开启邀请测试，可通过对话获取信息、回答问题和辅助创作。",
+    "url": "https://agents.baidu.com/docs/develop/model/ERNIE_bot_introduce/",
+    "source": "百度文心平台文档"
   },
   {
     "date": "2023-04-03",
@@ -636,9 +712,9 @@
   {
     "date": "2023-05-04",
     "org": "BigCode",
-    "name": "StarCoderBase",
+    "name": "StarCoderBase / StarCoder",
     "kind": "开放权重",
-    "note": "BigCode 开放 15.5B 参数的 StarCoderBase 代码语言模型，预训练语料覆盖八十多种编程语言。",
+    "note": "训练语料涵盖八十多种编程语言，并提供适合代码补全的 StarCoder 和 StarCoderBase。",
     "url": "https://huggingface.co/blog/starcoder",
     "source": "BigCode 发布公告"
   },
@@ -647,7 +723,7 @@
     "org": "MosaicML",
     "name": "MPT-7B",
     "kind": "开放权重",
-    "note": "MosaicML 开放在一万亿词元上训练的 7B 基础模型。",
+    "note": "MosaicML 公开在一万亿词元上训练的 MPT-7B，以及同一系列的 Instruct 与 Chat 权重。",
     "url": "https://www.databricks.com/blog/mpt-7b",
     "source": "MosaicML 发布公告"
   },
@@ -656,7 +732,7 @@
     "org": "Together AI",
     "name": "RedPajama-INCITE 3B / 7B",
     "kind": "开放权重",
-    "note": "Together AI 等团队使用 RedPajama 数据训练语言模型，首批 7B 权重来自训练中的检查点。",
+    "note": "基于 RedPajama 数据训练，系列包含基础、指令与聊天规格。首批 7B 权重来自训练中的检查点。",
     "url": "https://www.together.ai/blog/redpajama-models-v1",
     "source": "Together 发布公告"
   },
@@ -679,6 +755,15 @@
     "source": "官方原文"
   },
   {
+    "date": "2023-05-17",
+    "org": "Z.ai",
+    "name": "VisualGLM-6B",
+    "kind": "开放权重",
+    "note": "为语言模型加入图像理解，支持以中英文围绕输入图片进行对话。",
+    "url": "https://github.com/zai-org/ChatGLM-6B",
+    "source": "官方模型仓库"
+  },
+  {
     "date": "2023-05-22",
     "org": "RWKV",
     "name": "RWKV",
@@ -699,9 +784,9 @@
   {
     "date": "2023-06-06",
     "org": "Together AI",
-    "name": "RedPajama-INCITE-7B-Base v1",
+    "name": "RedPajama-INCITE-7B v1",
     "kind": "开放权重",
-    "note": "完成一万亿词元训练后，团队开放 7B 基础模型及训练检查点。",
+    "note": "完成 1T 词元训练后，团队发布 7B 基础、指令和聊天版本及训练检查点。",
     "url": "https://www.together.ai/blog/redpajama-7b",
     "source": "Together 发布公告"
   },
@@ -713,6 +798,15 @@
     "note": "星火在首发后进行第一次公开版本升级。",
     "url": "https://edu.iflytek.com/about-us/news/company-news/507.html",
     "source": "科大讯飞公司新闻"
+  },
+  {
+    "date": "2023-06-13",
+    "org": "OpenAI",
+    "name": "GPT-3.5 Turbo 16K / GPT-4-0613",
+    "kind": "开放 API",
+    "note": "发布支持函数调用的新快照，并为 GPT-3.5 Turbo 增加 16K 上下文版本。",
+    "url": "https://openai.com/index/function-calling-and-other-api-updates/",
+    "source": "OpenAI 发布公告"
   },
   {
     "date": "2023-06-15",
@@ -737,7 +831,7 @@
     "org": "MosaicML",
     "name": "MPT-30B",
     "kind": "开放权重",
-    "note": "MosaicML 公开支持 8K 上下文的 30B 基础语言模型。",
+    "note": "推出支持 8K 上下文的 30B 基础模型，同时公开聊天和指令微调版本。",
     "url": "https://www.databricks.com/blog/mpt-30b",
     "source": "MosaicML 发布公告"
   },
@@ -749,6 +843,16 @@
     "note": "第二代双语对话模型采用更长上下文，并降低多轮推理的显存占用。",
     "url": "https://github.com/zai-org/ChatGLM-6B",
     "source": "官方模型仓库"
+  },
+  {
+    "date": "2023-06-26",
+    "org": "Microsoft",
+    "name": "Kosmos-2",
+    "kind": "研究公开",
+    "note": "把图像区域的位置写进文本序列，让模型把描述与画面中的对象对应起来。",
+    "url": "https://arxiv.org/abs/2306.14824",
+    "source": "原始论文 · arXiv",
+    "url2": "https://huggingface.co/microsoft/kosmos-2-patch14-224"
   },
   {
     "date": "2023-07-06",
@@ -781,9 +885,9 @@
   {
     "date": "2023-07-11",
     "org": "百川智能",
-    "name": "Baichuan-13B-Base",
+    "name": "Baichuan-13B-Base / Baichuan-13B-Chat",
     "kind": "开放权重",
-    "note": "百川开放 13B 参数的中英双语预训练语言模型。",
+    "note": "在 13B 规模同时开放预训练模型与面向对话的对齐模型。",
     "url": "https://github.com/baichuan-inc/Baichuan-13B",
     "source": "官方模型仓库"
   },
@@ -795,6 +899,24 @@
     "note": "发布 7B、13B、70B 模型，在专有许可条件下支持研究和商业用途。",
     "url": "https://github.com/meta-llama/llama-models",
     "source": "官方仓库"
+  },
+  {
+    "date": "2023-07-25",
+    "org": "Z.ai",
+    "name": "CodeGeeX2",
+    "kind": "开放权重",
+    "note": "在 ChatGLM2-6B 基础上追加代码语料预训练，支持生成和补全代码。",
+    "url": "https://github.com/zai-org/ChatGLM2-6B",
+    "source": "官方模型仓库"
+  },
+  {
+    "date": "2023-07-31",
+    "org": "Z.ai",
+    "name": "ChatGLM2-6B-32K",
+    "kind": "开放权重",
+    "note": "为第二代 6B 对话模型发布专门支持 32K 上下文的权重。",
+    "url": "https://github.com/zai-org/ChatGLM2-6B",
+    "source": "官方模型仓库"
   },
   {
     "date": "2023-08-03",
@@ -824,6 +946,15 @@
     "source": "科大讯飞公司新闻"
   },
   {
+    "date": "2023-08-22",
+    "org": "Alibaba",
+    "name": "Qwen-VL / Qwen-VL-Chat",
+    "kind": "开放权重",
+    "note": "首代视觉语言模型开放基础版与对话版，可结合图片回答问题。",
+    "url": "https://github.com/QwenLM/Qwen-VL",
+    "source": "官方模型仓库"
+  },
+  {
     "date": "2023-08-24",
     "org": "NAVER",
     "name": "HyperCLOVA X",
@@ -831,6 +962,15 @@
     "note": "在 DAN 23 大会上发布韩语大模型，并展示基于它的 CLOVA X 对话服务。",
     "url": "https://www.navercorp.com/media/pressReleasesDetail?seq=31266",
     "source": "NAVER 发布公告"
+  },
+  {
+    "date": "2023-08-24",
+    "org": "Meta",
+    "name": "Code Llama",
+    "kind": "开放权重",
+    "note": "从 Llama 2 继续训练代码模型，同时发布通用、Python 专用和指令微调版本。",
+    "url": "https://ai.meta.com/blog/code-llama-large-language-model-coding/",
+    "source": "Meta 发布公告"
   },
   {
     "date": "2023-08-30",
@@ -882,16 +1022,16 @@
     "org": "上海人工智能实验室",
     "name": "InternLM-20B",
     "kind": "开放权重",
-    "note": "书生·浦语开放 20B 参数的预训练基础模型。",
+    "note": "书生·浦语发布 20B 基础版与聊天版模型。",
     "url": "https://github.com/InternLM/InternLM",
     "source": "书生·浦语发布记录"
   },
   {
     "date": "2023-09-25",
     "org": "Alibaba",
-    "name": "Qwen-14B",
+    "name": "Qwen-14B / Qwen-14B-Chat",
     "kind": "开放权重",
-    "note": "通义千问新增 14B 基础模型，扩大首代系列的参数规模。",
+    "note": "通义千问新增 14B 基础与对话模型，并一同更新 7B 权重。",
     "url": "https://github.com/QwenLM/Qwen",
     "source": "官方模型仓库"
   },
@@ -925,9 +1065,9 @@
   {
     "date": "2023-10",
     "org": "Moonshot",
-    "name": "Kimi 初代",
+    "name": "Kimi 初代（Kimi Chat）",
     "kind": "发布",
-    "note": "月之暗面通过 Kimi Chat 首次公开其长上下文语言模型，可处理约 20 万汉字的输入。",
+    "note": "月之暗面推出首代 Kimi 助手，以一次处理 20 万汉字的长文本能力亮相。",
     "url": "https://www.moonshot.cn/about/",
     "source": "月之暗面公司历程"
   },
@@ -961,9 +1101,9 @@
   {
     "date": "2023-10-27",
     "org": "Z.ai",
-    "name": "ChatGLM3-6B-Base",
+    "name": "ChatGLM3-6B-Base / ChatGLM3-6B",
     "kind": "开放权重",
-    "note": "智谱与清华开放第三代 ChatGLM 的 6B 基础语言模型。",
+    "note": "团队开放第三代基础模型与官方对话模型。对话版本支持函数调用和代码解释器。",
     "url": "https://keg.cs.tsinghua.edu.cn/yuxiao/papers/slides-2023-chatglm-agent.pdf#page=10",
     "source": "清华与智谱技术报告",
     "url2": "https://huggingface.co/zai-org/chatglm3-6b-base"
@@ -1023,6 +1163,15 @@
     "source": "官方原文"
   },
   {
+    "date": "2023-11-05",
+    "org": "零一万物",
+    "name": "Yi-6B-200K / Yi-34B-200K",
+    "kind": "开放权重",
+    "note": "长上下文版把输入窗口扩展到 20 万词元。",
+    "url": "https://github.com/01-ai/Yi",
+    "source": "零一万物发布记录"
+  },
+  {
     "date": "2023-11-06",
     "org": "OpenAI",
     "name": "GPT-4 Turbo",
@@ -1060,6 +1209,15 @@
     "source": "Anthropic 发布公告"
   },
   {
+    "date": "2023-11-23",
+    "org": "零一万物",
+    "name": "Yi-6B-Chat / Yi-34B-Chat",
+    "kind": "开放权重",
+    "note": "零一万物在自研 Yi-6B、Yi-34B 基座上训练对话模型，开放两个 Chat 版本的权重。",
+    "url": "https://github.com/01-ai/Yi",
+    "source": "零一万物发布记录"
+  },
+  {
     "date": "2023-11-27",
     "org": "浪潮信息",
     "name": "源 2.0（Yuan 2.0）",
@@ -1082,7 +1240,7 @@
     "org": "DeepSeek",
     "name": "DeepSeek LLM（7B / 67B）",
     "kind": "开放权重",
-    "note": "DeepSeek 开放 7B 与 67B 基础模型，两者均使用中英文语料预训练。",
+    "note": "首代通用模型在中英文语料上训练，7B 与 67B 均提供基础和聊天权重。",
     "url": "https://huggingface.co/deepseek-ai/deepseek-llm-67b-base/blob/8743a85964a1d02729027d5ad4ea1733254eaddc/README.md",
     "source": "DeepSeek 首发模型卡"
   },
@@ -1091,7 +1249,7 @@
     "org": "Alibaba",
     "name": "Qwen-72B / Qwen-1.8B",
     "kind": "开放权重",
-    "note": "Qwen 家族同时开放 72B 和 1.8B 两种规模的基础语言模型。",
+    "note": "同时补齐大型与轻量尺寸，两个系列均提供基础和对话权重。",
     "url": "https://github.com/QwenLM/Qwen",
     "source": "官方模型仓库"
   },
@@ -1159,6 +1317,15 @@
     "source": "微软官方公告"
   },
   {
+    "date": "2023-12-14",
+    "org": "元象科技",
+    "name": "XVERSE-65B-Chat",
+    "kind": "开放权重",
+    "note": "在 65B 基础模型上进行对齐，公开面向对话的权重。",
+    "url": "https://github.com/xverse-ai/XVERSE-65B",
+    "source": "元象官方模型仓库"
+  },
+  {
     "date": "2023-12-25",
     "org": "ByteDance",
     "name": "Skylark2-Pro-32K（云雀）",
@@ -1166,6 +1333,15 @@
     "note": "火山方舟增补 32K 窗口的云雀对话模型。",
     "url": "https://docs.volcengine.com/docs/ark/model-release-announcement-2024?lang=zh",
     "source": "火山方舟平台发布记录"
+  },
+  {
+    "date": "2023-12-29",
+    "org": "百川智能",
+    "name": "Baichuan2-13B-Chat v2",
+    "kind": "开放权重",
+    "note": "更新 13B 对话权重，重点改进数学、逻辑推理和复杂指令跟随。",
+    "url": "https://github.com/baichuan-inc/Baichuan2",
+    "source": "官方模型仓库"
   },
   {
     "date": "2024-01-11",
@@ -1179,9 +1355,9 @@
   {
     "date": "2024-01-16",
     "org": "Z.ai",
-    "name": "GLM-4",
+    "name": "GLM-4 / GLM-4 All Tools",
     "kind": "开放 API",
-    "note": "智谱通过 API 和产品提供新一代语言模型，支持 128K 上下文及工具调用。",
+    "note": "128K 上下文与工具调用。团队论文明确从该日通过 API 和产品提供。",
     "url": "https://arxiv.org/html/2406.12793v1",
     "source": "研究论文",
     "stage": "API/产品开放"
@@ -1191,18 +1367,54 @@
     "org": "上海人工智能实验室",
     "name": "InternLM2",
     "kind": "开放权重",
-    "note": "第二代书生·浦语首批开放 7B、20B 两种规模的基础模型。",
+    "note": "第二代首批开放 7B、20B 两种规模，以及各自的对话版本。",
     "url": "https://github.com/InternLM/InternLM",
     "source": "书生·浦语发布记录"
+  },
+  {
+    "date": "2024-01-18",
+    "org": "Alibaba",
+    "name": "Qwen-VL-Max",
+    "kind": "发布",
+    "note": "推出面向图文问答和细粒度图像理解的 Max 版本，并开放在线体验。",
+    "url": "https://github.com/QwenLM/Qwen-VL",
+    "source": "官方模型仓库"
   },
   {
     "date": "2024-01-19",
     "org": "Stability AI",
     "name": "Stable LM 2 1.6B",
     "kind": "开放权重",
-    "note": "Stability AI 开放用多语言文本与代码训练的 1.6B 基础语言模型。",
+    "note": "推出 1.6B 参数的基础及指令模型，使用多语言文本和代码训练。",
     "url": "https://stability.ai/news-updates/introducing-stable-lm-2",
     "source": "Stability AI 发布公告"
+  },
+  {
+    "date": "2024-01-23",
+    "org": "上海人工智能实验室",
+    "name": "InternLM2-Math",
+    "kind": "开放权重",
+    "note": "研究团队发布 7B 与 20B 数学模型，提供预训练和监督微调权重。",
+    "url": "https://github.com/InternLM/InternLM",
+    "source": "书生·浦语发布记录"
+  },
+  {
+    "date": "2024-01-23",
+    "org": "零一万物",
+    "name": "Yi-VL",
+    "kind": "开放权重",
+    "note": "两种视觉语言模型开放 6B 与 34B 权重，用于结合图片进行问答。",
+    "url": "https://github.com/01-ai/Yi",
+    "source": "零一万物发布记录"
+  },
+  {
+    "date": "2024-01-29",
+    "org": "Meta",
+    "name": "Code Llama 70B",
+    "kind": "开放权重",
+    "note": "Code Llama 新增 70B 版本，提供基础、Python 与指令模型。",
+    "url": "https://ai.meta.com/blog/code-llama-large-language-model-coding/",
+    "source": "Meta 发布公告"
   },
   {
     "date": "2024-01-30",
@@ -1234,9 +1446,9 @@
   {
     "date": "2024-02-03",
     "org": "商汤科技",
-    "name": "SenseChat V4",
+    "name": "SenseChat / SenseChat-Vision V4",
     "kind": "发布",
-    "note": "商汤公布日日新 4.0 系列的通用语言模型。",
+    "note": "日日新 4.0 同时更新通用语言模型与视觉对话模型。",
     "url": "https://www.sensetime.com/cn/news/51167488",
     "source": "商汤科技发布公告"
   },
@@ -1245,9 +1457,19 @@
     "org": "Alibaba",
     "name": "Qwen1.5",
     "kind": "开放权重",
-    "note": "通义千问团队发布 Qwen1.5，开放多个参数规模的基础模型。",
+    "note": "基座与对话模型系列升级。采用官方博客标注日期。",
     "url": "https://qwenlm.github.io/blog/qwen1.5/",
     "source": "官方原文"
+  },
+  {
+    "date": "2024-02-05",
+    "org": "DeepSeek",
+    "name": "DeepSeekMath-7B",
+    "kind": "研究公开",
+    "note": "在代码模型上继续数学预训练，并研究用组相对策略优化训练数学推理。",
+    "url": "https://arxiv.org/abs/2402.03300",
+    "source": "作者论文 · arXiv",
+    "url2": "https://github.com/deepseek-ai/DeepSeek-Math"
   },
   {
     "date": "2024-02-08",
@@ -1314,6 +1536,15 @@
     "source": "Cohere 发布公告"
   },
   {
+    "date": "2024-03-11",
+    "org": "DeepSeek",
+    "name": "DeepSeek-VL",
+    "kind": "开放权重",
+    "note": "公开 1.3B 与 7B 两种视觉语言模型，分别提供基础版和对话版。",
+    "url": "https://github.com/deepseek-ai/DeepSeek-VL",
+    "source": "官方模型仓库"
+  },
+  {
     "date": "2024-03-13",
     "org": "Anthropic",
     "name": "Claude 3 Haiku",
@@ -1345,7 +1576,7 @@
     "org": "Databricks",
     "name": "DBRX",
     "kind": "开放权重",
-    "note": "Databricks 开放 DBRX Base 稀疏混合专家语言模型，拥有 132B 总参数，每个词元激活 36B。",
+    "note": "开放基础与指令版本，采用 132B 总参数、36B 激活参数的细粒度混合专家架构。",
     "url": "https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm",
     "source": "Databricks 发布公告"
   },
@@ -1368,6 +1599,15 @@
     "source": "xAI 官方公告"
   },
   {
+    "date": "2024-03-28",
+    "org": "Alibaba",
+    "name": "Qwen1.5-MoE-A2.7B",
+    "kind": "开放权重",
+    "note": "Qwen 团队发布从自家稠密基座发展出的混合专家系列首版，含基础与对话权重，每个词元激活约 27 亿参数。",
+    "url": "https://qwenlm.github.io/blog/qwen-moe/",
+    "source": "Qwen 团队发布日志"
+  },
+  {
     "date": "2024-04-02",
     "org": "LumiOpen",
     "name": "Poro 34B",
@@ -1385,6 +1625,15 @@
     "note": "在 Command R 的检索增强生成基础上，加入面向企业工作流的多步工具使用能力。",
     "url": "https://cohere.com/blog/command-r-plus-microsoft-azure",
     "source": "Cohere 发布公告"
+  },
+  {
+    "date": "2024-04-05",
+    "org": "Google",
+    "name": "Gemma 1.1",
+    "kind": "开放权重",
+    "note": "首代 Gemma 的指令微调权重更新，覆盖 2B 与 7B 两个尺寸。",
+    "url": "https://ai.google.dev/gemma/docs/releases#gemma-1.1",
+    "source": "Google · Gemma 发布记录"
   },
   {
     "date": "2024-04-08",
@@ -1414,20 +1663,47 @@
     "source": "OpenAI API 更新记录"
   },
   {
+    "date": "2024-04-09",
+    "org": "Google",
+    "name": "CodeGemma",
+    "kind": "开放权重",
+    "note": "面向代码补全、代码生成和指令跟随，提供针对不同任务训练的权重。",
+    "url": "https://developers.googleblog.com/gemma-family-expands-with-models-tailored-for-developers-and-researchers/",
+    "source": "Google 开发者公告"
+  },
+  {
     "date": "2024-04-11",
     "org": "OpenBMB",
-    "name": "MiniCPM-1B",
+    "name": "MiniCPM-2B-128K / MoE-8x2B / 1B",
     "kind": "开放权重",
-    "note": "OpenBMB 在 MiniCPM 系列中增补了 1B 轻量语言模型。",
+    "note": "系列增补长上下文、混合专家和 1B 轻量模型。",
     "url": "https://github.com/OpenBMB/MiniCPM",
     "source": "OpenBMB 发布记录"
+  },
+  {
+    "date": "2024-04-12",
+    "org": "OpenBMB",
+    "name": "MiniCPM-V 2.0",
+    "kind": "开放权重",
+    "note": "轻量视觉语言模型针对场景文字识别与图像问答进行训练。",
+    "url": "https://github.com/OpenBMB/MiniCPM-V/blob/main/docs/changelog_en.md",
+    "source": "OpenBMB 多模态发布日志"
+  },
+  {
+    "date": "2024-04-12",
+    "org": "xAI",
+    "name": "Grok-1.5V",
+    "kind": "预览",
+    "note": "首个具备视觉输入的 Grok，展示了图表、文档和真实场景照片问答。",
+    "url": "https://x.ai/news/grok-1.5v",
+    "source": "xAI 官方公告"
   },
   {
     "date": "2024-04-16",
     "org": "Alibaba",
     "name": "CodeQwen1.5-7B",
     "kind": "开放权重",
-    "note": "通义千问团队公布 7B 代码基础模型，使用三万亿词元训练，支持代码补全。",
+    "note": "7B 代码模型覆盖代码补全和对话式编程，提供基础版与对话版。",
     "url": "https://qwenlm.github.io/blog/codeqwen1.5/",
     "source": "Qwen 团队发布日志",
     "url2": "https://huggingface.co/Qwen/CodeQwen1.5-7B"
@@ -1446,7 +1722,7 @@
     "org": "Mistral",
     "name": "Mixtral 8x22B",
     "kind": "开放 API",
-    "note": "Mistral 公布稀疏混合专家语言模型的可下载基础权重。",
+    "note": "在 La Plateforme 提供新的稀疏混合专家模型，同时公布可下载的权重及指令版。",
     "url": "https://mistral.ai/news/mixtral-8x22b/",
     "source": "Mistral 发布公告"
   },
@@ -1458,6 +1734,16 @@
     "note": "首发 8B 与 70B，推进通用语言和指令能力。",
     "url": "https://ai.meta.com/blog/meta-llama-3/",
     "source": "官方原文"
+  },
+  {
+    "date": "2024-04-18",
+    "org": "上海人工智能实验室",
+    "name": "InternVL-Chat-V1.5",
+    "kind": "开放权重",
+    "note": "上海人工智能实验室 OpenGVLab 发布视觉对话模型，结合自研 InternViT-6B 与书生团队的 InternLM2-Chat-20B。",
+    "url": "https://github.com/OpenGVLab/InternVL",
+    "source": "InternVL 官方仓库",
+    "url2": "https://huggingface.co/OpenGVLab/InternVL-Chat-V1-5"
   },
   {
     "date": "2024-04-22",
@@ -1491,7 +1777,7 @@
     "org": "Alibaba",
     "name": "Qwen1.5-110B",
     "kind": "开放权重",
-    "note": "通义千问 1.5 系列新增 110B 参数的基础语言模型。",
+    "note": "通义千问 1.5 系列新增 110B 参数规模的基础与聊天权重。",
     "url": "https://qwenlm.github.io/blog/qwen1.5-110b/",
     "source": "Qwen 团队发布日志"
   },
@@ -1534,9 +1820,9 @@
   {
     "date": "2024-05-13",
     "org": "TII",
-    "name": "Falcon 2 11B",
+    "name": "Falcon 2",
     "kind": "发布",
-    "note": "TII 公布 Falcon 2 系列的 11B 参数文本语言模型。",
+    "note": "公布 Falcon 2 11B 文本模型和支持图像输入的 11B VLM。",
     "url": "https://www.tii.ae/news/falcon-2-uaes-technology-innovation-institute-releases-new-ai-model-series-outperforming-metas",
     "source": "TII 发布公告"
   },
@@ -1560,6 +1846,24 @@
     "stage": "I/O 首次公告"
   },
   {
+    "date": "2024-05-14",
+    "org": "Google",
+    "name": "Gemini 1.5 Flash",
+    "kind": "预览",
+    "note": "Google 在 I/O 推出侧重低延迟的 Flash 分支，并向开发者提供公开预览。",
+    "url": "https://blog.google/innovation-and-ai/products/google-gemini-update-flash-ai-assistant-io-2024/",
+    "source": "官方原文"
+  },
+  {
+    "date": "2024-05-14",
+    "org": "Google",
+    "name": "PaliGemma",
+    "kind": "开放权重",
+    "note": "第一代 Gemma 视觉语言模型，可针对图像问答、描述与检测等任务微调。",
+    "url": "https://ai.google.dev/gemma/docs/releases#paligemma",
+    "source": "Google · Gemma 发布记录"
+  },
+  {
     "date": "2024-05-15",
     "org": "ByteDance",
     "name": "豆包通用模型（Doubao）",
@@ -1573,18 +1877,36 @@
     "org": "DeepSeek",
     "name": "DeepSeek-V2-Lite",
     "kind": "开放权重",
-    "note": "DeepSeek 开放 V2-Lite 基础语言模型，采用稀疏混合专家架构。",
+    "note": "V2 的精简版采用混合专家架构，并提供基础与对话模型。",
     "url": "https://github.com/deepseek-ai/DeepSeek-V2",
     "source": "官方模型仓库"
   },
   {
     "date": "2024-05-21",
     "org": "Microsoft",
-    "name": "Phi-3-small / Phi-3-medium",
+    "name": "Phi-3-small / medium / vision",
     "kind": "开放权重",
-    "note": "微软为 Phi-3 家族增加 7B 和 14B 参数的文本语言模型。",
+    "note": "增加 70 亿和 140 亿参数文本模型，以及支持图像理解的 Phi-3-vision。",
     "url": "https://azure.microsoft.com/en-us/blog/new-models-added-to-the-phi-3-family-available-on-microsoft-azure/",
     "source": "微软官方公告"
+  },
+  {
+    "date": "2024-05-21",
+    "org": "Microsoft",
+    "name": "Phi Silica",
+    "kind": "研究公开",
+    "note": "微软公布针对 Copilot+ PC 的 NPU 优化的端侧语言模型，供 Windows 应用本地调用。",
+    "url": "https://blogs.windows.com/windowsdeveloper/2024/05/21/unlock-a-new-era-of-innovation-with-windows-copilot-runtime-and-copilot-pcs/",
+    "source": "Windows 开发者公告"
+  },
+  {
+    "date": "2024-05-23",
+    "org": "Cohere",
+    "name": "Aya 23",
+    "kind": "开放权重",
+    "note": "为 23 种语言提供 8B 和 35B 两档开放权重模型。",
+    "url": "https://cohere.com/blog/aya23",
+    "source": "Cohere 发布公告"
   },
   {
     "date": "2024-05-29",
@@ -1607,9 +1929,9 @@
   {
     "date": "2024-06-05",
     "org": "Z.ai",
-    "name": "GLM-4-9B",
+    "name": "GLM-4-9B / GLM-4V-9B",
     "kind": "开放权重",
-    "note": "GLM-4 家族开放 9B 参数的基础语言模型。",
+    "note": "GLM-4 家族释出 9B 级文本及视觉对话模型。",
     "url": "https://github.com/zai-org/GLM-4",
     "source": "官方模型仓库",
     "url2": "https://huggingface.co/zai-org/glm-4-9b"
@@ -1635,12 +1957,21 @@
   {
     "date": "2024-06-14",
     "org": "NVIDIA",
-    "name": "Nemotron-4 340B Base",
+    "name": "Nemotron-4 340B Base / Instruct",
     "kind": "开放权重",
-    "note": "NVIDIA 公开 340B 参数的 Nemotron-4 基础语言模型。",
+    "note": "NVIDIA 开放 340B 参数的 Nemotron-4 基础及指令版本，可用于通用文本生成与合成数据制作。",
     "url": "https://research.nvidia.com/publication/2024-06_nemotron-4-340b",
     "source": "NVIDIA 研究报告",
     "url2": "https://huggingface.co/nvidia/Nemotron-4-340B-Base"
+  },
+  {
+    "date": "2024-06-14",
+    "org": "DeepSeek",
+    "name": "DeepSeek-Coder-V2-0614",
+    "kind": "开放 API",
+    "note": "官方 API 的编程模型升级为 Coder-V2，支持代码生成、理解和补全。",
+    "url": "https://api-docs.deepseek.com/updates/#date-2024-06-14",
+    "source": "DeepSeek API 更新记录"
   },
   {
     "date": "2024-06-20",
@@ -1663,9 +1994,9 @@
   {
     "date": "2024-06-27",
     "org": "Google",
-    "name": "Gemma 2 27B",
+    "name": "Gemma 2（9B / 27B）",
     "kind": "开放权重",
-    "note": "Google 正式开放从头训练的 27B 预训练模型。",
+    "note": "Google 开放第二代 Gemma 的 9B 和 27B 权重，各含预训练与指令版本。",
     "url": "https://developers.googleblog.com/fine-tuning-gemma-2-with-keras-hugging-face-update/",
     "source": "官方原文",
     "url2": "https://huggingface.co/google/gemma-2-27b"
@@ -1693,9 +2024,28 @@
     "org": "上海人工智能实验室",
     "name": "InternLM2.5-7B",
     "kind": "开放权重",
-    "note": "上海人工智能实验室发布 7B 规模的 InternLM2.5 基础语言模型。",
+    "note": "7B 系列提供基础、对话及一百万词元上下文对话版本。",
     "url": "https://github.com/InternLM/InternLM",
     "source": "书生·浦语发布记录"
+  },
+  {
+    "date": "2024-07-03",
+    "org": "Kyutai",
+    "name": "Moshi",
+    "kind": "预览",
+    "note": "展示可以边听边说的实时语音语言模型，并开放交互式研究原型。",
+    "url": "https://kyutai.org/assets/pdfs/cp_moshi.pdf",
+    "source": "Kyutai 发布公告（PDF）"
+  },
+  {
+    "date": "2024-07-04",
+    "org": "上海人工智能实验室",
+    "name": "InternVL2-8B",
+    "kind": "开放权重",
+    "note": "OpenGVLab 开放 InternVL2 家族的 8B 视觉语言版本，结合 InternViT 与同一实验室的 InternLM2.5-7B-Chat。",
+    "url": "https://github.com/OpenGVLab/InternVL",
+    "source": "InternVL 官方仓库",
+    "url2": "https://huggingface.co/OpenGVLab/InternVL2-8B"
   },
   {
     "date": "2024-07-16",
@@ -1713,6 +2063,15 @@
     "kind": "开放权重",
     "note": "将状态空间架构用于代码生成，公开 7B 模型并提供推理支持。",
     "url": "https://mistral.ai/news/codestral-mamba/",
+    "source": "Mistral 发布公告"
+  },
+  {
+    "date": "2024-07-16",
+    "org": "Mistral",
+    "name": "Mathstral",
+    "kind": "开放权重",
+    "note": "从 Mistral 7B 训练出面向数学推理和其他理工科任务的专用模型。",
+    "url": "https://mistral.ai/news/mathstral/",
     "source": "Mistral 发布公告"
   },
   {
@@ -1753,11 +2112,29 @@
     "stage": "发布 · API 与指令模型权重可用"
   },
   {
+    "date": "2024-07-31",
+    "org": "Google",
+    "name": "Gemma 2 2B",
+    "kind": "开放权重",
+    "note": "为先前的 9B 和 27B 系列补充更小的 2B 权重。",
+    "url": "https://ai.google.dev/gemma/docs/releases#gemma-2-2b",
+    "source": "Google · Gemma 发布记录"
+  },
+  {
+    "date": "2024-08",
+    "org": "Microsoft",
+    "name": "Phi-3.5-mini / MoE / vision",
+    "kind": "开放权重",
+    "note": "家族新增多语言 mini、稀疏专家 MoE 和可同时理解多张图像的 vision 版本。",
+    "url": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/discover-the-new-multi-lingual-high-quality-phi-3-5-slms/4225280",
+    "source": "微软 Phi-3.5 公告"
+  },
+  {
     "date": "2024-08-01",
     "org": "上海人工智能实验室",
     "name": "InternLM2.5-1.8B / 20B",
     "kind": "开放权重",
-    "note": "书生·浦语在 7B 之外新增 1.8B 和 20B 两种基础权重。",
+    "note": "在 7B 之外新增轻量和较大规模版本，分别配套基础与对话权重。",
     "url": "https://github.com/InternLM/InternLM",
     "source": "书生·浦语发布记录"
   },
@@ -1766,16 +2143,34 @@
     "org": "LG AI Research",
     "name": "EXAONE 3.0",
     "kind": "研究公开",
-    "note": "LG AI Research 公布 7.8B 参数的 EXAONE 3.0，报告了韩语和英语语料的预训练。",
+    "note": "公开 7.8B 韩英双语指令模型，供研究使用。",
     "url": "https://github.com/LG-AI-EXAONE/EXAONE-3.0",
     "source": "LG AI Research 官方发布记录",
     "url2": "https://arxiv.org/abs/2408.03541"
   },
   {
+    "date": "2024-08-08",
+    "org": "Alibaba",
+    "name": "Qwen2-Math",
+    "kind": "开放权重",
+    "note": "发布 1.5B、7B 与 72B 三种数学专用模型，重点支持英文数学推理。",
+    "url": "https://qwenlm.github.io/blog/qwen2-math/",
+    "source": "Qwen 团队发布日志"
+  },
+  {
+    "date": "2024-08-09",
+    "org": "Alibaba",
+    "name": "Qwen2-Audio",
+    "kind": "开放权重",
+    "note": "音频语言模型可听取语音指令，也能根据文本提问分析输入音频。",
+    "url": "https://qwenlm.github.io/blog/qwen2-audio/",
+    "source": "Qwen 团队发布日志"
+  },
+  {
     "date": "2024-08-12",
     "kind": "开放权重",
     "name": "Falcon Mamba 7B",
-    "note": "TII 公开 7B 参数的纯 Mamba 状态空间基础语言模型，在原有 Mamba 架构上加入 RMS 归一化。",
+    "note": "TII 发布 Falcon 系列首款状态空间模型 Falcon Mamba 7B，采用纯 Mamba 架构并加 RMS 归一化；7B 基座与指令版权重在 Hugging Face 开放，采用以 Apache 2.0 为基础的 TII Falcon 许可证（附可接受使用政策）。",
     "org": "TII",
     "source": "ATRC / TII 发布公告",
     "url": "https://www.atrc.gov.ae/news/uaes-technology-innovation-institute-revolutionizes-ai-language-models-new-architecture",
@@ -1795,10 +2190,19 @@
     "org": "AI21 Labs",
     "name": "Jamba 1.5 Mini / Large",
     "kind": "发布",
-    "note": "AI21 公布两款混合 Transformer 与 Mamba 架构的语言模型，Mini 和 Large 的激活参数分别为 12B 和 94B。",
+    "note": "推出两款长上下文指令模型，继续使用状态空间模型与注意力结合的架构。",
     "url": "https://www.ai21.com/blog/announcing-jamba-model-family/",
     "source": "AI21 Labs 发布公告",
     "url2": "https://arxiv.org/abs/2408.12570"
+  },
+  {
+    "date": "2024-08-29",
+    "org": "Alibaba",
+    "name": "Qwen2-VL",
+    "kind": "发布",
+    "note": "引入动态图像分辨率和多模态位置编码，并开放 2B 与 7B 权重。",
+    "url": "https://qwenlm.github.io/blog/qwen2-vl/",
+    "source": "Qwen 团队发布日志"
   },
   {
     "date": "2024-08-30",
@@ -1828,6 +2232,34 @@
     "source": "OpenBMB 发布记录"
   },
   {
+    "date": "2024-09-05",
+    "org": "DeepSeek",
+    "name": "DeepSeek-V2.5",
+    "kind": "版本更新",
+    "note": "DeepSeek 将自家通用对话与代码模型的能力整合为正式版本 V2.5，并更新官方 API。",
+    "url": "https://api-docs.deepseek.com/updates/#date-2024-09-05",
+    "source": "更新日志",
+    "stage": "模型/API更新"
+  },
+  {
+    "date": "2024-09-05",
+    "org": "零一万物",
+    "name": "Yi-Coder",
+    "kind": "开放权重",
+    "note": "开放 1.5B 与 9B 代码模型，分别提供基础版和对话版。",
+    "url": "https://github.com/01-ai/Yi-Coder",
+    "source": "Yi-Coder 官方仓库"
+  },
+  {
+    "date": "2024-09-11",
+    "org": "Mistral",
+    "name": "Pixtral 12B",
+    "kind": "开放权重",
+    "note": "首批开放的 Pixtral 视觉语言模型可结合文字与图像作为输入。",
+    "url": "https://legal.mistral.ai/ai-governance/models/pixtral-12b/",
+    "source": "Mistral 模型发行记录"
+  },
+  {
     "date": "2024-09-12",
     "org": "OpenAI",
     "name": "o1-preview / o1-mini",
@@ -1846,6 +2278,43 @@
     "source": "官方原文"
   },
   {
+    "date": "2024-09-19",
+    "org": "Alibaba",
+    "name": "Qwen2.5-Coder",
+    "kind": "开放权重",
+    "note": "首批开放 1.5B 和 7B 代码模型，支持程序生成、修复与代码推理。",
+    "url": "https://qwenlm.github.io/blog/qwen2.5-coder/",
+    "source": "Qwen 团队发布日志"
+  },
+  {
+    "date": "2024-09-19",
+    "org": "Alibaba",
+    "name": "Qwen2.5-Math",
+    "kind": "开放权重",
+    "note": "数学模型支持中英文推理，并能将自然语言推导与外部计算工具结合。",
+    "url": "https://qwenlm.github.io/blog/qwen2.5-math/",
+    "source": "Qwen 团队发布日志"
+  },
+  {
+    "date": "2024-09-25",
+    "org": "Ai2",
+    "name": "MolmoE-1B",
+    "kind": "开放权重",
+    "note": "Ai2 发布基于自研 OLMoE-1B-7B 的视觉语言型号，支持图像理解和自然语言问答。",
+    "url": "https://allenai.org/blog/molmo",
+    "source": "Ai2 发布公告",
+    "url2": "https://huggingface.co/allenai/MolmoE-1B-0924"
+  },
+  {
+    "date": "2024-09-25",
+    "org": "Meta",
+    "name": "Llama 3.2",
+    "kind": "开放权重",
+    "note": "加入小型 1B/3B 文本模型，以及 11B/90B 视觉模型。",
+    "url": "https://ai.meta.com/blog/llama-3-2-connect-2024-vision-edge-mobile-devices/",
+    "source": "官方原文"
+  },
+  {
     "date": "2024-09-30",
     "org": "Liquid AI",
     "name": "Liquid Foundation Models",
@@ -1853,6 +2322,33 @@
     "note": "首批 LFM 覆盖 1.3B、3B 和 40B 三档规模，面向不同计算预算的文本生成。",
     "url": "https://www.liquid.ai/blog/liquid-foundation-models-our-first-series-of-generative-ai-models",
     "source": "Liquid AI 发布公告"
+  },
+  {
+    "date": "2024-10-01",
+    "org": "OpenAI",
+    "name": "GPT-4o Realtime Preview",
+    "kind": "预览",
+    "note": "GPT-4o 的实时版本支持低延迟语音输入与输出，随 Realtime API 一起进入公开测试。",
+    "url": "https://openai.com/index/introducing-the-realtime-api/",
+    "source": "OpenAI 发布公告"
+  },
+  {
+    "date": "2024-10-03",
+    "org": "Google",
+    "name": "Gemini 1.5 Flash-8B",
+    "kind": "发布",
+    "note": "8B 参数的小型 Flash 模型进入稳定版，适合高吞吐、低延迟任务。",
+    "url": "https://ai.google.dev/gemini-api/docs/changelog#10-03-24",
+    "source": "Google · Gemini API 发布记录"
+  },
+  {
+    "date": "2024-10-03",
+    "org": "Google",
+    "name": "Gemma 2 JPN",
+    "kind": "开放权重",
+    "note": "Google 为自家 Gemma 2 家族发布 2B 参数的日语版本，提供日英双语生成能力。",
+    "url": "https://ai.google.dev/gemma/docs/releases#gemma-2-jpn",
+    "source": "Google · Gemma 发布记录"
   },
   {
     "date": "2024-10-16",
@@ -1891,11 +2387,20 @@
     "source": "Sarvam AI 发布公告"
   },
   {
+    "date": "2024-10-24",
+    "org": "Cohere",
+    "name": "Aya Expanse",
+    "kind": "开放权重",
+    "note": "通过多语言偏好训练与模型合并，训练覆盖 23 种语言的 8B 和 32B 模型。",
+    "url": "https://cohere.com/blog/aya-expanse-connecting-our-world",
+    "source": "Cohere 发布公告"
+  },
+  {
     "date": "2024-10-31",
     "org": "Hugging Face",
     "name": "SmolLM2",
     "kind": "开放权重",
-    "note": "Hugging Face 开放 135M、360M 和 1.7B 三种规模的端侧基础语言模型。",
+    "note": "开放面向设备端的 135M、360M 和 1.7B 文本模型，以及相应的指令版本。",
     "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B/tree/17c3abcf58954cfe4dff2cda2829a505d6e4c0ea",
     "source": "Hugging Face 模型发布快照"
   },
@@ -1927,13 +2432,58 @@
     "source": "MiniMax 发布公告"
   },
   {
+    "date": "2024-11-12",
+    "org": "Alibaba",
+    "name": "Qwen2.5-Coder-32B 等四款新尺寸",
+    "kind": "开放权重",
+    "note": "增加 0.5B、3B、14B 与 32B，使开放代码模型覆盖六种参数规模。",
+    "url": "https://qwenlm.github.io/blog/qwen2.5-coder-family/",
+    "source": "Qwen 团队发布日志"
+  },
+  {
+    "date": "2024-11-13",
+    "org": "DeepSeek",
+    "name": "JanusFlow",
+    "kind": "开放权重",
+    "note": "在同一架构内结合视觉理解和基于整流流的图像生成。",
+    "url": "https://github.com/deepseek-ai/Janus",
+    "source": "官方模型仓库"
+  },
+  {
+    "date": "2024-11-15",
+    "org": "Alibaba",
+    "name": "Qwen2.5-Turbo（1M 上下文）",
+    "kind": "开放 API",
+    "note": "Turbo 的 API 上下文扩大到一百万词元，可接收长篇文档。",
+    "url": "https://qwenlm.github.io/blog/qwen2.5-turbo/",
+    "source": "Qwen 团队发布日志"
+  },
+  {
+    "date": "2024-11-18",
+    "org": "Mistral",
+    "name": "Pixtral Large",
+    "kind": "开放权重",
+    "note": "将视觉编码器与大语言模型结合，支持理解文档、图像和图表。",
+    "url": "https://mistral.ai/news/pixtral-large/",
+    "source": "Mistral 发布公告"
+  },
+  {
     "date": "2024-11-26",
     "org": "Ai2",
     "name": "OLMo 2",
     "kind": "开放权重",
-    "note": "Ai2 发布 7B 和 13B 预训练语言模型，并公开训练数据、配方和检查点。",
+    "note": "发布 7B 和 13B 预训练与指令模型，并提供相应的数据、配方和检查点。",
     "url": "https://allenai.org/blog/olmo2",
     "source": "Ai2 发布公告"
+  },
+  {
+    "date": "2024-11-28",
+    "org": "Alibaba",
+    "name": "QwQ-32B-Preview",
+    "kind": "预览",
+    "note": "公开 32B 推理模型的预览权重，探索通过延长思考过程处理数学与编程问题。",
+    "url": "https://qwenlm.github.io/blog/qwq-32b-preview/",
+    "source": "Qwen 团队发布日志"
   },
   {
     "date": "2024-12-03",
@@ -1964,14 +2514,51 @@
     "stage": "ChatGPT 发布"
   },
   {
+    "date": "2024-12-05",
+    "org": "Google",
+    "name": "PaliGemma 2",
+    "kind": "开放权重",
+    "note": "发布 3B、10B 与 28B 三种视觉语言模型，供图像理解任务微调。",
+    "url": "https://ai.google.dev/gemma/docs/releases#paligemma-2",
+    "source": "Google · Gemma 发布记录"
+  },
+  {
+    "date": "2024-12-05",
+    "org": "上海人工智能实验室",
+    "name": "InternVL2.5-8B",
+    "kind": "开放权重",
+    "note": "OpenGVLab 发布 InternVL2.5 的 8B 视觉语言权重，采用 InternLM2.5-7B-Chat 语言主干，支持图像、文档及视频理解。",
+    "url": "https://github.com/OpenGVLab/InternVL",
+    "source": "InternVL 官方仓库",
+    "url2": "https://huggingface.co/OpenGVLab/InternVL2_5-8B"
+  },
+  {
+    "date": "2024-12-06",
+    "org": "Meta",
+    "name": "Llama 3.3 70B Instruct",
+    "kind": "开放权重",
+    "note": "70B 多语言指令模型支持文本输入与输出，模型卡列明八种正式支持的语言。",
+    "url": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
+    "source": "Meta 官方模型卡"
+  },
+  {
     "date": "2024-12-09",
     "org": "LG AI Research",
     "name": "EXAONE 3.5",
     "kind": "研究公开",
-    "note": "LG AI Research 公布这一代基座的多阶段预训练与长上下文扩展，覆盖 2.4B、7.8B 和 32B 三种规模。",
+    "note": "开放 2.4B、7.8B 与 32B 三种指令微调模型，面向不同算力条件。",
     "url": "https://github.com/LG-AI-EXAONE/K-EXAONE/blob/main/README.md",
     "source": "LG AI Research 官方发布记录",
     "url2": "https://arxiv.org/abs/2412.04862"
+  },
+  {
+    "date": "2024-12-10",
+    "org": "DeepSeek",
+    "name": "DeepSeek-V2.5-1210",
+    "kind": "发布",
+    "note": "聊天接口更新到 1210 版本，改善代码、数学与部分写作任务。",
+    "url": "https://api-docs.deepseek.com/updates/#date-2024-12-10",
+    "source": "DeepSeek API 更新记录"
   },
   {
     "date": "2024-12-11",
@@ -2001,6 +2588,15 @@
     "source": "Cohere 发布公告"
   },
   {
+    "date": "2024-12-13",
+    "org": "DeepSeek",
+    "name": "DeepSeek-VL2",
+    "kind": "开放权重",
+    "note": "视觉语言系列改用混合专家架构，开放 Tiny、Small 和标准三种权重。",
+    "url": "https://github.com/deepseek-ai/DeepSeek-VL2",
+    "source": "官方模型仓库"
+  },
+  {
     "date": "2024-12-17",
     "org": "OpenAI",
     "name": "o1 API（正式版）",
@@ -2012,12 +2608,48 @@
   {
     "date": "2024-12-17",
     "org": "TII",
-    "name": "Falcon3-7B-Base",
+    "name": "Falcon 3",
     "kind": "开放权重",
-    "note": "TII 公开第三代 Falcon 的 7B 基础语言模型。",
+    "note": "TII 推出 1B、3B、7B 和 10B 四档 Falcon 3 语言模型，分别提供 Base 与 Instruct 版本。",
     "url": "https://www.tii.ae/news/falcon-3-uaes-technology-innovation-institute-launches-worlds-most-powerful-small-ai-models",
     "source": "TII 发布公告",
     "url2": "https://huggingface.co/tiiuae/Falcon3-7B-Base"
+  },
+  {
+    "date": "2024-12-18",
+    "org": "IBM",
+    "name": "Granite 3.1",
+    "kind": "开放权重",
+    "note": "将文本模型的上下文窗口扩展到 128K，支持长文档处理。",
+    "url": "https://www.ibm.com/new/announcements/ibm-granite-3-1-powerful-performance-long-context-and-more",
+    "source": "IBM 发布公告"
+  },
+  {
+    "date": "2024-12-19",
+    "org": "Google",
+    "name": "Gemini 2.0 Flash Thinking",
+    "kind": "预览",
+    "note": "实验版在回答前生成推理过程，首批通过 Gemini API 提供。",
+    "url": "https://ai.google.dev/gemini-api/docs/changelog#12-19-2024",
+    "source": "Google · Gemini API 发布记录"
+  },
+  {
+    "date": "2024-12-20",
+    "org": "Z.ai",
+    "name": "GLM-Zero-Preview",
+    "kind": "预览",
+    "note": "智谱公开第一代深度推理模型的预览版。",
+    "url": "https://z.ai/company",
+    "source": "智谱公司大事记"
+  },
+  {
+    "date": "2024-12-25",
+    "org": "Alibaba",
+    "name": "QVQ-72B-Preview",
+    "kind": "预览",
+    "note": "开放视觉推理预览模型，支持结合图片进行逐步推理。",
+    "url": "https://qwenlm.github.io/blog/qvq-72b-preview/",
+    "source": "Qwen 团队发布日志"
   },
   {
     "date": "2024-12-26",
@@ -2039,11 +2671,20 @@
     "source": "科大讯飞公司新闻"
   },
   {
+    "date": "2025-01-13",
+    "org": "Moonshot",
+    "name": "Moonshot-v1-Vision-Preview",
+    "kind": "预览",
+    "note": "视觉理解预览模型上线 Kimi 开放平台，可在对话中传入图片。",
+    "url": "https://platform.kimi.com/blog/posts/changelog",
+    "source": "Kimi 开放平台更新日志"
+  },
+  {
     "date": "2025-01-15",
     "org": "MiniMax",
-    "name": "MiniMax-Text-01",
+    "name": "MiniMax-Text-01 / MiniMax-VL-01",
     "kind": "开放权重",
-    "note": "MiniMax 公布采用混合 Lightning Attention 的 MiniMax-Text-01 基础模型家族。",
+    "note": "MiniMax-01家族，基于混合Lightning Attention。同时提供文本和视觉语言模型。",
     "url": "https://www.minimax.io/news/minimax-01-series-2",
     "source": "官方原文",
     "stage": "开放权重及 API"
@@ -2051,9 +2692,9 @@
   {
     "date": "2025-01-15",
     "org": "上海人工智能实验室",
-    "name": "InternLM3-8B",
+    "name": "InternLM3-8B-Instruct",
     "kind": "发布",
-    "note": "书生·浦语公布第三代 8B 语言模型，披露了使用约四万亿词元的预训练。",
+    "note": "书生·浦语第三代释出 8B 指令模型，提供可直接部署的权重。",
     "url": "https://github.com/InternLM/InternLM",
     "source": "书生·浦语发布记录"
   },
@@ -2067,6 +2708,17 @@
     "source": "官方原文"
   },
   {
+    "date": "2025-01-20",
+    "org": "DeepSeek",
+    "name": "DeepSeek-R1",
+    "kind": "开放权重",
+    "note": "DeepSeek 发布基于 DeepSeek-V3-Base 的官方推理模型 R1，开放 MIT 许可权重，并在网页与 API 提供服务。",
+    "url": "https://api-docs.deepseek.com/news/news250120/",
+    "source": "开发者公告",
+    "stage": "开放权重及 API",
+    "url2": "https://huggingface.co/deepseek-ai/DeepSeek-R1"
+  },
+  {
     "date": "2025-01-22",
     "org": "ByteDance",
     "name": "Seed1.5（Doubao-1.5-pro）",
@@ -2074,6 +2726,33 @@
     "note": "字节 Seed 模型系列节点。沿用官方模型目录日期。",
     "url": "https://seed.bytedance.com/en/seed_model_portfolio",
     "source": "官方原文"
+  },
+  {
+    "date": "2025-01-26",
+    "org": "Alibaba",
+    "name": "Qwen2.5-VL",
+    "kind": "开放权重",
+    "note": "首批公布 3B、7B、72B 三种规模，可定位图像中的对象并理解长视频。",
+    "url": "https://qwenlm.github.io/blog/qwen2.5-vl/",
+    "source": "Qwen 团队发布日志"
+  },
+  {
+    "date": "2025-01-27",
+    "org": "Alibaba",
+    "name": "Qwen2.5-1M",
+    "kind": "开放权重",
+    "note": "7B 与 14B 指令模型支持本地处理最高一百万词元的上下文。",
+    "url": "https://qwenlm.github.io/blog/qwen2.5-1m/",
+    "source": "Qwen 团队发布日志"
+  },
+  {
+    "date": "2025-01-27",
+    "org": "DeepSeek",
+    "name": "Janus-Pro",
+    "kind": "开放权重",
+    "note": "统一视觉理解和图像生成模型扩大训练规模，提供 1B 和 7B 权重。",
+    "url": "https://github.com/deepseek-ai/Janus",
+    "source": "官方模型仓库"
   },
   {
     "date": "2025-01-28",
@@ -2168,6 +2847,15 @@
     "source": "官方原文"
   },
   {
+    "date": "2025-02-20",
+    "org": "Hugging Face",
+    "name": "SmolVLM2（256M / 500M / 2.2B）",
+    "kind": "开放权重",
+    "note": "Hugging Face 的 SmolVLM2 家族将自研 SmolLM2 系列扩展到多图、视频理解，开放三档权重。",
+    "url": "https://huggingface.co/blog/smolvlm2",
+    "source": "Hugging Face 发布公告"
+  },
+  {
     "date": "2025-02-24",
     "org": "Anthropic",
     "name": "Claude 3.7 Sonnet",
@@ -2195,13 +2883,31 @@
     "source": "Google · Gemini API 发布记录"
   },
   {
+    "date": "2025-02-25",
+    "org": "Alibaba",
+    "name": "QwQ-Max-Preview",
+    "kind": "预览",
+    "note": "面向复杂问题的推理模型在 Qwen Chat 开放早期体验。",
+    "url": "https://qwenlm.github.io/blog/qwq-max-preview/",
+    "source": "Qwen 团队发布日志"
+  },
+  {
     "date": "2025-02-26",
     "org": "Microsoft",
-    "name": "Phi-4-mini",
+    "name": "Phi-4-mini / Phi-4-multimodal",
     "kind": "开放权重",
-    "note": "微软公布 3.8B 参数的轻量文本语言模型，面向本地推理。",
+    "note": "mini 用于轻量文本推理，多模态版本将图像、语音与文本输入整合到同一个模型。",
     "url": "https://azure.microsoft.com/en-us/blog/empowering-innovation-the-next-generation-of-the-phi-family/",
     "source": "微软官方公告"
+  },
+  {
+    "date": "2025-02-26",
+    "org": "IBM",
+    "name": "Granite 3.2",
+    "kind": "开放权重",
+    "note": "指令模型增加可切换的推理模式，同时发布擅长文档理解的 2B 视觉语言模型。",
+    "url": "https://www.ibm.com/new/announcements/ibm-granite-3-2-open-source-reasoning-and-vision",
+    "source": "IBM 发布公告"
   },
   {
     "date": "2025-02-27",
@@ -2213,11 +2919,56 @@
     "source": "官方原文"
   },
   {
+    "date": "2025-03-04",
+    "org": "Cohere",
+    "name": "Aya Vision",
+    "kind": "开放权重",
+    "note": "推出可处理文字与图像的 8B 和 32B 模型，支持跨语言视觉问答。",
+    "url": "https://cohere.com/blog/aya-vision",
+    "source": "Cohere 发布公告"
+  },
+  {
+    "date": "2025-03-06",
+    "org": "AI21 Labs",
+    "name": "Jamba 1.6 Mini / Large",
+    "kind": "开放权重",
+    "note": "发布支持私有部署的两档模型，聚焦检索增强生成、引用与长文档处理。",
+    "url": "https://www.ai21.com/blog/introducing-jamba-1-6/",
+    "source": "AI21 Labs 发布公告"
+  },
+  {
+    "date": "2025-03-06",
+    "org": "Alibaba",
+    "name": "QwQ-32B",
+    "kind": "开放权重",
+    "note": "开放正式版 32B 推理模型，并披露用于数学和代码任务的强化学习方法。",
+    "url": "https://qwenlm.github.io/blog/qwq-32b/",
+    "source": "Qwen 团队发布日志"
+  },
+  {
+    "date": "2025-03-12",
+    "org": "Google",
+    "name": "Gemini Robotics-ER",
+    "kind": "预览",
+    "note": "Google DeepMind 发布基于 Gemini 的具身推理模型，可根据视觉与语言输入执行空间推理与任务规划，向合作伙伴提供。",
+    "url": "https://deepmind.google/blog/gemini-robotics-brings-ai-into-the-physical-world/",
+    "source": "Google DeepMind 研究公告"
+  },
+  {
+    "date": "2025-03-12",
+    "org": "Google",
+    "name": "Gemma 3",
+    "kind": "开放权重",
+    "note": "提供 1B、4B、12B、27B。系列增加视觉理解与更长上下文。",
+    "url": "https://blog.google/innovation-and-ai/technology/developers-tools/gemma-3/",
+    "source": "官方原文"
+  },
+  {
     "date": "2025-03-13",
     "org": "Ai2",
     "name": "OLMo 2 32B",
     "kind": "开放权重",
-    "note": "Ai2 将 OLMo 2 扩展到 32B，使用最多六万亿词元预训练，并公开基础权重。",
+    "note": "Ai2 将 OLMo 2 扩展到 32B，使用最多六万亿词元预训练，同时公开基础版及采用 Tülu 3.1 后训练的 Instruct 版。",
     "url": "https://allenai.org/blog/olmo2-32B",
     "source": "Ai2 发布公告"
   },
@@ -2258,6 +3009,35 @@
     "source": "研究论文"
   },
   {
+    "date": "2025-03-18",
+    "org": "LG AI Research",
+    "name": "EXAONE Deep",
+    "kind": "开放权重",
+    "note": "增强数学和代码推理，提供 2.4B、7.8B 和 32B 三种规模。",
+    "url": "https://github.com/LG-AI-EXAONE/K-EXAONE/blob/main/README.md",
+    "source": "LG AI Research 官方发布记录"
+  },
+  {
+    "date": "2025-03-24",
+    "org": "Alibaba",
+    "name": "Qwen2.5-VL-32B",
+    "kind": "开放权重",
+    "note": "视觉语言系列新增 32B 权重，并在数学和图文推理任务上采用强化学习训练。",
+    "url": "https://qwenlm.github.io/blog/qwen2.5-vl-32b/",
+    "source": "Qwen 团队发布日志"
+  },
+  {
+    "date": "2025-03-24",
+    "org": "DeepSeek",
+    "name": "DeepSeek-V3-0324",
+    "kind": "版本更新",
+    "note": "按 API 更新日志，deepseek-chat 于 3 月 24 日升级到该快照。独立发布公告标注 3 月 25 日。",
+    "url": "https://api-docs.deepseek.com/updates/#date-2025-03-24",
+    "source": "更新日志",
+    "url2": "https://api-docs.deepseek.com/news/news250325/",
+    "stage": "快照更新 · API 默认模型升级"
+  },
+  {
     "date": "2025-03-25",
     "org": "Google",
     "name": "Gemini 2.5 Pro Experimental",
@@ -2265,6 +3045,24 @@
     "note": "Gemini 转向显式思考模型。原始公告是 03-25，03-26 是更新日期。",
     "url": "https://blog.google/innovation-and-ai/models-and-research/google-deepmind/gemini-model-thinking-updates-march-2025/",
     "source": "官方原文"
+  },
+  {
+    "date": "2025-03-27",
+    "org": "Alibaba",
+    "name": "Qwen2.5-Omni",
+    "kind": "开放权重",
+    "note": "统一处理文本、图像、音频与视频，能生成文本并流式合成语音。",
+    "url": "https://qwenlm.github.io/blog/qwen2.5-omni/",
+    "source": "Qwen 团队发布日志"
+  },
+  {
+    "date": "2025-03-28",
+    "org": "Alibaba",
+    "name": "QVQ-Max",
+    "kind": "发布",
+    "note": "首个正式版本可以分析图像和视频，并结合视觉证据推理作答。",
+    "url": "https://qwenlm.github.io/blog/qvq-max-preview/",
+    "source": "Qwen 团队发布日志"
   },
   {
     "date": "2025-04-05",
@@ -2276,6 +3074,15 @@
     "source": "官方原文"
   },
   {
+    "date": "2025-04-08",
+    "org": "Amazon",
+    "name": "Nova Sonic",
+    "kind": "发布",
+    "note": "在一个端到端模型中完成语音理解与语音生成，支持双向流式对话和函数调用。",
+    "url": "https://aws.amazon.com/about-aws/whats-new/2025/04/amazon-nova-sonic-speech-to-speech-conversations-bedrock/",
+    "source": "AWS 发布公告"
+  },
+  {
     "date": "2025-04-10",
     "org": "商汤科技",
     "name": "SenseNova V6 / V6 Omni",
@@ -2283,6 +3090,15 @@
     "note": "结合多模态推理、强化学习和实时交互，支持对话、翻译和视觉讲解。",
     "url": "https://www.sensetime.com/cn/news/51169469",
     "source": "商汤科技发布公告"
+  },
+  {
+    "date": "2025-04-10",
+    "org": "Moonshot",
+    "name": "Kimi-VL",
+    "kind": "开放权重",
+    "note": "首代视觉语言系列开放 Instruct 与 Thinking 两个版本，用于图像、视频和长文档理解。",
+    "url": "https://github.com/MoonshotAI/Kimi-VL",
+    "source": "Kimi-VL 官方仓库"
   },
   {
     "date": "2025-04-14",
@@ -2313,6 +3129,15 @@
     "url2": "https://huggingface.co/zai-org/GLM-4-32B-Base-0414"
   },
   {
+    "date": "2025-04-14",
+    "org": "Z.ai",
+    "name": "GLM-4-32B-0414",
+    "kind": "开放权重",
+    "note": "32B 开放系列包括对话、推理和可进行较长时间思考的版本。",
+    "url": "https://github.com/zai-org/GLM-4",
+    "source": "官方模型仓库"
+  },
+  {
     "date": "2025-04-16",
     "org": "OpenAI",
     "name": "o3 / o4-mini",
@@ -2321,6 +3146,16 @@
     "url": "https://openai.com/index/introducing-o3-and-o4-mini/",
     "source": "官方原文",
     "stage": "ChatGPT / API 发布"
+  },
+  {
+    "date": "2025-04-16",
+    "org": "IBM",
+    "name": "Granite 3.3",
+    "kind": "开放权重",
+    "note": "IBM 发布 Granite 3.3 文本模型，改进推理和指令遵循能力，并提供 Base 与 Instruct 权重。",
+    "url": "https://www.ibm.com/new/announcements/ibm-granite-3-3-speech-recognition-refined-reasoning-rag-loras",
+    "source": "IBM 发布公告",
+    "url2": "https://huggingface.co/ibm-granite/granite-3.3-8b-instruct"
   },
   {
     "date": "2025-04-17",
@@ -2370,12 +3205,30 @@
   {
     "date": "2025-04-30",
     "org": "Xiaomi",
-    "name": "MiMo-7B-Base",
+    "name": "MiMo-7B（Base / SFT / RL / RL-Zero）",
     "kind": "开放权重",
-    "note": "小米开放从零预训练的 7B 基础语言模型，训练面向数学和代码推理。",
+    "note": "小米同时发布自训 7B 基座与官方 SFT、RL、RL-Zero 推理版本，并开放权重。",
     "url": "https://github.com/XiaomiMiMo/MiMo",
     "source": "小米模型发布公告",
     "url2": "https://huggingface.co/XiaomiMiMo/MiMo-7B-Base"
+  },
+  {
+    "date": "2025-04-30",
+    "org": "Microsoft",
+    "name": "Phi-4-reasoning / reasoning-plus / mini-reasoning",
+    "kind": "开放权重",
+    "note": "发布三个推理变体，其中 plus 在监督微调基础上追加了强化学习。",
+    "url": "https://azure.microsoft.com/en-us/blog/one-year-of-phi-small-language-models-making-big-leaps-in-ai/",
+    "source": "微软官方公告"
+  },
+  {
+    "date": "2025-05-06",
+    "org": "Moonshot",
+    "name": "Kimi-Thinking-Preview",
+    "kind": "预览",
+    "note": "Kimi 开放平台提供独立的思考模型接口。",
+    "url": "https://platform.kimi.com/blog/posts/changelog",
+    "source": "Kimi 开放平台更新日志"
   },
   {
     "date": "2025-05-07",
@@ -2405,11 +3258,56 @@
     "source": "字节跳动 Seed 模型目录"
   },
   {
+    "date": "2025-05-15",
+    "org": "OpenAI",
+    "name": "codex-mini-latest",
+    "kind": "开放 API",
+    "note": "为 Codex CLI 的代码编辑和命令行工作流提供轻量推理模型。",
+    "url": "https://developers.openai.com/api/docs/changelog",
+    "source": "OpenAI API 更新记录"
+  },
+  {
+    "date": "2025-05-16",
+    "org": "OpenAI",
+    "name": "codex-1",
+    "kind": "预览",
+    "note": "用软件工程任务训练的 o3 版本，作为云端 Codex 智能体的底层模型开放研究预览。",
+    "url": "https://openai.com/index/introducing-codex/",
+    "source": "OpenAI 发布公告"
+  },
+  {
+    "date": "2025-05-20",
+    "org": "Google",
+    "name": "MedGemma",
+    "kind": "开放权重",
+    "note": "发布面向医学文本和图像理解的模型，首批提供 4B 与 27B 尺寸。",
+    "url": "https://ai.google.dev/gemma/docs/releases#medgemma",
+    "source": "Google · Gemma 发布记录"
+  },
+  {
     "date": "2025-05-21",
     "org": "TII",
     "name": "Falcon-H1",
     "kind": "开放权重",
     "note": "发布从 500M 到 34B 的混合架构模型，将循环状态空间层与注意力结合。",
+    "url": "https://www.tii.ae/news/middle-easts-leading-ai-powerhouse-tii-launches-two-new-ai-models-falcon-arabic-first-arabic",
+    "source": "TII 发布公告"
+  },
+  {
+    "date": "2025-05-21",
+    "org": "Mistral",
+    "name": "Devstral Small",
+    "kind": "开放权重",
+    "note": "与 All Hands AI 合作开发 24B 编码模型，用于浏览代码库、编辑文件和解决软件工程任务。",
+    "url": "https://mistral.ai/news/devstral/",
+    "source": "Mistral 发布公告"
+  },
+  {
+    "date": "2025-05-21",
+    "org": "TII",
+    "name": "Falcon Arabic",
+    "kind": "开放权重",
+    "note": "Falcon 系列加入以阿拉伯语为重点训练的语言模型。",
     "url": "https://www.tii.ae/news/middle-easts-leading-ai-powerhouse-tii-launches-two-new-ai-models-falcon-arabic-first-arabic",
     "source": "TII 发布公告"
   },
@@ -2421,6 +3319,44 @@
     "note": "面向编程和长任务代理。支持在扩展思考中使用工具。",
     "url": "https://www.anthropic.com/news/claude-4",
     "source": "官方原文"
+  },
+  {
+    "date": "2025-05-26",
+    "org": "Tencent",
+    "name": "Hunyuan-Large-Vision",
+    "kind": "开放 API",
+    "note": "在混元 Large 上训练的视觉语言模型上线，支持多张图片与文本作为输入。",
+    "url": "https://cloud.tencent.com/document/product/1729/97765",
+    "source": "腾讯云模型更新记录"
+  },
+  {
+    "date": "2025-05-28",
+    "org": "DeepSeek",
+    "name": "DeepSeek-R1-0528",
+    "kind": "版本更新",
+    "note": "官方更新日志明确 deepseek-reasoner 升级到 R1-0528。增强推理并支持 JSON 输出与工具调用。",
+    "url": "https://api-docs.deepseek.com/updates/#date-2025-05-28",
+    "source": "更新日志",
+    "stage": "推理模型快照更新 · API 升级"
+  },
+  {
+    "date": "2025-05-30",
+    "org": "Xiaomi",
+    "name": "MiMo-7B-RL-0530",
+    "kind": "开放权重",
+    "note": "官方README明确标注2025.05.30。扩大SFT数据和RL训练窗口，改进数学推理。",
+    "url": "https://github.com/XiaomiMiMo/MiMo",
+    "source": "官方仓库"
+  },
+  {
+    "date": "2025-05-30",
+    "org": "Xiaomi",
+    "name": "MiMo-VL-7B（SFT / RL）",
+    "kind": "开放权重",
+    "note": "小米以 MiMo-7B-Base 为语言主干，结合视觉编码器，开放 MiMo-VL-7B 的官方 SFT 与 RL 权重。",
+    "url": "https://huggingface.co/XiaomiMiMo/MiMo-VL-7B-RL/commits/460c34be0c6cfe79b6b311647ae9112784f80b73",
+    "source": "权重仓库",
+    "url2": "https://github.com/XiaomiMiMo/MiMo-VL"
   },
   {
     "date": "2025-06-06",
@@ -2441,6 +3377,36 @@
     "source": "Apple 机器学习研究"
   },
   {
+    "date": "2025-06-10",
+    "org": "Mistral",
+    "name": "Magistral Small / Medium",
+    "kind": "发布",
+    "note": "Mistral 首个专门推理系列。Medium 当日为 Le Chat/API 预览。",
+    "url": "https://mistral.ai/news/magistral/",
+    "source": "官方原文",
+    "stage": "Small 开放权重，Medium 进入预览"
+  },
+  {
+    "date": "2025-06-10",
+    "org": "OpenAI",
+    "name": "o3-pro",
+    "kind": "开放 API",
+    "note": "提供使用更多推理计算的 o3 变体，用于难度较高的任务。",
+    "url": "https://developers.openai.com/api/docs/changelog",
+    "source": "OpenAI API 更新记录"
+  },
+  {
+    "date": "2025-06-16",
+    "org": "MiniMax",
+    "name": "MiniMax-M1",
+    "kind": "开放权重",
+    "note": "混合注意力推理模型支持 1M 上下文。此处沿用 MiniMax 公告的 6 月 16 日。",
+    "url": "https://www.minimax.io/news/minimaxm1",
+    "source": "官方原文",
+    "url2": "https://github.com/MiniMax-AI/MiniMax-M1",
+    "stage": "开放权重及 API"
+  },
+  {
     "date": "2025-06-17",
     "org": "Google",
     "name": "Gemini 2.5 Pro / Flash（稳定版）",
@@ -2448,6 +3414,33 @@
     "note": "2.5 Pro、Flash 转为稳定生产版本。同日预览 Flash-Lite。",
     "url": "https://blog.google/products-and-platforms/products/gemini/gemini-2-5-model-family-expands/",
     "source": "官方原文"
+  },
+  {
+    "date": "2025-06-19",
+    "org": "Tencent",
+    "name": "Hunyuan-T1-Vision / TurboS-Vision（0619）",
+    "kind": "开放 API",
+    "note": "视觉推理与视觉理解模型更新，分别支持多模态长思维链和图文问答。",
+    "url": "https://cloud.tencent.com/document/product/1729/97765",
+    "source": "腾讯云模型更新记录"
+  },
+  {
+    "date": "2025-06-21",
+    "org": "Moonshot",
+    "name": "Kimi-VL-A3B-Thinking-2506",
+    "kind": "开放权重",
+    "note": "更新视觉推理版，为复杂图片理解加入更强的多步推理能力。",
+    "url": "https://github.com/MoonshotAI/Kimi-VL",
+    "source": "Kimi-VL 官方仓库"
+  },
+  {
+    "date": "2025-06-24",
+    "org": "OpenAI",
+    "name": "o3-deep-research / o4-mini-deep-research",
+    "kind": "开放 API",
+    "note": "针对多步调查、资料整理和分析优化的两个 o 系列研究模型。",
+    "url": "https://developers.openai.com/api/docs/changelog",
+    "source": "OpenAI API 更新记录"
   },
   {
     "date": "2025-06-25",
@@ -2486,6 +3479,15 @@
     "source": "百度 ERNIE 技术博客"
   },
   {
+    "date": "2025-07-01",
+    "org": "Z.ai",
+    "name": "GLM-4.1V-9B-Thinking",
+    "kind": "开放权重",
+    "note": "公开 9B 视觉语言推理模型，在作答前可以结合图像展开推理。",
+    "url": "https://github.com/zai-org/GLM-V",
+    "source": "智谱视觉模型发布记录"
+  },
+  {
     "date": "2025-07-08",
     "org": "Hugging Face",
     "name": "SmolLM3",
@@ -2505,6 +3507,24 @@
     "stage": "正式发布 · API / grok.com 可用"
   },
   {
+    "date": "2025-07-09",
+    "org": "Google",
+    "name": "T5Gemma",
+    "kind": "开放权重",
+    "note": "将 Gemma 家族扩展至编码器－解码器架构，用于文本理解和生成。",
+    "url": "https://ai.google.dev/gemma/docs/releases#t5gemma",
+    "source": "Google · Gemma 发布记录"
+  },
+  {
+    "date": "2025-07-09",
+    "org": "Microsoft",
+    "name": "Phi-4-mini-flash-reasoning",
+    "kind": "开放权重",
+    "note": "使用混合解码架构降低推理延迟，面向资源受限设备上的数学任务。",
+    "url": "https://azure.microsoft.com/en-us/blog/reasoning-reimagined-introducing-phi-4-mini-flash-reasoning/",
+    "source": "微软官方公告"
+  },
+  {
     "date": "2025-07-10",
     "org": "Liquid AI",
     "name": "LFM2",
@@ -2521,6 +3541,15 @@
     "note": "31B 模型支持多语言、工具使用及推理模式，面向复杂任务。",
     "url": "https://www.upstage.ai/blog/en/solar-pro-2-launch",
     "source": "Upstage 发布公告"
+  },
+  {
+    "date": "2025-07-10",
+    "org": "Mistral",
+    "name": "Devstral Small 1.1 / Medium",
+    "kind": "发布",
+    "note": "更新 Small 并新增 Medium 编码模型，两者均用于多文件软件工程任务。",
+    "url": "https://mistral.ai/news/devstral-2507/",
+    "source": "Mistral 发布公告"
   },
   {
     "date": "2025-07-11",
@@ -2543,6 +3572,24 @@
     "source": "LG AI Research 官方发布记录"
   },
   {
+    "date": "2025-07-15",
+    "org": "Mistral",
+    "name": "Voxtral Small / Mini",
+    "kind": "发布",
+    "note": "发布支持音频输入的语言模型，除语音转录外还可对录音内容进行问答。",
+    "url": "https://docs.mistral.ai/resources/changelogs",
+    "source": "Mistral 官方更新日志"
+  },
+  {
+    "date": "2025-07-21",
+    "org": "Alibaba",
+    "name": "Qwen3-235B-A22B-Instruct-2507",
+    "kind": "开放权重",
+    "note": "发布独立的非思考指令模型，支持 256K 上下文。",
+    "url": "https://github.com/QwenLM/Qwen3",
+    "source": "官方模型仓库"
+  },
+  {
     "date": "2025-07-22",
     "org": "Alibaba",
     "name": "Qwen3-Coder",
@@ -2559,6 +3606,24 @@
     "note": "低成本 2.5 模型进入稳定版，可用于分类、提取等大批量任务。",
     "url": "https://ai.google.dev/gemini-api/docs/changelog#07-22-2025",
     "source": "Google · Gemini API 发布记录"
+  },
+  {
+    "date": "2025-07-22",
+    "org": "NAVER",
+    "name": "HyperCLOVA X SEED 14B Think",
+    "kind": "开放权重",
+    "note": "NAVER 发布自家 HyperCLOVA X THINK 的 14B 轻量推理版本，提供可商用权重。",
+    "url": "https://www.navercorp.com/en/media/pressReleasesDetail?seq=33144",
+    "source": "NAVER 发布公告"
+  },
+  {
+    "date": "2025-07-25",
+    "org": "Alibaba",
+    "name": "Qwen3-235B-A22B-Thinking-2507",
+    "kind": "开放权重",
+    "note": "独立开放 235B 混合专家模型的思考版，面向复杂推理任务。",
+    "url": "https://github.com/QwenLM/Qwen3",
+    "source": "官方模型仓库"
   },
   {
     "date": "2025-07-28",
@@ -2589,6 +3654,24 @@
     "source": "阶跃星辰研究博客"
   },
   {
+    "date": "2025-07-31",
+    "org": "Cohere",
+    "name": "Command A Vision",
+    "kind": "发布",
+    "note": "在 Command 系列加入图像理解，可解析文档、图表与多语言图像中的文字。",
+    "url": "https://docs.cohere.com/changelog/2025-07-31-command-a-vision",
+    "source": "Cohere 发布公告"
+  },
+  {
+    "date": "2025-08-01",
+    "org": "Google",
+    "name": "Gemini 2.5 Deep Think",
+    "kind": "发布",
+    "note": "在 Gemini 应用向 Ultra 订阅用户开放，通过并行推理比较多条解题路径。",
+    "url": "https://blog.google/products-and-platforms/products/gemini/gemini-2-5-deep-think/",
+    "source": "Google 发布公告"
+  },
+  {
     "date": "2025-08-05",
     "org": "Anthropic",
     "name": "Claude Opus 4.1",
@@ -2607,6 +3690,15 @@
     "source": "官方原文"
   },
   {
+    "date": "2025-08-05",
+    "org": "蚂蚁集团",
+    "name": "Ring-lite-2507",
+    "kind": "开放权重",
+    "note": "发布基于 Ling 的轻量推理模型，结合长思考训练与强化学习。",
+    "url": "https://inclusionai.github.io/blog/ring-lite-2507/",
+    "source": "InclusionAI 研究博客"
+  },
+  {
     "date": "2025-08-07",
     "org": "OpenAI",
     "name": "GPT-5",
@@ -2617,11 +3709,39 @@
     "stage": "ChatGPT / API 发布"
   },
   {
+    "date": "2025-08-07",
+    "org": "Xiaomi",
+    "name": "MiMo-VL-7B-RL-2508",
+    "kind": "开放权重",
+    "note": "小米更新自家 MiMo-VL-7B 的视觉推理版本，改进图像和视频理解，开放 2508 快照权重。",
+    "url": "https://huggingface.co/XiaomiMiMo/MiMo-VL-7B-RL-2508/commits/main",
+    "source": "权重仓库",
+    "url2": "https://github.com/XiaomiMiMo/MiMo-VL/blob/main/README.md"
+  },
+  {
+    "date": "2025-08-11",
+    "org": "Z.ai",
+    "name": "GLM-4.5V",
+    "kind": "开放权重",
+    "note": "开放视觉推理模型，可根据图像、视频与复杂图文材料作答。",
+    "url": "https://github.com/zai-org/GLM-V",
+    "source": "智谱视觉模型发布记录"
+  },
+  {
+    "date": "2025-08-14",
+    "org": "Google",
+    "name": "Gemma 3 270M",
+    "kind": "开放权重",
+    "note": "Google 为 Gemma 3 新增 2.7 亿参数规格，发布端侧用预训练权重和官方指令权重。",
+    "url": "https://ai.google.dev/gemma/docs/releases#gemma-3-270m",
+    "source": "Google · Gemma 发布记录"
+  },
+  {
     "date": "2025-08-20",
     "org": "ByteDance",
-    "name": "Seed-OSS-36B Base",
+    "name": "Seed-OSS-36B",
     "kind": "开放权重",
-    "note": "字节跳动开放两组 36B 基础权重，其中一组的训练未使用合成数据。",
+    "note": "同时开放指令版和两组基础权重，其中一组基础模型的训练未使用合成数据。",
     "url": "https://github.com/ByteDance-Seed/seed-oss",
     "source": "官方模型仓库"
   },
@@ -2634,6 +3754,15 @@
     "url": "https://api-docs.deepseek.com/updates/#date-2025-08-21",
     "source": "更新日志",
     "stage": "模型/API更新"
+  },
+  {
+    "date": "2025-08-21",
+    "org": "Cohere",
+    "name": "Command A Reasoning",
+    "kind": "发布",
+    "note": "在 111B 参数模型中引入混合推理，用于多步工具任务并支持 23 种语言。",
+    "url": "https://docs.cohere.com/changelog/2025-08-21-command-a-reasoning",
+    "source": "Cohere 发布公告"
   },
   {
     "date": "2025-08-28",
@@ -2654,11 +3783,29 @@
     "source": "xAI 官方公告"
   },
   {
+    "date": "2025-08-28",
+    "org": "Cohere",
+    "name": "Command A Translate",
+    "kind": "开放 API",
+    "note": "推出面向 23 种语言的专用机器翻译模型，开放 API 调用。",
+    "url": "https://docs.cohere.com/v1/changelog/2025-08-28-command-a-translate",
+    "source": "Cohere 发布公告"
+  },
+  {
+    "date": "2025-08-28",
+    "org": "OpenAI",
+    "name": "gpt-realtime",
+    "kind": "发布",
+    "note": "正式版语音到语音模型支持图像输入和更自然的语音交互。",
+    "url": "https://openai.com/index/introducing-gpt-realtime/",
+    "source": "OpenAI 发布公告"
+  },
+  {
     "date": "2025-08-29",
     "org": "美团",
-    "name": "LongCat-Flash",
+    "name": "LongCat-Flash-Chat",
     "kind": "发布",
-    "note": "美团公布 560B 参数的混合专家语言模型，通过首个对话版本提供访问，并披露了基础模型的预训练方法。",
+    "note": "美团开放通用对话模型，并通过 LongCat Chat 提供体验。",
     "url": "https://longcat.chat/platform/docs/zh/ChangeLog.html",
     "source": "美团 LongCat 更新日志",
     "url2": "https://github.com/meituan-longcat/LongCat-Flash-Chat"
@@ -2682,6 +3829,15 @@
     "source": "OpenBMB 发布记录"
   },
   {
+    "date": "2025-09-05",
+    "org": "Moonshot",
+    "name": "Kimi-K2-Instruct-0905",
+    "kind": "开放 API",
+    "note": "K2 九月版 API 上线，增强仓库级代码修改，并将上下文扩至 256K。",
+    "url": "https://platform.kimi.com/blog/posts/kimi-k2-0905",
+    "source": "Kimi 开放平台公告"
+  },
+  {
     "date": "2025-09-11",
     "org": "Alibaba",
     "name": "Qwen3-Next-80B-A3B",
@@ -2689,6 +3845,15 @@
     "note": "混合注意力与超稀疏MoE，面向高效推理。",
     "url": "https://qwen.ai/blog?id=qwen3-next",
     "source": "官方原文"
+  },
+  {
+    "date": "2025-09-15",
+    "org": "OpenAI",
+    "name": "GPT-5-Codex",
+    "kind": "发布",
+    "note": "为 Codex 中的智能体编程优化，可在 IDE、命令行和云端代码审查中使用。",
+    "url": "https://developers.openai.com/codex/changelog#codex-2025-09-15",
+    "source": "OpenAI Codex 更新记录"
   },
   {
     "date": "2025-09-19",
@@ -2700,6 +3865,43 @@
     "source": "xAI 官方公告"
   },
   {
+    "date": "2025-09-21",
+    "org": "Alibaba",
+    "name": "Qwen3-Omni",
+    "kind": "发布",
+    "note": "统一处理文本、图像、音频和视频，并可同时流式输出文本与语音。",
+    "url": "https://qwen.ai/blog?id=qwen3-omni",
+    "source": "Qwen 团队发布日志"
+  },
+  {
+    "date": "2025-09-22",
+    "org": "Alibaba",
+    "name": "Qwen3-VL-235B-A22B",
+    "kind": "开放权重",
+    "note": "通义千问第三代视觉语言系列首先开放 235B 混合专家模型，面向长上下文与多模态推理。",
+    "url": "https://qwen.ai/blog?id=b550154aa5ba6b812cdebba2b9dc1156c4369d40",
+    "source": "Qwen 团队发布日志"
+  },
+  {
+    "date": "2025-09-22",
+    "org": "DeepSeek",
+    "name": "DeepSeek-V3.1-Terminus",
+    "kind": "版本更新",
+    "note": "改进语言一致性、代码代理与搜索代理。thinking 和 non-thinking 两条 API 别名同步升级。",
+    "url": "https://api-docs.deepseek.com/updates/#date-2025-09-22",
+    "source": "更新日志",
+    "stage": "模型更新 · API 升级"
+  },
+  {
+    "date": "2025-09-22",
+    "org": "美团",
+    "name": "LongCat-Flash-Thinking",
+    "kind": "开放权重",
+    "note": "推理版权重与在线体验同时开放，支持通过 API 调用。",
+    "url": "https://longcat.chat/platform/docs/zh/ChangeLog.html",
+    "source": "美团 LongCat 更新日志"
+  },
+  {
     "date": "2025-09-24",
     "org": "Alibaba",
     "name": "Qwen3-Max",
@@ -2707,6 +3909,15 @@
     "note": "Qwen3-Max-Instruct 在阿里云和 Qwen Chat 提供服务，重点更新编程和智能体能力。",
     "url": "https://qwen.ai/blog?id=241398b9cd6353de490b0f82806c7848c5d2777d",
     "source": "Qwen 团队发布日志"
+  },
+  {
+    "date": "2025-09-25",
+    "org": "Google",
+    "name": "Gemini Robotics-ER 1.5",
+    "kind": "预览",
+    "note": "面向机器人的具身推理模型，接受视觉与语言输入，用于感知和任务规划。",
+    "url": "https://ai.google.dev/gemini-api/docs/changelog#09-25-2025",
+    "source": "Google · Gemini API 发布记录"
   },
   {
     "date": "2025-09-29",
@@ -2738,13 +3949,31 @@
     "stage": "开放权重及 API"
   },
   {
+    "date": "2025-10",
+    "org": "蚂蚁集团",
+    "name": "Ring-1T",
+    "kind": "开放权重",
+    "note": "InclusionAI 在 Ring 系列加入一万亿参数的推理模型，架构延续 Ling-V2。",
+    "url": "https://github.com/inclusionAI/Ring-V2",
+    "source": "InclusionAI 发布记录"
+  },
+  {
     "date": "2025-10-02",
     "org": "IBM",
     "name": "Granite 4.0",
     "kind": "开放权重",
-    "note": "IBM 以 Apache 2.0 协议开放多个规模的基础模型，其中包括混合架构。",
+    "note": "以 Apache 2.0 协议发布 Micro、Tiny 和 Small 的基础与指令版本，包含混合架构。",
     "url": "https://www.ibm.com/new/announcements/ibm-granite-4-0-hyper-efficient-high-performance-hybrid-models",
     "source": "IBM 发布公告"
+  },
+  {
+    "date": "2025-10-07",
+    "org": "Google",
+    "name": "Gemini 2.5 Computer Use",
+    "kind": "预览",
+    "note": "通过分析界面截图生成浏览器交互操作，在 Gemini API 中开放预览。",
+    "url": "https://ai.google.dev/gemini-api/docs/changelog#10-07-2025",
+    "source": "Google · Gemini API 发布记录"
   },
   {
     "date": "2025-10-15",
@@ -2793,11 +4022,49 @@
     "source": "科大讯飞公司新闻"
   },
   {
+    "date": "2025-11-06",
+    "org": "Moonshot",
+    "name": "Kimi K2 Thinking",
+    "kind": "开放权重",
+    "note": "将长程推理与多步工具调用结合。日期来自官方研究索引。",
+    "url": "https://www.kimi.com/en/blog/kimi-k2-thinking",
+    "source": "官方原文",
+    "url2": "https://www.kimi.com/en/blog/",
+    "stage": "开放权重及 API"
+  },
+  {
+    "date": "2025-11-07",
+    "org": "OpenAI",
+    "name": "GPT-5-Codex-Mini",
+    "kind": "发布",
+    "note": "在 Codex 中提供更小的编码模型，可减少同一账户额度下的使用消耗。",
+    "url": "https://developers.openai.com/codex/changelog#codex-2025-11-07",
+    "source": "OpenAI Codex 更新记录"
+  },
+  {
     "date": "2025-11-09",
     "org": "Tencent",
     "name": "Hunyuan 2.0 Think",
     "kind": "开放 API",
     "note": "混元更换推理底座，支持复杂指令、多轮对话和长文本理解。",
+    "url": "https://cloud.tencent.com/document/product/1729/97765",
+    "source": "腾讯云模型更新记录"
+  },
+  {
+    "date": "2025-11-11",
+    "org": "Baidu",
+    "name": "ERNIE-4.5-VL-28B-A3B-Thinking",
+    "kind": "开放权重",
+    "note": "28B 总参数的视觉语言推理模型用图文输入执行多步推理。",
+    "url": "https://ernie.baidu.com/zh/research/posts/ernie-4.5-vl-28b-a3b-thinking/",
+    "source": "百度文心发布公告"
+  },
+  {
+    "date": "2025-11-11",
+    "org": "Tencent",
+    "name": "Hunyuan 2.0 Instruct",
+    "kind": "开放 API",
+    "note": "指令版在腾讯云上线，面向多轮对话、创作与代码任务。",
     "url": "https://cloud.tencent.com/document/product/1729/97765",
     "source": "腾讯云模型更新记录"
   },
@@ -2821,6 +4088,15 @@
     "source": "百度公司发布稿"
   },
   {
+    "date": "2025-11-13",
+    "org": "OpenAI",
+    "name": "GPT-5.1-Codex / Codex mini",
+    "kind": "开放 API",
+    "note": "Responses API 增加面向编程智能体的 GPT-5.1-Codex 及其轻量版本。",
+    "url": "https://developers.openai.com/api/docs/changelog",
+    "source": "OpenAI API 更新记录"
+  },
+  {
     "date": "2025-11-17",
     "org": "xAI",
     "name": "Grok 4.1",
@@ -2839,6 +4115,15 @@
     "source": "官方原文"
   },
   {
+    "date": "2025-11-18",
+    "org": "OpenAI",
+    "name": "GPT-5.1-Codex-Max",
+    "kind": "发布",
+    "note": "为跨越多个上下文窗口的长时间编程任务训练，可持续修改、测试和审查代码。",
+    "url": "https://developers.openai.com/codex/changelog#codex-2025-11-18",
+    "source": "OpenAI Codex 更新记录"
+  },
+  {
     "date": "2025-11-19",
     "org": "xAI",
     "name": "Grok 4.1 Fast",
@@ -2852,7 +4137,7 @@
     "org": "Ai2",
     "name": "Olmo 3",
     "kind": "开放权重",
-    "note": "Ai2 推出 7B 和 32B 基础语言模型，并公开预训练过程中的检查点。",
+    "note": "推出 7B 和 32B 系列，并公开从预训练、长上下文训练到指令及推理后训练的中间检查点。",
     "url": "https://allenai.org/blog/olmo3",
     "source": "Ai2 发布公告"
   },
@@ -2867,11 +4152,21 @@
     "stage": "正式发布 · 应用与 API 可用"
   },
   {
+    "date": "2025-11-27",
+    "org": "DeepSeek",
+    "name": "DeepSeekMath-V2",
+    "kind": "研究公开",
+    "note": "团队公布结合证明生成与自我验证的数学推理训练方法。",
+    "url": "https://arxiv.org/abs/2511.22570",
+    "source": "作者论文 · arXiv",
+    "url2": "https://huggingface.co/deepseek-ai/DeepSeek-Math-V2"
+  },
+  {
     "date": "2025-12-01",
     "org": "DeepSeek",
-    "name": "DeepSeek-V3.2",
+    "name": "DeepSeek-V3.2 / V3.2-Speciale",
     "kind": "发布",
-    "note": "DeepSeek 宣布 V3.2 正式可用，并在开发者平台更新模型接口。",
+    "note": "V3.2正式版。Speciale通过临时专用接口提供。",
     "url": "https://api-docs.deepseek.com/news/news251201/",
     "source": "开发者公告"
   },
@@ -2912,6 +4207,24 @@
     "source": "官方原文"
   },
   {
+    "date": "2025-12-02",
+    "org": "Amazon",
+    "name": "Nova 2 Sonic",
+    "kind": "发布",
+    "note": "第二代语音到语音模型发布，面向多语言实时对话和可调用工具的语音智能体。",
+    "url": "https://aws.amazon.com/about-aws/whats-new/2025/12/amazon-nova-2-sonic-real-time-conversational-ai/",
+    "source": "AWS 发布公告"
+  },
+  {
+    "date": "2025-12-04",
+    "org": "Google",
+    "name": "Gemini 3 Deep Think",
+    "kind": "发布",
+    "note": "为 Ultra 订阅用户推出 Gemini 3 的并行深度推理模式。",
+    "url": "https://blog.google/products-and-platforms/products/gemini/gemini-3-deep-think/",
+    "source": "Google 发布公告"
+  },
+  {
     "date": "2025-12-08",
     "org": "Z.ai",
     "name": "GLM-4.6V / GLM-4.6V-Flash",
@@ -2932,12 +4245,22 @@
   {
     "date": "2025-12-09",
     "org": "G42 Inception",
-    "name": "Jais 2",
+    "name": "Jais 2（8B / 70B）",
     "kind": "发布",
-    "note": "Inception、Cerebras 和 MBZUAI 公布 Jais 2，从头训练的 70B 双语模型采用以阿拉伯语为主的预训练语料。",
+    "note": "G42 Inception、MBZUAI 与 Cerebras 发布 Jais 2 阿英双语模型家族，同时开放官方 70B 对话权重。",
     "url": "https://www.cerebras.ai/blog/jais2",
     "source": "Cerebras 联合发布公告",
-    "url2": "https://mbzuai.ac.ae/news-events/news/inception-cerebras-mbzuai-release-jais-2-the-next-generation-the-worlds-leading"
+    "url2": "https://huggingface.co/inception42/Jais-2-70B-Chat"
+  },
+  {
+    "date": "2025-12-10",
+    "org": "蚂蚁集团",
+    "name": "LLaDA 2.0",
+    "kind": "研究公开",
+    "note": "蚂蚁团队以自研 Ling-mini-2.0 与 Ling-flash-2.0 为起点，发布 16B 和 100B 的扩散语言模型及指令版本。",
+    "url": "https://arxiv.org/abs/2512.15745",
+    "source": "研究论文",
+    "url2": "https://github.com/inclusionAI/LLaDA2.0"
   },
   {
     "date": "2025-12-11",
@@ -2947,6 +4270,15 @@
     "note": "加强长上下文、工具使用及多步骤专业知识工作。",
     "url": "https://openai.com/index/introducing-gpt-5-2/",
     "source": "官方原文"
+  },
+  {
+    "date": "2025-12-12",
+    "org": "Ai2",
+    "name": "Olmo 3.1",
+    "kind": "开放权重",
+    "note": "新增 32B Think 和 Instruct 检查点，Think 延长强化学习训练，Instruct 支持多轮对话与工具调用。",
+    "url": "https://allenai.org/blog/olmo3",
+    "source": "Ai2 发布公告"
   },
   {
     "date": "2025-12-15",
@@ -2987,6 +4319,33 @@
     "source": "Google · Gemini API 发布记录"
   },
   {
+    "date": "2025-12-18",
+    "org": "Google",
+    "name": "FunctionGemma",
+    "kind": "开放权重",
+    "note": "2.7 亿参数的轻量模型，专门把自然语言指令转成函数调用。",
+    "url": "https://ai.google.dev/gemma/docs/releases#functiongemma",
+    "source": "Google · Gemma 发布记录"
+  },
+  {
+    "date": "2025-12-18",
+    "org": "Google",
+    "name": "T5Gemma 2",
+    "kind": "开放权重",
+    "note": "推出第二代编码器－解码器系列，提供三种参数配置。",
+    "url": "https://blog.google/innovation-and-ai/technology/developers-tools/t5gemma-2/",
+    "source": "Google · Gemma 发布记录"
+  },
+  {
+    "date": "2025-12-18",
+    "org": "OpenAI",
+    "name": "GPT-5.2-Codex",
+    "kind": "发布",
+    "note": "将 GPT-5.2 针对长程软件工程和上下文压缩进一步优化，并在 Codex 中提供。",
+    "url": "https://developers.openai.com/codex/changelog#codex-2025-12-18",
+    "source": "OpenAI Codex 更新记录"
+  },
+  {
     "date": "2025-12-22",
     "org": "Z.ai",
     "name": "GLM-4.7",
@@ -3017,12 +4376,30 @@
   {
     "date": "2026-01-05",
     "org": "Liquid AI",
-    "name": "LFM2.5-1.2B-Base",
+    "name": "LFM2.5",
     "kind": "开放权重",
-    "note": "Liquid AI 开放 LFM2.5 系列的 1.2B 预训练基础模型。",
+    "note": "更新 1.2B 语言模型及其指令变体，同时推出共享基础架构的多模态模型。",
     "url": "https://www.liquid.ai/blog/introducing-lfm2-5-the-next-generation-of-on-device-ai",
     "source": "Liquid AI 发布公告",
     "url2": "https://huggingface.co/LiquidAI/LFM2.5-1.2B-Base"
+  },
+  {
+    "date": "2026-01-05",
+    "org": "TII",
+    "name": "Falcon-H1 Arabic",
+    "kind": "发布",
+    "note": "面向阿拉伯语扩展 Falcon-H1 混合架构，推出多档参数规模。",
+    "url": "https://falconllm.tii.ae/abu-dhabi-tii-launches-falcon-h1-arabic-establishing-the-worlds-leading-arabic-ai-model.html",
+    "source": "TII 发布公告"
+  },
+  {
+    "date": "2026-01-05",
+    "org": "TII",
+    "name": "Falcon-H1R 7B",
+    "kind": "开放权重",
+    "note": "在 Falcon-H1 基础上训练 7B 推理模型，面向数学、代码等多步推理任务。",
+    "url": "https://falconllm.tii.ae/tii-launches-falcon-reasoning-best-7b-ai-model-globally-also-outperforms-larger-models.html",
+    "source": "TII 发布公告"
   },
   {
     "date": "2026-01-08",
@@ -3032,6 +4409,43 @@
     "note": "提供 3B 稠密模型和 Mini 混合专家模型，后者每次前向计算激活 12B 参数。",
     "url": "https://www.ai21.com/blog/introducing-jamba2/",
     "source": "AI21 Labs 发布公告"
+  },
+  {
+    "date": "2026-01-12",
+    "org": "Xiaomi",
+    "name": "MiMo-V2-Flash-0112",
+    "kind": "版本更新",
+    "note": "增强通用能力、Thinking编程和指令遵循。0112是官方对比表中的更新标签，调用ID仍为mimo-v2-flash。",
+    "url": "https://mimo.mi.com/docs/en-US/updates/model",
+    "source": "更新日志",
+    "stage": "API模型更新"
+  },
+  {
+    "date": "2026-01-13",
+    "org": "Google",
+    "name": "MedGemma 1.5",
+    "kind": "开放权重",
+    "note": "医学模型系列更新 4B 参数版本，扩展医学图像理解能力。",
+    "url": "https://ai.google.dev/gemma/docs/releases#medgemma1_5",
+    "source": "Google · Gemma 发布记录"
+  },
+  {
+    "date": "2026-01-14",
+    "org": "美团",
+    "name": "LongCat-Flash-Thinking-2601",
+    "kind": "开放权重",
+    "note": "560B 混合专家推理模型加入多环境强化学习，强化搜索和工具使用。",
+    "url": "https://longcat.chat/platform/docs/zh/ChangeLog.html",
+    "source": "美团 LongCat 更新日志"
+  },
+  {
+    "date": "2026-01-15",
+    "org": "Google",
+    "name": "TranslateGemma",
+    "kind": "开放权重",
+    "note": "面向机器翻译推出 4B、12B 和 27B 三种规模。",
+    "url": "https://ai.google.dev/gemma/docs/releases#translategemma",
+    "source": "Google · Gemma 发布记录"
   },
   {
     "date": "2026-01-19",
@@ -3053,6 +4467,15 @@
     "stage": "正式版 / 产品 / API"
   },
   {
+    "date": "2026-01-25",
+    "org": "Alibaba",
+    "name": "Qwen3-Max-Thinking",
+    "kind": "发布",
+    "note": "Max 推理版本可按需使用检索或代码解释器，并探索扩大测试时计算量。",
+    "url": "https://qwen.ai/blog?id=qwen3-max-thinking",
+    "source": "Qwen 团队发布日志"
+  },
+  {
     "date": "2026-01-26",
     "org": "Upstage",
     "name": "Solar Pro 3",
@@ -3072,6 +4495,27 @@
     "url2": "https://huggingface.co/arcee-ai/Trinity-Large-Base"
   },
   {
+    "date": "2026-01-27",
+    "org": "Arcee AI",
+    "name": "Trinity Large Preview",
+    "kind": "预览",
+    "note": "Arcee AI 在同一 400B 预训练模型上轻量后训练，推出可在 OpenRouter 试用的对话预览版。",
+    "url": "https://www.arcee.ai/blog/trinity-large",
+    "source": "Arcee AI 发布公告",
+    "url2": "https://huggingface.co/arcee-ai/Trinity-Large-Preview"
+  },
+  {
+    "date": "2026-01-27",
+    "org": "Moonshot",
+    "name": "Kimi K2.5",
+    "kind": "开放权重",
+    "note": "原生多模态，增强视觉编程与多智能体协作。日期来自官方研究索引。",
+    "url": "https://www.kimi.com/en/blog/kimi-k2-5",
+    "source": "官方原文",
+    "url2": "https://www.kimi.com/en/blog/",
+    "stage": "开放权重及 API"
+  },
+  {
     "date": "2026-02",
     "org": "科大讯飞",
     "name": "讯飞星火 X2",
@@ -3089,6 +4533,25 @@
     "url": "https://www.stepfun.com/news/step-3-5-flash-launch",
     "source": "官方原文",
     "stage": "开放权重及 API"
+  },
+  {
+    "date": "2026-02-02",
+    "org": "Alibaba",
+    "name": "Qwen3-Coder-Next",
+    "kind": "开放权重",
+    "note": "面向本地编程智能体的小激活量混合专家模型开放权重。",
+    "url": "https://qwen.ai/blog?id=qwen3-coder-next",
+    "source": "Qwen 团队发布日志"
+  },
+  {
+    "date": "2026-02-04",
+    "org": "Xiaomi",
+    "name": "MiMo-V2-Flash-0204",
+    "kind": "版本更新",
+    "note": "改进Thinking编程、工具调用及思维链效率。0204是更新标签，调用ID仍为mimo-v2-flash。",
+    "url": "https://mimo.mi.com/docs/en-US/updates/model",
+    "source": "更新日志",
+    "stage": "API模型更新"
   },
   {
     "date": "2026-02-05",
@@ -3138,6 +4601,24 @@
     "stage": "官方公告/开放权重及 API"
   },
   {
+    "date": "2026-02-12",
+    "org": "Google",
+    "name": "Gemini 3 Deep Think（新版）",
+    "kind": "发布",
+    "note": "面向科学与工程难题更新深度推理模式，并首次向部分研究者开放 API。",
+    "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-deep-think/",
+    "source": "Google 发布公告"
+  },
+  {
+    "date": "2026-02-12",
+    "org": "OpenAI",
+    "name": "GPT-5.3-Codex-Spark",
+    "kind": "预览",
+    "note": "研究预览提供面向实时编程的轻量变体，让开发者可在产生代码时交互修改。",
+    "url": "https://developers.openai.com/codex/changelog#codex-2026-02-12",
+    "source": "OpenAI Codex 更新记录"
+  },
+  {
     "date": "2026-02-14",
     "org": "ByteDance",
     "name": "Seed2.0",
@@ -3175,6 +4656,15 @@
     "source": "官方原文"
   },
   {
+    "date": "2026-02-23",
+    "org": "OpenAI",
+    "name": "GPT-Realtime-1.5",
+    "kind": "开放 API",
+    "note": "实时语音到语音模型更新，同日为 Chat Completions 提供 GPT-Audio-1.5。",
+    "url": "https://developers.openai.com/api/docs/changelog",
+    "source": "OpenAI API 更新记录"
+  },
+  {
     "date": "2026-02-24",
     "org": "Inception Labs",
     "name": "Mercury 2",
@@ -3210,6 +4700,15 @@
     "note": "主要更新日常对话、搜索答案与语气。",
     "url": "https://openai.com/index/gpt-5-3-instant/",
     "source": "官方原文"
+  },
+  {
+    "date": "2026-03-04",
+    "org": "Microsoft",
+    "name": "Phi-4-reasoning-vision-15B",
+    "kind": "开放权重",
+    "note": "把结构化推理扩展到图表、界面和其他图文输入，模型权重同步提供下载。",
+    "url": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-phi-4-reasoning-vision-to-microsoft-foundry/4499154",
+    "source": "微软官方公告"
   },
   {
     "date": "2026-03-05",
@@ -3258,6 +4757,15 @@
     "source": "NVIDIA 发布公告"
   },
   {
+    "date": "2026-03-11",
+    "org": "美团",
+    "name": "LongCat-Flash-Omni-2603",
+    "kind": "发布",
+    "note": "更新全模态对话模型，可结合视觉、语音和文字输入，并从语音调用工具。",
+    "url": "https://longcat.chat/platform/docs/zh/ChangeLog.html",
+    "source": "美团 LongCat 更新日志"
+  },
+  {
     "date": "2026-03-16",
     "org": "Mistral",
     "name": "Mistral Small 4",
@@ -3265,6 +4773,15 @@
     "note": "在一个模型中整合指令、推理、多模态与代理编程，采用 Apache 2.0。",
     "url": "https://mistral.ai/news/mistral-small-4/",
     "source": "官方原文"
+  },
+  {
+    "date": "2026-03-16",
+    "org": "Mistral",
+    "name": "Leanstral",
+    "kind": "开放权重",
+    "note": "针对 Lean 4 形式化证明任务训练，开放模型权重并提供 API。",
+    "url": "https://mistral.ai/news/leanstral/",
+    "source": "Mistral 发布公告"
   },
   {
     "date": "2026-03-17",
@@ -3311,6 +4828,15 @@
     "note": "通过 API 提供 1M 上下文，模型约有 1T 总参数、42B 激活参数。",
     "url": "https://mimo.mi.com/docs/en-US/updates/model",
     "source": "更新日志"
+  },
+  {
+    "date": "2026-04-01",
+    "org": "Arcee AI",
+    "name": "Trinity Large Thinking",
+    "kind": "开放权重",
+    "note": "在此前 Preview 的 400B 混合专家基础上发布推理版本，并以 Apache 2.0 开放权重。",
+    "url": "https://www.arcee.ai/blog/trinity-large-thinking",
+    "source": "Arcee AI 发布公告"
   },
   {
     "date": "2026-04-02",
@@ -3369,6 +4895,24 @@
     "stage": "Meta AI 可用 · API 私人预览"
   },
   {
+    "date": "2026-04-14",
+    "org": "Google",
+    "name": "Gemini Robotics-ER 1.6",
+    "kind": "预览",
+    "note": "升级具身推理模型，改进空间感知和机器人场景理解。",
+    "url": "https://ai.google.dev/gemini-api/docs/changelog#04-14-2026",
+    "source": "Google · Gemini API 发布记录"
+  },
+  {
+    "date": "2026-04-14",
+    "org": "OpenAI",
+    "name": "GPT-5.4-Cyber",
+    "kind": "预览",
+    "note": "通过 Trusted Access for Cyber 向经过验证的安全研究者开放专用版本。",
+    "url": "https://openai.com/index/scaling-trusted-access-for-cyber-defense/",
+    "source": "OpenAI 发布公告"
+  },
+  {
     "date": "2026-04-16",
     "org": "Alibaba",
     "name": "Qwen3.6-35B-A3B",
@@ -3385,6 +4929,15 @@
     "note": "强化编程、代理、视觉与多步骤任务的稳定性。",
     "url": "https://www.anthropic.com/news/claude-opus-4-7",
     "source": "官方原文"
+  },
+  {
+    "date": "2026-04-16",
+    "org": "OpenAI",
+    "name": "GPT-Rosalind",
+    "kind": "预览",
+    "note": "面向获准机构的生命科学研究预览，支持生物学推理与科学研究任务。",
+    "url": "https://openai.com/index/introducing-gpt-rosalind/",
+    "source": "OpenAI 发布公告"
   },
   {
     "date": "2026-04-18",
@@ -3435,6 +4988,16 @@
     "url2": "https://mimo.mi.com/docs/en-US/updates/model"
   },
   {
+    "date": "2026-04-22",
+    "org": "蚂蚁集团",
+    "name": "LLaDA2.0-Uni",
+    "kind": "研究公开",
+    "note": "将离散词元编码器、混合专家扩散语言模型和图像解码器结合，统一多模态理解与生成。",
+    "url": "https://arxiv.org/abs/2604.20796",
+    "source": "研究论文",
+    "url2": "https://huggingface.co/inclusionAI/LLaDA2.0-Uni"
+  },
+  {
     "date": "2026-04-23",
     "org": "OpenAI",
     "name": "GPT-5.5",
@@ -3464,6 +5027,15 @@
     "stage": "API发布日志节点"
   },
   {
+    "date": "2026-04-23",
+    "org": "xAI",
+    "name": "Grok Voice 1.0",
+    "kind": "开放 API",
+    "note": "在语音对话 API 中提供端到端语音理解与生成。",
+    "url": "https://x.ai/news/grok-voice-think-fast-1",
+    "source": "xAI 官方公告"
+  },
+  {
     "date": "2026-04-24",
     "org": "DeepSeek",
     "name": "DeepSeek-V4-Pro / V4-Flash Preview",
@@ -3476,9 +5048,9 @@
   {
     "date": "2026-04-27",
     "org": "Xiaomi",
-    "name": "MiMo-V2.5-Pro-Base",
+    "name": "MiMo-V2.5-Pro / MiMo-V2.5-Pro-Base",
     "kind": "开放权重",
-    "note": "小米在产品页宣布开放 V2.5-Pro 系列权重，其中包括预训练基础模型。",
+    "note": "小米宣布开放 V2.5-Pro 及对应的预训练基础权重。",
     "url": "https://mimo.xiaomi.com/mimo-v2-5-pro",
     "source": "官方原文",
     "url2": "https://huggingface.co/XiaomiMiMo/MiMo-V2.5-Pro-Base"
@@ -3488,7 +5060,7 @@
     "org": "IBM",
     "name": "Granite 4.1",
     "kind": "开放权重",
-    "note": "IBM 推出 3B、8B 和 30B 三款稠密文本基础模型。",
+    "note": "推出 3B、8B 和 30B 稠密文本模型，每种规格均有基础版及指令版。",
     "url": "https://research.ibm.com/blog/granite-4-1-ai-foundation-models",
     "source": "IBM 发布公告"
   },
@@ -3511,6 +5083,15 @@
     "source": "OpenRouter 模型发布记录"
   },
   {
+    "date": "2026-05-05",
+    "org": "OpenAI",
+    "name": "GPT-5.5 Instant",
+    "kind": "发布",
+    "note": "ChatGPT 开始推出新的默认快速对话模型，更新了回答风格与个性化能力。",
+    "url": "https://openai.com/index/gpt-5-5-instant/",
+    "source": "OpenAI 发布公告"
+  },
+  {
     "date": "2026-05-07",
     "org": "University of Cambridge / Radboud University",
     "name": "CoBit",
@@ -3518,6 +5099,33 @@
     "note": "论文首版公开了 130M 参数的连续比特流扩散语言模型，将词元编码为定宽比特，并在 LM1B 和 OpenWebText 上报告了生成困惑度。",
     "url": "https://arxiv.org/abs/2605.07013v1",
     "source": "作者论文 · arXiv v1"
+  },
+  {
+    "date": "2026-05-07",
+    "org": "OpenAI",
+    "name": "GPT-5.5-Cyber",
+    "kind": "预览",
+    "note": "通过验证机制向网络防御人员提供更适合授权安全任务的早期版本。",
+    "url": "https://openai.com/index/gpt-5-5-with-trusted-access-for-cyber/",
+    "source": "OpenAI 发布公告"
+  },
+  {
+    "date": "2026-05-07",
+    "org": "OpenAI",
+    "name": "GPT-Realtime-2",
+    "kind": "开放 API",
+    "note": "为实时语音智能体提供可调推理，并同时发布流式语音翻译、转写模型。",
+    "url": "https://developers.openai.com/api/docs/changelog",
+    "source": "OpenAI API 更新记录"
+  },
+  {
+    "date": "2026-05-09",
+    "org": "Baidu",
+    "name": "ERNIE 5.1",
+    "kind": "发布",
+    "note": "百度正式发布 ERNIE 5.1。该版本基于自家 ERNIE 5.0 的弹性预训练，并针对智能体任务进行后训练。",
+    "url": "https://ernie.baidu.com/zh/research/posts/ernie-5.1-0508-release/",
+    "source": "百度文心发布公告"
   },
   {
     "date": "2026-05-19",
@@ -3559,9 +5167,9 @@
   {
     "date": "2026-05-25",
     "org": "OpenBMB",
-    "name": "MiniCPM5-1B-Base",
+    "name": "MiniCPM5-1B-Base / MiniCPM5-1B-SFT",
     "kind": "开放权重",
-    "note": "OpenBMB 在项目文档中公布 1B 预训练基础权重的 Hugging Face 和 ModelScope 下载链接。",
+    "note": "OpenBMB 在项目文档中公布了预训练基础权重和监督微调权重的下载链接，两套检查点均可从 Hugging Face 和 ModelScope 获取。",
     "url": "https://github.com/OpenBMB/MiniCPM/blob/e618b095685718b6d6997a967cfbc0490f9622c6/README.md",
     "source": "OpenBMB 项目发布说明",
     "url2": "https://github.com/OpenBMB/MiniCPM/pull/348"
@@ -3632,6 +5240,15 @@
     "source": "Google 开发者公告"
   },
   {
+    "date": "2026-06-03",
+    "org": "OpenAI",
+    "name": "GPT-Rosalind-5.5",
+    "kind": "预览",
+    "note": "新一代生命科学推理模型以研究预览形式向符合要求的机构提供。",
+    "url": "https://deploymentsafety.openai.com/gpt-rosalind-5-5/introduction",
+    "source": "OpenAI 模型系统卡"
+  },
+  {
     "date": "2026-06-04",
     "org": "NVIDIA",
     "name": "Nemotron 3 Ultra",
@@ -3658,6 +5275,15 @@
     "url": "https://www.anthropic.com/news/claude-fable-5-mythos-5",
     "source": "官方原文",
     "stage": "Fable 普遍可用，Mythos 限定访问"
+  },
+  {
+    "date": "2026-06-09",
+    "org": "Cohere",
+    "name": "North Mini Code",
+    "kind": "开放权重",
+    "note": "面向本地编码智能体，采用 30B 总参数和 3B 激活参数的混合专家模型。",
+    "url": "https://docs.cohere.com/v2/changelog/north-mini-code-1-0",
+    "source": "Cohere 发布公告"
   },
   {
     "date": "2026-06-12",
@@ -3726,6 +5352,15 @@
     "source": "美团 LongCat 更新日志"
   },
   {
+    "date": "2026-06-30",
+    "org": "Mistral",
+    "name": "Leanstral 1.5",
+    "kind": "发布",
+    "note": "更新面向 Lean 4 的实验模型，调整监督微调数据并扩展长上下文推理训练。",
+    "url": "https://docs.mistral.ai/resources/changelogs",
+    "source": "Mistral 官方更新日志"
+  },
+  {
     "date": "2026-07-06",
     "org": "Tencent",
     "name": "Hy3 正式版",
@@ -3733,6 +5368,15 @@
     "note": "腾讯正式推出 Hy3，在预览反馈的基础上更新了后训练，并优化智能体任务。",
     "url": "https://www.tencent.com/tencent-hunyuan-officially-releases-hy3-advancing-agent-capabilities-and-deeper-product-integration/",
     "source": "腾讯发布公告"
+  },
+  {
+    "date": "2026-07-06",
+    "org": "OpenAI",
+    "name": "GPT-Realtime-2.1 / mini",
+    "kind": "开放 API",
+    "note": "改进实时语音中对字母数字串、静音和打断的处理，同时提供较小版本。",
+    "url": "https://developers.openai.com/api/docs/changelog",
+    "source": "OpenAI API 更新记录"
   },
   {
     "date": "2026-07-08",
@@ -3809,6 +5453,24 @@
     "source": "Kimi K3 官方开放日"
   },
   {
+    "date": "2026-07-29",
+    "org": "xAI",
+    "name": "Grok Voice 2.0",
+    "kind": "发布",
+    "note": "第二代实时语音对话模型，可在对话中使用工具。",
+    "url": "https://x.ai/news/grok-voice-think-fast-2",
+    "source": "xAI 官方公告"
+  },
+  {
+    "date": "2026-07-30",
+    "org": "Google",
+    "name": "Gemini Robotics ER 2",
+    "kind": "预览",
+    "note": "公开两个具身推理模型的预览端点，供开发者处理机器人感知和规划。",
+    "url": "https://ai.google.dev/gemini-api/docs/changelog#07-30-2026",
+    "source": "Google · Gemini API 发布记录"
+  },
+  {
     "date": "2026-07-31",
     "org": "LG AI Research",
     "name": "K-EXAONE 2.0",
@@ -3816,6 +5478,16 @@
     "note": "新一代多语言模型使用混合注意力与混合专家，拥有 750B 总参数和 37B 激活参数。",
     "url": "https://github.com/LG-AI-EXAONE/K-EXAONE-2.0",
     "source": "LG AI Research 官方仓库"
+  },
+  {
+    "date": "2026-07-31",
+    "org": "DeepSeek",
+    "name": "DeepSeek-V4-Flash-0731",
+    "kind": "预览",
+    "note": "官方称正式版 API 开始 public beta。架构与规模不变，仅重新后训练。当天仅 Flash API 更新，Pro 与网页/App 未同步变化。",
+    "url": "https://api-docs.deepseek.com/updates/#date-2026-07-31",
+    "source": "更新日志",
+    "stage": "API 更新／公开测试"
   },
   {
     "date": "2026-08-03",
@@ -3844,6 +5516,15 @@
     "note": "开放 30B 端侧智能体模型，支持本地工具调用和代码任务。",
     "url": "https://research.meta.ai/blog/introducing-muse-glimmer-open-agentic-model",
     "source": "Meta 发布公告"
+  },
+  {
+    "date": "2026-08-10",
+    "org": "OpenAI",
+    "name": "GPT-5.6-Cyber",
+    "kind": "预览",
+    "note": "Daybreak 项目扩展访问范围，并引入针对网络安全防御工作的模型。",
+    "url": "https://openai.com/index/expanding-daybreak-as-the-cyber-defense-window-narrows/",
+    "source": "OpenAI 发布公告"
   },
   {
     "date": "2026-08-11",
@@ -3920,6 +5601,25 @@
     "stage": "正式发布/API"
   },
   {
+    "date": "2026-08-21",
+    "org": "DeepSeek",
+    "name": "DeepSeek-V4-Flash-Vision-Exp",
+    "kind": "预览",
+    "note": "DeepSeek 通过 API 提供实验性的视觉理解版本。",
+    "url": "https://api-docs.deepseek.com/updates/#date-2026-08-21",
+    "source": "更新日志",
+    "stage": "实验多模态版本 · API 可用"
+  },
+  {
+    "date": "2026-08-25",
+    "org": "IBM",
+    "name": "Granite 4.2",
+    "kind": "开放权重",
+    "note": "将原生推理能力引入 Granite 语言模型，并针对工具调用等企业任务进行训练。",
+    "url": "https://research.ibm.com/blog/introducing-granite-4-2",
+    "source": "IBM 发布公告"
+  },
+  {
     "date": "2026-08-26",
     "org": "Alibaba",
     "name": "Qwen3.8-Flash",
@@ -3987,6 +5687,15 @@
     "source": "Meta 发布公告"
   },
   {
+    "date": "2026-09-02",
+    "org": "Alibaba",
+    "name": "Qwen3.8-Max-0902",
+    "kind": "版本更新",
+    "note": "官方明确这是 2026-09-02 快照，别名 qwen3.8-max-2026-09-02。默认 qwen3.8-max 的自动切换另在 9 月 5 日。",
+    "url": "https://docs.qwencloud.com/changelog/model-updates/qwen3.8-max-upgrade",
+    "source": "更新日志"
+  },
+  {
     "date": "2026-09-03",
     "org": "OpenAI",
     "name": "GPT-6 Astra",
@@ -4015,6 +5724,16 @@
     "source": "Inception Labs 发布公告"
   },
   {
+    "date": "2026-09-09",
+    "org": "Cohere",
+    "name": "North Small Translate",
+    "kind": "开放权重",
+    "note": "Cohere 发布 North Small Translate 1.0 混合专家语言模型，针对 50 种语言与地区变体之间的翻译，开放模型权重。",
+    "url": "https://docs.cohere.com/v2/changelog/north-small-translate-1-0",
+    "source": "Cohere 发布公告",
+    "url2": "https://huggingface.co/CohereLabs/North-Small-Translate-1.0"
+  },
+  {
     "date": "2026-09-10",
     "org": "DeepSeek",
     "name": "DeepSeek-V4.1-Flash",
@@ -4023,6 +5742,15 @@
     "url": "https://api-docs.deepseek.com/updates/#date-2026-09-10",
     "source": "更新日志",
     "stage": "正式发布/API"
+  },
+  {
+    "date": "2026-09-10",
+    "org": "OpenAI",
+    "name": "GPT-Live 1",
+    "kind": "开放 API",
+    "note": "双工语音模型在 API 正式可用，交谈过程中可将推理和工具调用委派给后台模型。",
+    "url": "https://developers.openai.com/api/docs/changelog",
+    "source": "OpenAI API 更新记录"
   },
   {
     "date": "2026-09-11",
@@ -4104,6 +5832,26 @@
     "source": "美团 LongCat 更新日志"
   },
   {
+    "date": "2026-09-25",
+    "org": "Xiaomi",
+    "name": "MiMo-V2.6-Pro / Flash（API 更新）",
+    "kind": "版本更新",
+    "note": "小米在 9 月 27 日的博文回溯确认，API 于 9 月 25 日 06:00（UTC+8）更新，修正工具调用重复问题。",
+    "url": "https://mimo.xiaomi.com/blog/mimo-v2-6-tool-call-repetition",
+    "source": "官方原文",
+    "stage": "API更新上线"
+  },
+  {
+    "date": "2026-09-27",
+    "org": "Xiaomi",
+    "name": "MiMo-V2.6-Pro-MOPD / MiMo-V2.6-Flash-MOPD",
+    "kind": "开放权重",
+    "note": "9月27日官博宣布已开放带MOPD后缀的新检查点，用于修正工具调用重复。该节点记录公告日，API实际更新日在9月25日。",
+    "url": "https://mimo.xiaomi.com/blog/mimo-v2-6-tool-call-repetition",
+    "source": "官方原文",
+    "url2": "https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-MOPD"
+  },
+  {
     "date": "2026-09-28",
     "org": "Anthropic",
     "name": "Claude Sonnet 5.5",
@@ -4142,6 +5890,15 @@
     "source": "Upstage 发布公告"
   },
   {
+    "date": "2026-10-05",
+    "org": "Amazon",
+    "name": "Nova 2.5 Sonic",
+    "kind": "发布",
+    "note": "语音对话模型增加推理能力，可处理需要多步骤思考和工具调用的语音请求。",
+    "url": "https://aws.amazon.com/about-aws/whats-new/2026/10/amazon-nova-2.5-Sonic/",
+    "source": "AWS 发布公告"
+  },
+  {
     "date": "2026-10-06",
     "org": "Mistral",
     "name": "Mistral Large 4 / Le Chonk（预览）",
@@ -4161,6 +5918,15 @@
     "source": "官方原文"
   },
   {
+    "date": "2026-10-07",
+    "org": "OpenAI",
+    "name": "GPT-6（Chat 对话版）",
+    "kind": "发布",
+    "note": "OpenAI 开始推出 Sol、Luna 的对话适配版本，以及可生成交互界面的 Intelligent UI。",
+    "url": "https://openai.com/index/gpt-6-for-everyone/",
+    "source": "官方原文"
+  },
+  {
     "date": "2026-10-12",
     "org": "Meta",
     "name": "Muse Wonder / Muse Wonder Full",
@@ -4171,6 +5937,16 @@
     "stage": "正式发布 · API / Muse Code 可用"
   },
   {
+    "date": "2026-10-12",
+    "org": "Z.ai",
+    "name": "GLM-Legal",
+    "kind": "预览",
+    "note": "基于 GLM-5.3-Flash 的法律领域专用模型，首批 API 用户可申请参加 Beta 测试。",
+    "url": "https://z.ai/blog/glm-legal",
+    "source": "官方原文",
+    "stage": "专用模型官宣 · 申请制 API Beta"
+  },
+  {
     "date": "2026-10-13",
     "org": "Google",
     "name": "Gemini 4 Argon",
@@ -4178,6 +5954,15 @@
     "note": "正式向 API 开发者、企业和符合订阅条件的消费者开放。",
     "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
     "source": "官方原文"
+  },
+  {
+    "date": "2026-10-14",
+    "org": "xAI",
+    "name": "Grok Voice 3.0",
+    "kind": "开放 API",
+    "note": "在双向语音 API 上线，支持实时语音对话。",
+    "url": "https://x.ai/news/grok-voice-3",
+    "source": "xAI 官方公告"
   },
   {
     "date": "2026-10-15",
@@ -4206,6 +5991,26 @@
     "url": "https://ifm.ai/blog/jais3/",
     "source": "MBZUAI IFM 发布公告",
     "url2": "https://huggingface.co/inception42/Jais-3-3.7B"
+  },
+  {
+    "date": "2026-10-15",
+    "org": "NVIDIA",
+    "name": "Nemotron 3.5 Super VL",
+    "kind": "开放权重",
+    "note": "NVIDIA 在自家 Nemotron 3 Super 家族发布 120B 总参数、12B 激活参数的视觉语言模型，提供基础版与后训练版 BF16 权重。",
+    "url": "https://blogs.nvidia.com/blog/nemotron-3-5-super-vl/",
+    "source": "NVIDIA 发布公告",
+    "url2": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-BF16"
+  },
+  {
+    "date": "2026-10-17",
+    "org": "DeepSeek",
+    "name": "DeepSeek-V4.1-Flash-1017",
+    "kind": "版本更新",
+    "note": "网页、App和API同步升级并开放权重。采用自反馈强化学习，增强完整项目开发能力，同时减少任务耗时与输出长度。API模型ID保持deepseek-flash。",
+    "url": "https://api-docs.deepseek.com/news/news261017/",
+    "source": "开发者公告",
+    "stage": "模型快照更新 · 网页/App/API 同步上线 · 开放权重"
   },
   {
     "date": "2026-10-19",
@@ -4260,9 +6065,9 @@
   {
     "date": "2026-10-27",
     "org": "Liquid AI",
-    "name": "LFM3-1.7B-Base",
+    "name": "LFM3",
     "kind": "开放权重",
-    "note": "Liquid AI 开放采用三类序列处理层的 1.7B 文本基础模型，预训练语料规模为 22 万亿词元。",
+    "note": "Liquid AI 发布 LFM3 轻量语言模型家族，包括 1.7B 预训练基座及其官方文本、视觉和音频版本。",
     "url": "https://www.liquid.ai/blog/lfm3",
     "source": "Liquid AI 发布公告",
     "url2": "https://huggingface.co/LiquidAI/LFM3-1.7B-Base"
@@ -4287,6 +6092,16 @@
     "url2": "https://legal.mistral.ai/ai-governance/models/mistral-large-4/"
   },
   {
+    "date": "2026-10-29",
+    "org": "Z.ai",
+    "name": "GLM-5.3-FlashX-Legal",
+    "kind": "发布",
+    "note": "智谱在 AutoClaw 中上线法律专用模型，用户可在产品内直接使用。",
+    "url": "https://autoclaw.z.ai/blog/model/GLM-5.3-flashX-Legal/",
+    "source": "官方原文",
+    "stage": "AutoClaw 产品内上线"
+  },
+  {
     "date": "2026-10-30",
     "org": "商汤科技",
     "name": "SenseNova-Loop-9B-Preview",
@@ -4295,6 +6110,15 @@
     "url": "https://huggingface.co/sensenova/SenseNova-Loop-9B-Preview",
     "source": "官方模型卡与权重",
     "url2": "https://github.com/OpenSenseNova/SenseNova-Loop/blob/main/README_CN.md"
+  },
+  {
+    "date": "2026-10-30",
+    "org": "OpenAI",
+    "name": "GPT-6 Rosalind",
+    "kind": "开放 API",
+    "note": "结合生物学推理与科研工具使用，向获准开展生命科学研究的组织提供。",
+    "url": "https://developers.openai.com/api/docs/changelog",
+    "source": "OpenAI API 更新记录"
   },
   {
     "date": "2026-11-02",
@@ -4333,13 +6157,24 @@
     "source": "百度文心发布公告"
   },
   {
+    "date": "2026-11-05",
+    "org": "OpenAI",
+    "name": "GPT-6 Cyber",
+    "kind": "受限开放",
+    "note": "首批获批的 Daybreak Red 客户可通过 API 和 Codex 使用这款网络安全模型，查找并验证可利用漏洞。",
+    "url": "https://openai.com/index/introducing-gpt-6-cyber/",
+    "source": "官方原文",
+    "stage": "定向受限发布（API / Codex）"
+  },
+  {
     "date": "2026-11-06",
     "kind": "研究公开",
     "name": "LexisLM-500M / LexisLM-1B",
-    "note": "研究团队在 220 亿词元的希腊语维基百科和 FineWeb2 希腊语语料上从零训练两个解码器语言模型，参数量分别为 502M 和 1.09B。",
+    "note": "团队在 220 亿希腊语词元上从零预训练 502M 与 1.09B 解码器语言模型，并提供自家基座的指令版本。",
     "org": "National and Kapodistrian University of Athens / lightsaber.gr",
     "source": "作者论文 v1",
-    "url": "https://arxiv.org/abs/2611.10209v1"
+    "url": "https://arxiv.org/abs/2611.10209v1",
+    "url2": "https://huggingface.co/ComputationalLinguisticsPlatform/LexisLM-1B-Instruct"
   },
   {
     "date": "2026-11-09",
@@ -4387,5 +6222,15 @@
     "org": "Alibaba",
     "source": "阿里云百炼文档",
     "url": "https://help.aliyun.com/zh/model-studio/qwen4-max-preview"
+  },
+  {
+    "date": "2026-11-11",
+    "org": "Baidu",
+    "name": "ERNIE 5.5 Flash Preview",
+    "kind": "预览",
+    "note": "百度发布 ERNIE 5.5 Flash Base 的首个官方后训练版本，支持 100 万词元上下文，当天在百度智能云千帆开放预览 API。",
+    "url": "https://ernie.baidu.com/zh/release/ernie-5-5-flash-preview/",
+    "source": "百度文心发布公告",
+    "url2": "https://ernie.baidu.com/release/ernie-5-5-flash-base"
   }
 ]

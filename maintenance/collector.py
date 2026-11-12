@@ -187,10 +187,7 @@ def scan(path):
         for source in sources:
             checkpoint = state["sources"].get(source["id"], {})
             since = checkpoint.get("checked")
-            if source.get("channel") in {"huggingface", "modelscope"}:
-                job = pool.submit(read_source, source, since, set(checkpoint.get("seen", ())))
-            else:
-                job = pool.submit(read_source, source, since)
+            job = pool.submit(read_source, source, since, set(checkpoint.get("seen", ())))
             jobs[job] = source
         for job in as_completed(jobs):
             source = jobs[job]
@@ -258,7 +255,7 @@ def issue_body(group, items):
         f"<!-- atlas-candidate:{group} -->\n待核实的发布线索：\n\n"
         + "\n".join(evidence_text(x) for x in items)
         + (f"\n\n{excerpt}" if excerpt else "")
-        + "\n\n请补充发布方关于模型预训练、发布日期和开放范围的一手依据。\n\n"
+        + "\n\n请补充原开发方关于所属基座或官方版本、发布日期和开放范围的一手依据。\n\n"
         + "```json\n"
         + json.dumps(proposal, ensure_ascii=False, indent=2).replace("`", "\\u0060")
         + "\n```"

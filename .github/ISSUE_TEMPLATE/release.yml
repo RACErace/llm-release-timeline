@@ -7,7 +7,7 @@ body:
     id: record
     attributes:
       label: 发布记录
-      description: 请附发布方公告、开发者日志或官方模型卡，并说明发布的是哪个基模型。若同一模型分阶段开放，请写明本次事件及日期。
+      description: 请附原开发方的公告、开发者日志或模型卡，写明所属基座、官方版本和本次开放的渠道及日期。
       render: json
       value: |
         {

@@ -16,8 +16,9 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 from anthropic_releases import release as anthropic_release
+from baidu_releases import read_announcement as baidu_announcement, release_cards as baidu_cards
 from model_hubs import huggingface_models, legacy_model, modelscope_models
-from model_scope import announcement_in_scope, base_training_evidence, hub_metadata_in_scope
+from model_scope import announcement_in_scope, hub_release_evidence, hub_metadata_in_scope
 
 HERE = Path(__file__).resolve().parent
 LOCAL = threading.local()
@@ -236,8 +237,18 @@ def meta_research_items(source, soup):
         yield signal(source, url.rstrip("/"), title, url, kind, date, title)
 
 
-def page_items(source, raw):
+def page_items(source, raw, seen=None):
     soup = BeautifulSoup(raw, "html.parser")
+    if source["id"] == "baidu-news":
+        for model, title, url, date in baidu_cards(soup, source["url"]):
+            identity = url.rstrip("/") + "|" + date
+            if seen and key(source["id"], identity) in seen:
+                continue
+            announcement = baidu_announcement(get(url), model, title, date)
+            if announcement:
+                kind, intro = announcement
+                yield signal(source, identity, model, url, kind, date, intro, model=model)
+        return
     if source["id"] == "claude-news":
         cards = soup.select("li[data-listing-row]")
         if not cards:
@@ -358,11 +369,11 @@ def model_card(source, row):
 
 
 def verify_hub_item(source, row, item):
-    evidence = base_training_evidence(row, model_card(source, row))
+    evidence = hub_release_evidence(row, model_card(source, row))
     if not evidence:
         return None
     item["base_evidence"] = clean(evidence)
-    item["excerpt"] = "发布方模型卡中的预训练依据：" + item["base_evidence"]
+    item["excerpt"] = "发布方提供的基座或官方版本依据：" + item["base_evidence"]
     return item
 
 
@@ -394,7 +405,7 @@ def lookup_hub_model(repo, channel):
 def checked_model(repo):
     item = lookup_hub_model(repo, "huggingface")
     if not item:
-        raise ValueError("该仓库缺少独立预训练语言基模型的权重或模型卡依据")
+        raise ValueError("该仓库缺少语言基模型或原开发方官方版本的权重及发布依据")
     return item
 
 
@@ -422,6 +433,6 @@ def read_source(source, since, seen=None):
         rows = (
             feed_items(source, response.content)
             if source["channel"] == "feeds"
-            else page_items(source, response.content)
+            else page_items(source, response.content, seen)
         )
     return {r["id"]: r for r in rows if announcement_in_scope(r.get("model") or r["name"])}

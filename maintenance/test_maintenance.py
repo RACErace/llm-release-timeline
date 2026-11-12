@@ -46,7 +46,7 @@ class CollectorTests(unittest.TestCase):
                 },
             )
 
-        for suffix in ("-BNB", "-Thinking-BNB", "-bitsandbytes-4bit", "-SFT"):
+        for suffix in ("-BNB", "-Thinking-BNB", "-bitsandbytes-4bit"):
             self.assertIsNone(hub("MiniCPM-V-4.6" + suffix))
         alias = hub("MiniCPM-V-4_5")
         self.assertTrue(collector.already_catalogued(alias, [record]))
@@ -60,6 +60,7 @@ class CollectorTests(unittest.TestCase):
             "MiniCPM-V-45",
             "MiniCPM-V-4.5-Base",
             "MiniCPM-V-4_5-Thinking",
+            "MiniCPM-V-4.6-SFT",
         ):
             other = hub(name)
             self.assertIsNotNone(other)
@@ -119,7 +120,7 @@ class CollectorTests(unittest.TestCase):
                 patch.object(
                     collector,
                     "read_source",
-                    side_effect=lambda s, _: {} if s["id"] == "ok" else self._offline(),
+                    side_effect=lambda s, since, seen: {} if s["id"] == "ok" else self._offline(),
                 ),
                 patch.object(collector, "report"),
             ):
