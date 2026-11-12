@@ -6661,6 +6661,15 @@
     "stage": "定向受限发布（API / Codex）"
   },
   {
+    "date": "2026-11-05",
+    "kind": "研究公开",
+    "name": "Drex（DLM / v1.5 / v2.0 / Max）",
+    "note": "Nace.AI 的四个开放决策模型：8B DLM（扩散语言模型底座）、9B v1.5、35B-A3B v2.0 与 27B Max（基于 Qwen3.8-27B、多模态读出），不生成 token，直接对用户给定选项返回校准概率分布；Max 在 Decision Index 0.4.1 公开集得 67.52、典型请求 183 ms。论文声明四者均开放权重与推理代码（Max/v2.0/v1.5 为 Nace.AI Open RAIL-M，DLM 为 CC BY-NC 4.0），v1.5/v2.0/Max 另提供托管 API 与 OpenRouter。",
+    "org": "Nace.AI",
+    "source": "作者论文 v1",
+    "url": "https://arxiv.org/abs/2611.07854v1"
+  },
+  {
     "date": "2026-11-06",
     "org": "中国科学院计算技术研究所",
     "name": "Chinese Decision Unified（0.8B/2B/4B）",
