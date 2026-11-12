@@ -96,7 +96,10 @@ class FoundationScopeTests(unittest.TestCase):
             check_new_record(article)
         check_new_record(article, historical_source=True)
         check_new_record(dict(article, url2="https://org.example/research/new-model"))
-        for note in ("基于 Qwen3-VL 的医疗模型", "Qwen3.5 底座、合并 LoRA", "采用 Example-3B 作为骨干"):
+        for note in (
+            "基于 Qwen3-VL 的医疗模型", "Qwen3.5 底座、合并 LoRA", "采用 Example-3B 作为骨干",
+            "通过合并多个 LoRA 适配器得到。", "Built by merging two trained LoRA adapters.",
+        ):
             with self.assertRaises(ValueError):
                 check_new_record(dict(article, note=note, url="https://org.example/candidate"))
         for note in ("基于 Transformer 架构，从零预训练。", "基于作者自训底座。", "基于 Llama3 的架构，从零训练。"):

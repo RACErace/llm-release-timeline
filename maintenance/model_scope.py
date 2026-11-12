@@ -35,9 +35,12 @@ DERIVED_CLAIM = re.compile(
     r"\b(?:model|LLM|checkpoint|assistant)\s+(?:is\s+)?(?:built on|based on|derived from|initialized from)\s+"
     r"(?:the\s+)?(?:[\w.-]+/[\w.-]+|[A-Za-z][\w.-]*\d|Llama\b|Gemma\b|Mistral\b)|"
     r"\b(?:uses?|using)\s+(?:an? |the )?(?:pre[- ]?trained )?(?:language )?(?:backbone|base model)\b|"
+    r"\b(?:by|from) merging\s+(?:(?:multiple|several|two|the|trained|\d+)\s+)*"
+    r"(?:LoRA\b|adapters?\b|checkpoints?\b)|"
     r"(?:基于|采用|使用|沿用|初始化自)\s*(?:[A-Za-z][A-Za-z0-9_.-]*/[A-Za-z0-9_.-]+|"
     r"[A-Za-z][A-Za-z.\- ]{0,28}\d[A-Za-z0-9_.-]*)(?![A-Za-z0-9_.-]|\s*(?:的\s*)?(?:架构|结构|训练框架))|"
     r"[A-Za-z][\w.-]*\d[\w.-]*\s*(?:为|作为)?\s*(?:底座|基座|骨干)|合并\s*(?:LoRA|适配器)|"
+    r"(?:通过|由)合并[^，。；\n]{0,32}(?:LoRA|适配器|权重|检查点)[^，。；\n]{0,12}(?:得到|而成|生成)|"
     r"(?:基于|在).{1,55}(?:基础上|模型上)?(?:进行|通过|经过)?(?:微调|蒸馏|继续预训练)|"
     r"(?:通过|由).{0,45}(?:微调|蒸馏|量化|合并)(?:得到|而成|训练而成)", re.I,
 )
