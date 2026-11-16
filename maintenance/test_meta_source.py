@@ -51,6 +51,18 @@ class MetaResearchTests(unittest.TestCase):
         )
         self.assertEqual(len(snapshot), 2)
 
+    def test_reused_article_url_does_not_hide_new_model_or_stage(self):
+        first = self.snapshot(card("/blog/new", "Introducing Muse Example"))
+        for title, date in (
+            ("Introducing Muse Example 2", "2026-11-09"),
+            ("Introducing Muse Example", "2026-11-10"),
+            ("Introducing Muse Example in preview", "2026-11-09"),
+        ):
+            with self.subTest(title=title, date=date):
+                changed = self.snapshot(card("/blog/new", title, date))
+                self.assertEqual(len(changed), 1)
+                self.assertTrue(first.keys().isdisjoint(changed.keys()))
+
     def test_verified_access_stage_covers_same_meta_announcement(self):
         title = "Introducing Our Smallest, Most Efficient Model: Muse&nbsp;Ember"
         row = next(iter(self.snapshot(card("/blog/muse-ember", title)).values()))

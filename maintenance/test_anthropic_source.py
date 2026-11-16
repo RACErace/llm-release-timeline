@@ -6,12 +6,13 @@ import sources
 from anthropic_releases import release
 
 
-RSS = {"id": "claude", "org": "Anthropic"}
+RSS = {"id": "claude", "org": "Anthropic", "revision": 2, "bootstrap_days": 14}
 NEWS = {
     "id": "claude-news",
     "org": "Anthropic",
     "url": "https://www.anthropic.com/news",
-    "bootstrap_days": 3,
+    "revision": 2,
+    "bootstrap_days": 14,
 }
 
 
@@ -56,7 +57,7 @@ class AnthropicTests(unittest.TestCase):
         ET.SubElement(item, "link").text = (
             "https://platform.claude.com/docs/en/release-notes/overview#claude-fable-5-2"
         )
-        # Keep the first 180 characters of the RSS evidence from Issue #34.
+        # Evidence from the deployed Issue #34, including the companion model.
         ET.SubElement(item, "description").text = (
             "<ul><li>We’ve launched <strong>Claude Fable 5.2</strong> "
             "(<code>claude-fable-5-2</code>), built for demanding reasoning and "
@@ -79,7 +80,7 @@ class AnthropicTests(unittest.TestCase):
 
     def test_rss_newsroom_reprints_and_api_stage(self):
         rss, news = self.feed(), self.newsroom()
-        self.assertEqual(rss["id"], "f2cc2160b1ce89656ed00d74014bcbfe")
+        self.assertEqual(rss["id"], self.feed()["id"])
         self.assertEqual((rss["name"], rss["kind"]), ("Claude Fable 5.2 / Mythos 5.2", "发布"))
         self.assertEqual(news["date"], "2026-11-09")
         state = {"pending": {}, "sources": {"claude": {"checked": "2026-11-08", "seen": []}}}
@@ -114,7 +115,9 @@ class AnthropicTests(unittest.TestCase):
         rss, news = self.feed(), self.newsroom()
         state = {
             "pending": {}, "delivered": {"6b278419dc1e536ce5008c682f47c88c": 34},
-            "sources": {"claude": {"checked": "2026-11-10", "seen": [rss["id"]]}},
+            "sources": {"claude": {"checked": "2026-11-10", "seen": [
+                "f2cc2160b1ce89656ed00d74014bcbfe"  # Legacy truncated evidence ID.
+            ]}},
         }
         records = [dict(rss, url=news["url"])]
         for source, item in [(RSS, rss), (NEWS, news)]:
@@ -130,3 +133,39 @@ class AnthropicTests(unittest.TestCase):
         self.assertFalse(collector.already_catalogued(dict(update, date="2024-11-01"), [record]))
         with self.assertRaises(ValueError):
             list(sources.page_items(NEWS, "<html>Temporary outage</html>"))
+
+    def test_full_feed_evidence_retains_late_companions_and_reused_preview_urls(self):
+        def read(text, date="Mon, 09 Nov 2026 00:00:00 GMT"):
+            root = ET.Element("rss")
+            item = ET.SubElement(root, "item")
+            ET.SubElement(item, "title").text = "Release notes"
+            ET.SubElement(item, "link").text = "https://platform.claude.com/docs/en/release-notes/overview"
+            ET.SubElement(item, "pubDate").text = date
+            ET.SubElement(item, "description").text = "<p>" + text + "</p>"
+            return next(iter(sources.feed_items(RSS, ET.tostring(root))))
+
+        prefix = "We’ve launched Claude Fable 5.2, " + "with stronger reasoning " * 10
+        first = read(prefix + "alongside Claude Mythos 5.2.")
+        changed = read(prefix + "alongside Claude Mythos 5.3.")
+        self.assertNotEqual(first["id"], changed["id"])
+        self.assertNotEqual(collector.event_id(first), collector.event_id(changed))
+        preview = "Introducing Claude Mythos Preview"
+        first = read(preview)
+        changed = read(preview, "Tue, 10 Nov 2026 00:00:00 GMT")
+        self.assertNotEqual(first["id"], changed["id"])
+        self.assertNotEqual(collector.event_id(first), collector.event_id(changed))
+        with self.assertRaisesRegex(ValueError, "missing feed publication date"):
+            read(preview, "")
+
+    def test_newsroom_reused_url_retains_new_model_and_date(self):
+        def read(name, date):
+            page = f'''<li data-listing-row="a"><a href="/new-claude">
+            <h3>Introducing {name}</h3></a><time>{date}</time></li>'''
+            return next(iter(sources.page_items(NEWS, page)))
+
+        first = read("Claude Fable 5.2", "Nov 9, 2026")
+        changed = read("Claude Fable 5.3", "Nov 9, 2026")
+        self.assertNotEqual(first["id"], changed["id"])
+        first = read("Claude Mythos Preview", "Nov 9, 2026")
+        changed = read("Claude Mythos Preview", "Nov 10, 2026")
+        self.assertNotEqual(first["id"], changed["id"])

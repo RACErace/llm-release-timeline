@@ -168,9 +168,7 @@ def feed_items(source, raw):
         links = node.findall("{*}link")
         link = next((n for n in links if n.get("rel", "alternate") == "alternate"), None)
         url = (link.get("href") or link.text or "") if link is not None else ""
-        # Preserve old evidence markers for Anthropic; matching normalizes
-        # typography independently from the source identity below.
-        title = " ".join(node.findtext("{*}title", "").replace("\u200b", "").split())
+        title = clean(node.findtext("{*}title", ""))
         date = utc_date(
             next(
                 (
@@ -195,9 +193,10 @@ def feed_items(source, raw):
             for part in segments or [plain(body), title]:
                 if launch := anthropic_release(part):
                     name, kind = launch
-                    # Preserve evidence IDs stored by the original RSS reader.
-                    ref = url + ("|" + part[:180] if part != title else "")
-                    yield signal(source, ref, name or part[:145], url, kind, date, part, model=name)
+                    if not date:
+                        raise ValueError("missing feed publication date: " + url)
+                    ref = "|".join((url, part, date, kind))
+                    yield signal(source, ref, name or part, url, kind, date, part, model=name)
             continue
         brief = plain(body)[:650] if len(segments) == 1 and segments[0] == title else ""
         for part in segments:
@@ -258,8 +257,9 @@ def meta_research_items(source, soup):
             raise ValueError("missing Meta AI Research publication date: " + link.path)
         url = link._replace(query="", fragment="").geturl()
         kind = guess_kind(title.replace("‑", "-"))
-        yield signal(source, url.rstrip("/"), title, url, kind, date, title,
-                     model=headline_model(title, source["org"]))
+        model = headline_model(title, source["org"])
+        identity = "|".join((url.rstrip("/"), model or title, date, kind))
+        yield signal(source, identity, title, url, kind, date, title, model=model)
 
 
 def page_items(source, raw, seen=None):
@@ -318,7 +318,8 @@ def page_items(source, raw, seen=None):
                 )
                 if not date:
                     raise ValueError("invalid Anthropic newsroom publication date: " + url)
-                yield signal(source, url, name or title, url, kind, date, title, model=name)
+                identity = "|".join((url.rstrip("/"), name or title, date, kind))
+                yield signal(source, identity, name or title, url, kind, date, title, model=name)
         return
     if source["id"] == "meta-research":
         yield from meta_research_items(source, soup)
