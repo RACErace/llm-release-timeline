@@ -6302,6 +6302,15 @@
     "url2": "https://thinkingmachines.ai/news/inkling-2-small/"
   },
   {
+    "date": "2026-11-12",
+    "kind": "开放权重",
+    "name": "Nemotron-Labs-Sigma-8B-instruct",
+    "note": "NVIDIA 的 8B 连续扩散语言模型（在 16 维连续词元嵌入空间去噪、块并行解码，支持 DDPM/DDIM 采样与自条件），本条为在 Nemotron-Labs-Sigma-8B 基础上指令微调的 SFT 版；上下文 8192 词元、仅英文，采用 NVIDIA Nemotron Open Model License，权重在 Hugging Face 发布。",
+    "org": "NVIDIA",
+    "source": "官方模型卡",
+    "url": "https://huggingface.co/nvidia/Nemotron-Labs-Sigma-8B-instruct"
+  },
+  {
     "date": "2026-11-15",
     "org": "Agnes AI",
     "name": "Agnes 2.5 Pro Theta",
