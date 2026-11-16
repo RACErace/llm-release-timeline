@@ -4,6 +4,7 @@ import hashlib
 import json
 import re
 import threading
+from copy import deepcopy
 from datetime import datetime
 from email.utils import parsedate_to_datetime
 from pathlib import Path
@@ -20,11 +21,13 @@ from baidu_releases import read_announcement as baidu_announcement, release_card
 from model_hubs import huggingface_models, legacy_model, modelscope_models
 from model_scope import announcement_in_scope, hub_release_evidence, hub_metadata_in_scope
 from publisher_releases import PARSERS as PUBLISHER_PARSERS, thinking_releases
+from release_notes import PARSERS as NOTE_PARSERS, markdown_releases
+from release_text import headline_model, normalized_text
 
 HERE = Path(__file__).resolve().parent
 LOCAL = threading.local()
 MODEL = re.compile(
-    r"\b(?:GPT[- .]?\d|o[134]\b|Claude|Gemini|Gemma|Grok|Qwen|Kimi[- ]?K\d|DeepSeek|Nova|Titan|DBRX|Dolly|Jamba|Mercury|tsuzumi|Latam[- ]?GPT|LLMs?\b|(?:language|foundation|reasoning) models?\b)|大模型|语言模型|千问|星火|modelo de lenguaje",
+    r"\b(?:GPT(?:[- .]?\d|[- ][A-Za-z])|o\d+\b|Claude|Gemini|Gemma|Grok|Qwen|Kimi[- ]?K\d|DeepSeek|Nova|Titan|Olympus|DBRX|Dolly|Jamba|Mercury|tsuzumi|Latam[- ]?GPT|LLMs?\b|(?:language|foundation|reasoning) models?\b)|大模型|语言模型|千问|星火|modelo de lenguaje",
     re.IGNORECASE,
 )
 LAUNCH = re.compile(
@@ -46,7 +49,7 @@ def key(*parts):
 
 
 def clean(value):
-    return " ".join(value.replace("\u200b", "").split())
+    return normalized_text(value)
 
 
 def plain(markup):
@@ -138,15 +141,36 @@ def guess_kind(text):
     return "发布"
 
 
+def feed_content(node, name):
+    """Read feed content, not similarly named image/media metadata."""
+    element = node.find(name)
+    if element is None:
+        for namespace in ("http://www.w3.org/2005/Atom", "http://purl.org/rss/1.0/"):
+            element = node.find("{" + namespace + "}" + name)
+            if element is not None:
+                break
+    if element is None:
+        return ""
+    if len(element):  # Atom may carry an XHTML subtree rather than escaped HTML.
+        element = deepcopy(element)
+        for child in element.iter():
+            child.tag = child.tag.rsplit("}", 1)[-1]
+        return ET.tostring(element, encoding="unicode")
+    return element.text or ""
+
+
 def feed_items(source, raw):
     root = ET.fromstring(raw)
     if root.tag.rsplit("}", 1)[-1] not in {"rss", "RDF", "feed"}:
         raise ValueError("expected an RSS or Atom feed")
     items = root.findall(".//{*}item") + root.findall("{*}entry")
     for node in items:
-        link = node.find("{*}link")
+        links = node.findall("{*}link")
+        link = next((n for n in links if n.get("rel", "alternate") == "alternate"), None)
         url = (link.get("href") or link.text or "") if link is not None else ""
-        title = clean(node.findtext("{*}title", ""))
+        # Preserve old evidence markers for Anthropic; matching normalizes
+        # typography independently from the source identity below.
+        title = " ".join(node.findtext("{*}title", "").replace("\u200b", "").split())
         date = utc_date(
             next(
                 (
@@ -157,17 +181,8 @@ def feed_items(source, raw):
                 "",
             )
         )
-        body = (
-            next(
-                (
-                    node.findtext("{*}" + k)
-                    for k in ("content", "description", "summary")
-                    if node.findtext("{*}" + k)
-                ),
-                "",
-            )
-            or ""
-        )
+        body = next((value for k in ("content", "description", "summary")
+                     if (value := feed_content(node, k))), "")
         segments = [title]
         if source["id"] in {"claude", "vertex"}:
             doc = BeautifulSoup(body, "html.parser")
@@ -194,6 +209,10 @@ def feed_items(source, raw):
                 continue
             if RETIRED.search(part) or not LAUNCH.search(text):
                 continue
+            if re.search(r"available in (?:AWS|Azure|the .+ region)", part, re.I):
+                continue
+            if re.search(r"(?:video|image|music|speech)[ -](?:generation|editing|synthesis)", text, re.I) and not re.search(r"text generation|language model", text, re.I):
+                continue
             if source["id"] == "vertex" and not re.search(
                 r"(?:launch|releas|introduc|announc)\w*\s+(?:the\s+)?(?:Claude|Gemini|Gemma)\b|"
                 r"\b(?:Claude (?:Opus|Haiku|Sonnet|Fable)|Gemini|Gemma)\b[^.!?]{0,60}\b(?:available|launched|released|rollout)",
@@ -202,9 +221,13 @@ def feed_items(source, raw):
             ):
                 continue
             kind = guess_kind(part)
-            # Daily notes can add another release to an already published item.
-            ref = url + ("|" + part[:180] if part != title else "")
-            yield signal(source, ref, part[:145], url, kind, date, text)
+            if not date:
+                raise ValueError("missing feed publication date: " + url)
+            # Full text, date and stage distinguish edits to a stable URL and
+            # separate entries sharing a long introduction in daily notes.
+            ref = "|".join((url, part, date, kind))
+            yield signal(source, ref, part, url, kind, date, text,
+                         model=headline_model(part, source["org"]))
 
 
 def meta_research_items(source, soup):
@@ -235,19 +258,30 @@ def meta_research_items(source, soup):
             raise ValueError("missing Meta AI Research publication date: " + link.path)
         url = link._replace(query="", fragment="").geturl()
         kind = guess_kind(title.replace("‑", "-"))
-        yield signal(source, url.rstrip("/"), title, url, kind, date, title)
+        yield signal(source, url.rstrip("/"), title, url, kind, date, title,
+                     model=headline_model(title, source["org"]))
 
 
 def page_items(source, raw, seen=None):
+    if source.get("format") == "markdown":
+        raw = raw.decode("utf-8") if isinstance(raw, bytes) else raw
+        for release in markdown_releases(raw, source["url"], source["org"]):
+            identity = "|".join((release.name.casefold(), release.date, release.kind))
+            yield signal(source, identity, release.name, release.url, release.kind,
+                         release.date, release.excerpt, model=release.name)
+        return
     soup = BeautifulSoup(raw, "html.parser")
-    if source["id"] in PUBLISHER_PARSERS or source["id"] == "thinking-news":
+    parsers = PUBLISHER_PARSERS | NOTE_PARSERS
+    if source["id"] in parsers or source["id"] == "thinking-news":
         releases = (
             thinking_releases(soup, source["url"], get)
             if source["id"] == "thinking-news"
-            else PUBLISHER_PARSERS[source["id"]](soup, source["url"])
+            else parsers[source["id"]](soup, source["url"])
         )
         for release in releases:
             identity = "|".join((release.name.casefold(), release.date, release.kind))
+            if release.kind == "版本更新" and len(release.date) < 10:
+                identity += "|" + clean(release.excerpt)
             yield signal(source, identity, release.name, release.url, release.kind,
                          release.date, release.excerpt, model=release.name)
         return

@@ -1,6 +1,7 @@
 """Scan first-party sources into a durable outbox, then reconcile candidate Issues."""
 
 import argparse
+import calendar
 import json
 import os
 import re
@@ -22,10 +23,7 @@ from sources import (
     registry,
 )
 
-FAMILY = re.compile(
-    r"\b(?:GPT[- ]?\d+(?:\.\d+)*|Claude[- ](?:Opus|Sonnet|Haiku|Fable)[- ]\d+(?:\.\d+)*|Gemini[- ]\d+(?:\.\d+)*|Kimi[- ]K\d+(?:\.\d+)*|DeepSeek[- ]V\d+(?:\.\d+)*|Qwen[- ]?\d+(?:\.\d+)*)(?:[- ](?:Pro|Flash|Cyber|Thinking|Highspeed|Lite|Base|Instant|Mini|[\d.]+[BMT]|\d{4}))*\b",
-    re.IGNORECASE,
-)
+ANNOUNCEMENT_SOURCES = frozenset(s["id"] for s in registry() if s["channel"] in {"feeds", "pages"})
 
 
 def normalized(text, *, hub=False):
@@ -36,10 +34,7 @@ def normalized(text, *, hub=False):
 
 
 def model_name(row):
-    if row.get("model"):
-        return normalized(row["model"], hub=True)
-    names = {normalized(n) for n in FAMILY.findall(row["name"])}
-    return names.pop() if len(names) == 1 else ""
+    return normalized(row["model"], hub=True) if row.get("model") else ""
 
 
 def claude_launch(row):
@@ -47,6 +42,7 @@ def claude_launch(row):
     return (
         row["source"] in {"claude", "claude-news"}
         and row.get("model")
+        and re.search(r"\d", row["model"])
         and row["kind"] in {"发布", "预览"}
     )
 
@@ -54,8 +50,13 @@ def claude_launch(row):
 def event_id(row):
     model = model_name(row)
     if not model:
-        return key(row["org"], row["url"], row["name"], row["kind"])
-    when = "" if row["kind"] in {"开放权重", "受限开放"} or claude_launch(row) else row["date"]
+        # Evidence IDs retain the complete source text, including names beyond
+        # the display-length limit. Unknown names must not share a family key.
+        return key(row["org"], row["url"], row.get("id", row["name"]), row["kind"], row["date"])
+    hub = row["source"].startswith(("huggingface:", "modelscope:"))
+    when = "" if row["kind"] == "开放权重" or (hub and row["kind"] == "受限开放") or claude_launch(row) else row["date"]
+    if row["kind"] == "版本更新" and len(when) < 10:
+        return key(row["org"], model, row["kind"], when, row["id"])
     return key(row["org"], model, row["kind"], when)
 
 
@@ -65,6 +66,8 @@ def already_catalogued(row, records):
         if record["org"] != row["org"]:
             continue
         name, kind = record["name"], record["kind"]
+        # Access-stage annotations are display labels, not model variants.
+        name = re.sub(r"[（(](?:广泛开放|定向开放|API 开放|权重开放)[）)]$", "", name)
         if row["source"] == "meta-research" and row["kind"] == "发布":
             # The index headline often omits the access stage verified from the article.
             # Require the same dated announcement and the complete model name.
@@ -82,23 +85,43 @@ def already_catalogued(row, records):
             ):
                 return True
             continue
+        if (
+            row["source"] in {"openai", "gemini", "mercury"}
+            and row["kind"] == "发布" and row["date"] == record["date"]
+            and model and model == normalized(name, hub=True)
+            and row["url"].rstrip("/") in {
+                record.get(k, "").rstrip("/") for k in ("url", "url2")
+            }
+        ):
+            # News headlines can omit the access stage established by review.
+            # Require the same complete model, publication day, and article.
+            return True
         if row["source"] in {"claude", "claude-news"}:
             # Earlier announcements used "Claude 3.5 Sonnet" and grouped
             # "Claude 4：Opus 4 / Sonnet 4" on the same catalog row.
             name = anthropic_catalog_name(name)
             if kind == "发布" and name.endswith("（更新版）"):
                 name, kind = name.removesuffix("（更新版）"), "版本更新"
-        if kind != row["kind"]:
+        # A general launch headline and its same-day API announcement describe
+        # one launch. Explicit preview, weights and later API stages stay apart.
+        same_launch = (row["kind"] == "发布" and kind == "开放 API" and model
+                       and row["source"] in ANNOUNCEMENT_SOURCES
+                       and row["date"] and row["date"] == record["date"])
+        if kind != row["kind"] and not same_launch:
             continue
         if row["date"] and row["date"] != record["date"] and not claude_launch(row):
             continue
-        if model and model == normalized(name, hub=bool(row.get("model"))):
-            return True
+        if model:
+            if model == normalized(name, hub=True):
+                return True
+            # Sharing a URL/date is not enough: one announcement may release
+            # several distinct models (including a base and its Speciale tier).
+            continue
         if (
             row["date"]
             and row["date"] == record["date"]
             and row["url"] in (record["url"], record.get("url2"))
-            and normalized(record["name"]) in normalized(row["name"])
+            and normalized(record["name"]) == normalized(row["name"])
         ):
             return True
     return False
@@ -131,28 +154,43 @@ def report(message):
             f.write(message + "\n\n")
 
 
+def date_bounds(value):
+    """Respect the publication precision supplied by the publisher."""
+    if not value:
+        return "", ""
+    if re.fullmatch(r"\d{4}-\d{2}", value):
+        year, month = map(int, value.split("-"))
+        return value + "-01", value + f"-{calendar.monthrange(year, month)[1]:02}"
+    if re.fullmatch(r"\d{4}", value):
+        return value + "-01-01", value + "-12-31"
+    return datetime.fromisoformat(value).date().isoformat(), value
+
+
 def accept_snapshot(state, source, snapshot, checked, records):
     if "bootstrap_days" in source:
         # An announcement dated in the future may be visible on the index early.
         # Leave it out of seen until its publication day.
-        snapshot = {k: row for k, row in snapshot.items() if row["date"] <= checked[:10]}
+        snapshot = {k: row for k, row in snapshot.items() if date_bounds(row["date"])[0] <= checked[:10]}
     old = state["sources"].get(source["id"])
     seen = set(old["seen"]) if old else set()
+    revision = source.get("revision", 1)
+    replay = old is not None and old.get("revision", 1) != revision
     baseline = old.get("baseline", old["checked"]) if old else checked
     # New publisher indexes may already contain yesterday's launch. Opt in only
     # for sources with publisher-supplied dates; baseline older entries silently.
     bootstrap_from = None
-    if not old and "bootstrap_days" in source:
+    if (not old or replay) and "bootstrap_days" in source:
         today = datetime.fromisoformat(checked).date()
         bootstrap_from = (today - timedelta(days=source["bootstrap_days"])).isoformat()
     added = 0
     for ident, item in snapshot.items():
         if excluded_evidence(item):
             continue
-        if ident in seen:
+        if ident in seen and not replay:
             continue
-        if not old and not (
-            bootstrap_from and bootstrap_from <= item["date"] <= checked[:10]
+        if (not old or replay) and not (
+            bootstrap_from and date_bounds(item["date"])[1] >= bootstrap_from
+            and date_bounds(item["date"])[0] <= checked[:10]
         ):
             continue
         # A busy Hub may return older items on another page of the overlap window.
@@ -169,6 +207,7 @@ def accept_snapshot(state, source, snapshot, checked, records):
     state["sources"][source["id"]] = {
         "checked": checked,
         "baseline": baseline,
+        "revision": revision,
         "seen": sorted(seen | snapshot.keys()),
     }
     return added

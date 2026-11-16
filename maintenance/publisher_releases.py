@@ -70,7 +70,7 @@ def table_rows(table):
 
 def named_tables(soup, required):
     found = False
-    for table in soup.select("table"):
+    for table in ([soup] if soup.name == "table" else soup.select("table")):
         rows = table_rows(table)
         headers = next(rows, [])
         if not set(required) <= set(headers):

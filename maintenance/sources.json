@@ -67,27 +67,35 @@
   },
   "modelscope": {"Alibaba": "Qwen"},
   "feeds": [
-    {"id":"openai","org":"OpenAI","url":"https://openai.com/news/rss.xml"},
+    {"id":"openai","org":"OpenAI","url":"https://openai.com/news/rss.xml","revision":2,"bootstrap_days":14},
     {"id":"claude","org":"Anthropic","url":"https://platform.claude.com/docs/en/release-notes/feed.xml"},
-    {"id":"vertex","org":"Google","url":"https://docs.cloud.google.com/feeds/generative-ai-on-vertex-ai-release-notes.xml","include":"Gemini|Gemma"},
-    {"id":"gemini","org":"Google","url":"https://blog.google/innovation-and-ai/models-and-research/gemini-models/rss/"},
-    {"id":"databricks","org":"Databricks","url":"https://www.databricks.com/feed","include":"DBRX|Dolly|foundation model|language model"},
-    {"id":"ntt","org":"NTT","url":"https://group.ntt/en/newsrelease/rss/release.rdf","include":"tsuzumi|language model"},
-    {"id":"aws","org":"Amazon","url":"https://aws.amazon.com/about-aws/whats-new/recent/feed/","include":"Amazon Nova|Amazon Titan|Amazon Olympus"},
-    {"id":"cenia","org":"CENIA","url":"https://cenia.cl/feed/","include":"Latam[- ]?GPT|modelo de lenguaje"}
+    {"id":"vertex","org":"Google","url":"https://docs.cloud.google.com/feeds/generative-ai-on-vertex-ai-release-notes.xml","include":"Gemini|Gemma","revision":2,"bootstrap_days":14},
+    {"id":"gemini","org":"Google","url":"https://blog.google/innovation-and-ai/models-and-research/gemini-models/rss/","revision":2,"bootstrap_days":14},
+    {"id":"databricks","org":"Databricks","url":"https://www.databricks.com/feed","include":"DBRX|Dolly|foundation model|language model","revision":2,"bootstrap_days":14},
+    {"id":"ntt","org":"NTT","url":"https://group.ntt/en/newsrelease/rss/release.rdf","include":"tsuzumi|language model","revision":2,"bootstrap_days":14},
+    {"id":"aws","org":"Amazon","url":"https://aws.amazon.com/about-aws/whats-new/recent/feed/","include":"Amazon Nova|Amazon Titan|Amazon Olympus","revision":2,"bootstrap_days":14},
+    {"id":"cenia","org":"CENIA","url":"https://cenia.cl/feed/","include":"Latam[- ]?GPT|modelo de lenguaje","revision":2,"bootstrap_days":14}
   ],
   "pages": [
     {"id":"baidu-news","org":"Baidu","url":"https://ernie.baidu.com/zh/research/","bootstrap_days":3},
     {"id":"claude-news","org":"Anthropic","url":"https://www.anthropic.com/news","bootstrap_days":3},
-    {"id":"deepseek","org":"DeepSeek","url":"https://api-docs.deepseek.com/updates/","type":"headings","select":"article h3","include":"DeepSeek|Coder|Reasoner"},
+    {"id":"deepseek","org":"DeepSeek","url":"https://api-docs.deepseek.com/updates/","revision":2,"bootstrap_days":14},
     {"id":"bailian-releases","org":"Alibaba","url":"https://help.aliyun.com/zh/model-studio/newly-released-models","bootstrap_days":3},
     {"id":"huawei-maas","org":"华为","url":"https://support.huaweicloud.com/bulletin-maas/bulletin-maas-0001.html","bootstrap_days":3},
     {"id":"tencent-tokenhub","org":"Tencent","url":"https://cloud.tencent.com/document/product/1823/130675","bootstrap_days":3},
     {"id":"thinking-news","org":"Thinking Machines Lab","url":"https://thinkingmachines.ai/news/","bootstrap_days":3},
-    {"id":"xai","org":"xAI","url":"https://docs.x.ai/developers/release-notes","type":"headings","select":"main h3","include":"Grok"},
-    {"id":"meta-research","org":"Meta","url":"https://research.meta.ai/","bootstrap_days":1},
-    {"id":"mercury","org":"Inception Labs","url":"https://www.inceptionlabs.ai/blog","type":"links","select":"a[href*='/blog/']","include":"Mercury"},
-    {"id":"spark","org":"科大讯飞","url":"https://www.xfyun.cn/doc/spark/Web.html","select":"main p","include":"^公告说明.*(?:X[0-9]|星火|Spark)","kind":"版本更新"},
-    {"id":"kimi","org":"Moonshot","url":"https://www.kimi.com/code/docs/en/kimi-code/whats-new.html","select":".vp-doc p","include":"(?:launch|release|availab|rolled out|introduc|上线|发布).{0,85}\\bK[0-9]|\\bK[0-9].{0,85}(?:availab|rolled out|release|launch|上线|发布)"}
+    {"id":"xai","org":"xAI","url":"https://docs.x.ai/developers/release-notes","revision":2,"bootstrap_days":14},
+    {"id":"meta-research","org":"Meta","url":"https://research.meta.ai/","bootstrap_days":1,"revision":2},
+    {"id":"mercury","org":"Inception Labs","url":"https://www.inceptionlabs.ai/blog","revision":2,"bootstrap_days":14},
+    {"id":"spark","org":"科大讯飞","url":"https://www.xfyun.cn/doc/spark/Web.html","select":"main p > strong","include":"^公告说明.*(?:X[0-9]|星火|Spark)","kind":"版本更新","revision":2,"bootstrap_days":14},
+    {"id":"kimi","org":"Moonshot","url":"https://www.kimi.com/code/docs/en/kimi-code/whats-new.html","revision":2,"bootstrap_days":14},
+    {"id":"gemini-api","org":"Google","url":"https://aistudio.google.com/docs/changelog.md","bootstrap_days":14,"format":"markdown"},
+    {"id":"mistral-api","org":"Mistral","url":"https://docs.mistral.ai/resources/changelogs.md","bootstrap_days":14,"format":"markdown"},
+    {"id":"cohere-api","org":"Cohere","url":"https://docs.cohere.com/v2/changelog","bootstrap_days":14},
+    {"id":"zai-api","org":"Z.ai","url":"https://docs.z.ai/release-notes/new-released","bootstrap_days":14},
+    {"id":"mimo-api","org":"Xiaomi","url":"https://mimo.mi.com/docs/en-US/updates/model","bootstrap_days":14},
+    {"id":"longcat-api","org":"美团","url":"https://longcat.chat/platform/docs/zh/ChangeLog.html","bootstrap_days":14},
+    {"id":"minimax-news","org":"MiniMax","url":"https://www.minimax.io/blog","bootstrap_days":14},
+    {"id":"doubao-api","org":"ByteDance","url":"https://ark.volcengine.com/region:cn-beijing/docs/model-release-announcement","bootstrap_days":14}
   ]
 }

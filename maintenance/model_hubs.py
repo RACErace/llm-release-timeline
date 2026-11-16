@@ -12,12 +12,14 @@ def recent_models(pages, modified_field, since):
     for rows in pages:
         if not isinstance(rows, list) or (not rows and not since):
             raise ValueError("expected a non-empty initial public organization listing")
+        recent = False
         for row in rows:
             updated = row[modified_field]
             if cutoff and datetime.fromisoformat(updated) < cutoff:
-                return
+                continue
+            recent = True
             yield row, updated
-        if not since:
+        if not since or not recent:
             return
 
 
