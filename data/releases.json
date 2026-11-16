@@ -6131,6 +6131,15 @@
     "source": "OpenAI API 更新记录"
   },
   {
+    "date": "2026-11",
+    "kind": "版本更新",
+    "name": "Doubao-Seed-Evolving",
+    "note": "火山方舟公告 Seed-Evolving 版本更新（统一 Model ID doubao-seed-evolving 自动生效）：多步骤任务的任务规划与结果验收更完整，工具调用与事实一致性明显改善，多数场景响应时延与单次成本下降；该模型采动态迭代机制、每周至少发布一个版本。",
+    "org": "ByteDance",
+    "source": "火山引擎方舟发布公告",
+    "url": "https://ark.volcengine.com/region:cn-beijing/docs/model-release-announcement#202611"
+  },
+  {
     "date": "2026-11-02",
     "org": "美团",
     "name": "LongCat-2.5",
