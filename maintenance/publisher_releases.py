@@ -33,23 +33,55 @@ def first_party(base, href):
     return url
 
 
+def table_rows(table):
+    """Expand publisher HTML row/column spans before interpreting column names."""
+    spans = {}
+    for row in table.select("tr"):
+        if row.find_parent("table") is not table:
+            continue
+        values = []
+
+        def carry():
+            while len(values) in spans:
+                column = len(values)
+                value, remaining = spans.pop(column)
+                values.append(value)
+                if remaining > 1:
+                    spans[column] = (value, remaining - 1)
+
+        for cell in row.find_all(["th", "td"], recursive=False):
+            carry()
+            width, height = (int(cell.get(attr, 1)) for attr in ("colspan", "rowspan"))
+            if not 1 <= width <= 32 or not 1 <= height <= 1000:
+                raise ValueError("invalid publisher table span")
+            value = text(cell)
+            for _ in range(width):
+                column = len(values)
+                if column in spans:
+                    raise ValueError("overlapping publisher table spans")
+                values.append(value)
+                if height > 1:
+                    spans[column] = (value, height - 1)
+        carry()
+        yield values
+    if spans:
+        raise ValueError("unfinished publisher table span")
+
+
 def named_tables(soup, required):
     found = False
     for table in soup.select("table"):
-        rows = table.select("tr")
-        if not rows:
-            continue
-        headers = [text(cell) for cell in rows[0].find_all(["th", "td"], recursive=False)]
+        rows = table_rows(table)
+        headers = next(rows, [])
         if not set(required) <= set(headers):
             continue
         found = True
-        for row in rows[1:]:
-            cells = row.find_all(["th", "td"], recursive=False)
+        for cells in rows:
             if not cells:
                 continue
             if len(cells) != len(headers):
                 raise ValueError("publisher release table has an incomplete row")
-            yield dict(zip(headers, (text(cell) for cell in cells)))
+            yield dict(zip(headers, cells))
     if not found:
         raise ValueError("missing publisher release table")
 

@@ -23,6 +23,19 @@ def parse(name, html):
 
 
 class PublisherReleaseTests(unittest.TestCase):
+    def test_huawei_shared_cells_do_not_corrupt_the_following_models(self):
+        html = ('<table><tr><th>模型名称</th><th>模型类型</th><th>模型版本</th>'
+                '<th>预置服务</th><th>版本说明</th></tr>'
+                '<tr><td>Vidu-T2V</td><td rowspan="2">视频生成</td><td>20261115</td>'
+                '<td rowspan="2">√</td><td>视频</td></tr>'
+                '<tr><td>Vidu-IT2V</td><td>20261115</td><td>视频</td></tr>'
+                '<tr><td>openPangu-2.1-Pro</td><td>文本生成</td><td>20261115</td>'
+                '<td>√</td><td>512K</td></tr><tr><td colspan="5">说明</td></tr></table>')
+        row, = parse("huawei-maas", html)
+        self.assertEqual((row["name"], row["date"]), ("openPangu-2.1-Pro", "2026-11-15"))
+        with self.assertRaisesRegex(ValueError, "incomplete row"):
+            parse("huawei-maas", html.replace('<td>512K</td>', ''))
+
     def test_cloud_changelog_uses_original_publishers_and_row_dates(self):
         tc = table(["动态名称", "动态描述", "发布时间", "相关文档"], [
             ["新增支持模型", "新增支持 Hy4 flash 模型。", "2026-11-16", "模型列表"],
