@@ -5286,6 +5286,16 @@
     "source": "Cohere 发布公告"
   },
   {
+    "date": "2026-06-10",
+    "kind": "开放权重",
+    "name": "DiffusionGemma 26B A4B IT",
+    "note": "Google DeepMind 基于 Gemma 4 26B A4B MoE 的开放权重扩散语言模型（25.2B 总参数、3.8B 激活，8/128 专家），以离散扩散按 256 词元画布并行去噪生成文本，支持文本/图像/视频输入、256K 上下文、可配置思考模式与函数调用，Apache 2.0 许可。",
+    "org": "Google",
+    "source": "官方博客",
+    "url": "https://blog.google/innovation-and-ai/technology/developers-tools/diffusion-gemma-faster-text-generation/",
+    "url2": "https://huggingface.co/google/diffusiongemma-26B-A4B-it"
+  },
+  {
     "date": "2026-06-12",
     "org": "Moonshot",
     "name": "Kimi K2.7 Code",
