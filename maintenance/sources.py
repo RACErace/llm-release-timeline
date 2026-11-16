@@ -19,6 +19,7 @@ from anthropic_releases import release as anthropic_release
 from baidu_releases import read_announcement as baidu_announcement, release_cards as baidu_cards
 from model_hubs import huggingface_models, legacy_model, modelscope_models
 from model_scope import announcement_in_scope, hub_release_evidence, hub_metadata_in_scope
+from publisher_releases import PARSERS as PUBLISHER_PARSERS, thinking_releases
 
 HERE = Path(__file__).resolve().parent
 LOCAL = threading.local()
@@ -239,6 +240,17 @@ def meta_research_items(source, soup):
 
 def page_items(source, raw, seen=None):
     soup = BeautifulSoup(raw, "html.parser")
+    if source["id"] in PUBLISHER_PARSERS or source["id"] == "thinking-news":
+        releases = (
+            thinking_releases(soup, source["url"], get)
+            if source["id"] == "thinking-news"
+            else PUBLISHER_PARSERS[source["id"]](soup, source["url"])
+        )
+        for release in releases:
+            identity = "|".join((release.name.casefold(), release.date, release.kind))
+            yield signal(source, identity, release.name, release.url, release.kind,
+                         release.date, release.excerpt, model=release.name)
+        return
     if source["id"] == "baidu-news":
         for model, title, url, date in baidu_cards(soup, source["url"]):
             identity = url.rstrip("/") + "|" + date

@@ -38,7 +38,7 @@ DERIVED_CLAIM = re.compile(
     r"\b(?:by|from) merging\s+(?:(?:multiple|several|two|the|trained|\d+)\s+)*"
     r"(?:LoRA\b|adapters?\b|checkpoints?\b)|"
     r"(?:基于|采用|使用|沿用|初始化自)\s*(?:[A-Za-z][A-Za-z0-9_.-]*/[A-Za-z0-9_.-]+|"
-    r"[A-Za-z][A-Za-z.\- ]{0,28}\d[A-Za-z0-9_.-]*)(?![A-Za-z0-9_.-]|\s*(?:的\s*)?(?:架构|结构|训练框架))|"
+    r"[A-Za-z][A-Za-z.\- ]{0,28}\d[A-Za-z0-9_.-]*)(?![A-Za-z0-9_.-]|\s*(?:的\s*)?(?:架构|结构|训练框架|许可|协议))|"
     r"[A-Za-z][\w.-]*\d[\w.-]*\s*(?:为|作为)?\s*(?:底座|基座|骨干)|合并\s*(?:LoRA|适配器)|"
     r"(?:通过|由)合并[^，。；\n]{0,32}(?:LoRA|适配器|权重|检查点)[^，。；\n]{0,12}(?:得到|而成|生成)|"
     r"(?:基于|在).{1,55}(?:基础上|模型上)?(?:进行|通过|经过)?(?:微调|蒸馏|继续预训练)|"
@@ -202,6 +202,25 @@ def documented_version(repo, card):
     return ""
 
 
+def documented_package(row, card):
+    """Recognize a publisher's explicitly named release, without claiming pretraining."""
+    owner, name = row["id"].split("/", 1)
+    family = family_name(name)
+    if not family or family_name(owner) != family:
+        return ""
+    architectures = (row.get("config") or {}).get("architectures") or ()
+    if not any(re.match(re.escape(family) + r"(?=[A-Z_])", a, re.I)
+               for a in architectures):
+        return ""
+    named = r"[- ]".join(re.escape(part) for part in name.split("-"))
+    for paragraph in card.split("\n\n"):
+        if re.search(r"(?<![\w-])" + named + r"\s+is (?:a|an)\b", paragraph, re.I) and re.search(
+            r"\b(?:this release provides|we release)\s+(?:BF16 |FP32 )?weights\b", paragraph, re.I
+        ):
+            return paragraph.strip()[:260]
+    return ""
+
+
 def hub_release_evidence(row, card):
     tasks = {row.get("pipeline_tag")} | set(row.get("tasks") or ())
     if not tasks.intersection(LANGUAGE_TASKS) and not re.search(
@@ -209,12 +228,17 @@ def hub_release_evidence(row, card):
     ):
         return ""
     launch = documented_version(row["id"], card)
+    native = re.search(
+        r"\b(?:model (?:was|is) )?(?:pretrained,?\s*(?:midtrained\s*and\s*)?post-trained|"
+        r"trained natively)\s+in (NVFP4|FP[48])\b", card, re.I,
+    )
     quant = (row.get("config") or {}).get("quantization_config")
     if quant:
         precision = str(quant.get("quant_method") or "")
-        if not re.fullmatch(r"fp[48]", precision, re.I):
+        native_modelopt = precision.casefold() == "modelopt" and native and native[1].upper() == "NVFP4"
+        if not re.fullmatch(r"fp[48]", precision, re.I) and not native_modelopt:
             return ""
-        if not launch and not re.search(
+        if not launch and not native_modelopt and not re.search(
             r"\b" + precision + r"(?: mixed[- ]precision)? training\b|\btrained (?:natively )?in " + precision,
             card, re.I,
         ):
@@ -233,6 +257,10 @@ def hub_release_evidence(row, card):
         return ""
     if not stage and DERIVED_CLAIM.search(card):
         return ""
+    if native:
+        return native[0]
+    if package := documented_package(row, card):
+        return package
     for line in card.splitlines():
         if match := BASE_EVIDENCE.search(line):
             start = max(0, match.start() - 65)

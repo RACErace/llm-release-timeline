@@ -6177,6 +6177,16 @@
     "stage": "定向受限发布（API / Codex）"
   },
   {
+    "date": "2026-11-05",
+    "org": "Thinking Machines Lab",
+    "name": "Inkling 2 Small",
+    "kind": "发布",
+    "note": "发布第二代通用多模态 MoE 模型，总参数 594B、激活参数 17B，支持图像输入；当天可通过 Tinker 使用，权重随后于 11 月 12 日开放。",
+    "url": "https://thinkingmachines.ai/news/inkling-2-small/",
+    "source": "Thinking Machines Lab 发布公告",
+    "url2": "https://thinkingmachines.ai/model-card/inkling-2-small/"
+  },
+  {
     "date": "2026-11-06",
     "kind": "研究公开",
     "name": "LexisLM-500M / LexisLM-1B",
@@ -6262,5 +6272,55 @@
     "stage": "Gemini API 与 AI Studio 普遍可用，应用与搜索向所有用户推送",
     "url": "https://deepmind.google/models/model-cards/gemini-4-hydrogen/",
     "url2": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/"
+  },
+  {
+    "date": "2026-11-12",
+    "org": "Thinking Machines Lab",
+    "name": "Inkling 2 Small",
+    "kind": "开放权重",
+    "note": "官方公告更新确认权重正式开放，采用 Apache 2.0 许可。模型以 NVFP4 原生精度完成预训练、中期训练和后训练，另提供 MXFP8 权重。",
+    "url": "https://huggingface.co/thinkingmachines/Inkling-2-Small",
+    "source": "官方模型卡与权重开放公告",
+    "url2": "https://thinkingmachines.ai/news/inkling-2-small/"
+  },
+  {
+    "date": "2026-11-15",
+    "org": "Agnes AI",
+    "name": "Agnes 2.5 Pro Theta",
+    "kind": "开放权重",
+    "note": "开放约 187.8B 参数的多模态 MoE 模型及 BF16 权重，采用 Apache 2.0 许可，支持文本、图像及视频帧输入，配置上下文长度为 262144 词元。日期依据官方仓库发布提交。",
+    "url": "https://huggingface.co/Agnes-AI/Agnes-2.5-Pro-Theta",
+    "source": "Agnes AI 官方模型卡与发布提交",
+    "url2": "https://huggingface.co/Agnes-AI/Agnes-2.5-Pro-Theta/commit/1f5791a53ea72d06c4badb8a0f5a2a267c88343c"
+  },
+  {
+    "date": "2026-11-15",
+    "org": "华为",
+    "name": "openPangu-2.1-Pro",
+    "kind": "开放 API",
+    "note": "华为云 MaaS 上线 20261115 版本，支持 512K 上下文、Function Call、前缀续写、前缀缓存和思维链。此次记录为预置模型 API 上线。",
+    "url": "https://support.huaweicloud.com/bulletin-maas/bulletin-maas-0001.html",
+    "source": "华为云 MaaS 模型发布公告",
+    "url2": "https://support.huaweicloud.com/model-call-maas/model-call-019.html"
+  },
+  {
+    "date": "2026-11-16",
+    "org": "Alibaba",
+    "name": "Qwen4-Max",
+    "kind": "开放 API",
+    "note": "Qwen4-Max 正式版在百炼上线，支持文本、图像和视频输入、深度思考、工具调用及 100 万词元上下文，可通过 API 与 Token Plan 调用。",
+    "url": "https://help.aliyun.com/zh/model-studio/qwen4-max",
+    "source": "阿里云百炼模型上架公告与模型文档",
+    "url2": "https://help.aliyun.com/zh/model-studio/newly-released-models#region-0-2026-11-16"
+  },
+  {
+    "date": "2026-11-16",
+    "org": "Tencent",
+    "name": "Hy4 flash",
+    "kind": "开放 API",
+    "note": "腾讯云 TokenHub 正式上线 Hy4 flash，调用标识为 hy4-flash，支持 100 万词元上下文、图像理解、深度思考、结构化输出及 Function Calling。",
+    "url": "https://cloud.tencent.com/document/product/1823/130675",
+    "source": "腾讯云 TokenHub 产品动态与模型列表",
+    "url2": "https://cloud.tencent.com/document/product/1823/130051"
   }
 ]

@@ -1,5 +1,6 @@
 {
   "huggingface": {
+    "Agnes AI": "Agnes-AI",
     "AI Singapore": "aisingapore",
     "AI21 Labs": "ai21labs",
     "Ai2": "allenai",
@@ -46,6 +47,7 @@
     "Swiss AI": "swiss-ai",
     "TII": "tiiuae",
     "Tencent": "tencent",
+    "Thinking Machines Lab": "thinkingmachines",
     "Together AI": "togethercomputer",
     "Upstage": "upstage",
     "Xiaomi": "XiaomiMiMo",
@@ -78,7 +80,10 @@
     {"id":"baidu-news","org":"Baidu","url":"https://ernie.baidu.com/zh/research/","bootstrap_days":3},
     {"id":"claude-news","org":"Anthropic","url":"https://www.anthropic.com/news","bootstrap_days":3},
     {"id":"deepseek","org":"DeepSeek","url":"https://api-docs.deepseek.com/updates/","type":"headings","select":"article h3","include":"DeepSeek|Coder|Reasoner"},
-    {"id":"bailian","org":"Alibaba","url":"https://help.aliyun.com/zh/model-studio/newly-released-models","select":"h4","include":"^(qwen|千问|qvq|qwq)","kind":"开放 API"},
+    {"id":"bailian-releases","org":"Alibaba","url":"https://help.aliyun.com/zh/model-studio/newly-released-models","bootstrap_days":3},
+    {"id":"huawei-maas","org":"华为","url":"https://support.huaweicloud.com/bulletin-maas/bulletin-maas-0001.html","bootstrap_days":3},
+    {"id":"tencent-tokenhub","org":"Tencent","url":"https://cloud.tencent.com/document/product/1823/130675","bootstrap_days":3},
+    {"id":"thinking-news","org":"Thinking Machines Lab","url":"https://thinkingmachines.ai/news/","bootstrap_days":3},
     {"id":"xai","org":"xAI","url":"https://docs.x.ai/developers/release-notes","type":"headings","select":"main h3","include":"Grok"},
     {"id":"meta-research","org":"Meta","url":"https://research.meta.ai/","bootstrap_days":1},
     {"id":"mercury","org":"Inception Labs","url":"https://www.inceptionlabs.ai/blog","type":"links","select":"a[href*='/blog/']","include":"Mercury"},
