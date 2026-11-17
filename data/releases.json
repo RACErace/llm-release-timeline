@@ -6350,5 +6350,16 @@
     "source": "官方模型仓库",
     "url": "https://huggingface.co/sarvamai/sarvam-105b-1711-bf16",
     "url2": "https://huggingface.co/sarvamai/sarvam-105b-1711"
+  },
+  {
+    "date": "2026-11-17",
+    "kind": "发布",
+    "name": "GPT-6.2 Astra / GPT-6.2 Sol",
+    "note": "OpenAI 发布 GPT-6.2 Astra 与 GPT-6.2 Sol：Astra 面向高难度专业工作（文档、幻灯片、代码、电脑操作），Sol 面向日常编码、写作与智能体任务；API 型号 gpt-6.2-astra / gpt-6.2-sol，Astra 输入 8、缓存输入 0.4、输出 40 美元/百万词元（较 GPT-6 Astra 降 20%），Sol 维持 GPT-6.1 Sol 的 2/10 美元。",
+    "org": "OpenAI",
+    "source": "官方原文",
+    "stage": "ChatGPT Work / Codex / API 同步发布",
+    "url": "https://openai.com/index/introducing-gpt-6-2-astra-sol",
+    "url2": "https://developers.openai.com/api/docs/guides/latest-model"
   }
 ]
