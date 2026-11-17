@@ -6340,5 +6340,15 @@
     "url": "https://cloud.tencent.com/document/product/1823/130675",
     "source": "腾讯云 TokenHub 产品动态与模型列表",
     "url2": "https://cloud.tencent.com/document/product/1823/130051"
+  },
+  {
+    "date": "2026-11-17",
+    "kind": "开放权重",
+    "name": "Sarvam-105B-1711",
+    "note": "Sarvam AI 在 Sarvam-105B（105B 总参数、每词元约 10.3B 激活的 MoE + MLA 架构）基础上进一步后训练的版本，重点提升工具调用、指令遵循、智能体任务与印度语言能力；Apache 2.0 开放 BF16 与 NVFP4 权重，支持 131,072 词元上下文。",
+    "org": "Sarvam AI",
+    "source": "官方模型仓库",
+    "url": "https://huggingface.co/sarvamai/sarvam-105b-1711-bf16",
+    "url2": "https://huggingface.co/sarvamai/sarvam-105b-1711"
   }
 ]
