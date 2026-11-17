@@ -25,6 +25,11 @@ NON_RELEASE = re.compile(
     r"evaluation of|scaling laws?|fine[- ]tuning (?:service|API|support))\b|"
     r"基准(?:测试|评测)|数据集|评测榜单", re.I,
 )
+# Reviewed application announcements are excluded by source, not by model name:
+# the same model's original launch and later API/weight releases remain eligible.
+APPLICATION_UPDATES = frozenset({
+    ("openai.com", "/index/improving-gpt-5-6-sol-in-chatgpt"),
+})
 # These are assertions about a checkpoint's origin, not training tips, usage
 # examples, comparisons with another model, or an architecture it implements.
 DERIVED_CLAIM = re.compile(
@@ -72,8 +77,14 @@ def paper_url(url):
     )
 
 
-def announcement_in_scope(title):
-    return not (excluded_name(title) or NON_RELEASE.search(title) or REPACK.search(title)) and (
+def application_update(url):
+    target = urlsplit(url)
+    address = ((target.hostname or "").lower().removeprefix("www."), target.path.rstrip("/"))
+    return address in APPLICATION_UPDATES
+
+
+def announcement_in_scope(title, url=""):
+    return not (application_update(url) or excluded_name(title) or NON_RELEASE.search(title) or REPACK.search(title)) and (
         not DERIVED_CLAIM.search(title) or describes_own_family({"name": title}, title, ())
     )
 
@@ -122,6 +133,8 @@ REPACK = re.compile(
 
 
 def check_new_record(row, *, historical_source=False, catalogue=()):
+    if application_update(row["url"]):
+        raise ValueError("该来源是应用体验更新，不是独立的模型发布事件")
     text = row["name"] + "。" + row["note"]
     if excluded_name(row["name"]) or NON_RELEASE.search(row["name"]) or REPACK.search(text) or (
         DERIVED_CLAIM.search(text) and not describes_own_family(row, text, catalogue)

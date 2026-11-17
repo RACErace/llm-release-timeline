@@ -304,7 +304,7 @@ def issue_body(group, items):
 def excluded_evidence(item):
     return (
         item["source"] == "arxiv-cl" or "arxiv" in item or paper_url(item["url"])
-        or not announcement_in_scope(item.get("model") or item["name"])
+        or not announcement_in_scope(item.get("model") or item["name"], item["url"])
     )
 
 

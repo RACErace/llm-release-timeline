@@ -482,4 +482,4 @@ def read_source(source, since, seen=None):
             if source["channel"] == "feeds"
             else page_items(source, response.content, seen)
         )
-    return {r["id"]: r for r in rows if announcement_in_scope(r.get("model") or r["name"])}
+    return {r["id"]: r for r in rows if announcement_in_scope(r.get("model") or r["name"], r["url"])}

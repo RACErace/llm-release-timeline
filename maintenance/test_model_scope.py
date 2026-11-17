@@ -16,6 +16,34 @@ MODEL = {
 
 
 class FoundationScopeTests(unittest.TestCase):
+    def test_reviewed_application_update_cannot_reenter_as_a_model_release(self):
+        url = "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt"
+        title = "GPT-5.6 Sol / GPT-5.6 Luna（ChatGPT）"
+        for address in (url, url + "/", url + "?utm_source=rss#availability", url.replace("//openai", "//www.openai")):
+            self.assertFalse(announcement_in_scope(title, address))
+            with self.assertRaisesRegex(ValueError, "应用体验更新"):
+                check_new_record({"name": title, "note": "ChatGPT 聊天体验调整。", "url": address})
+        self.assertTrue(announcement_in_scope("Introducing GPT-5.6", "https://openai.com/index/introducing-gpt-5-6/"))
+        check_new_record({"name": "GPT-5.6 Sol", "note": "首次发布，可在 ChatGPT 和 API 使用。",
+                          "url": "https://openai.com/index/introducing-gpt-5-6/"})
+        item = sources.signal({"id": "openai", "org": "OpenAI"}, "app-update", title, url,
+                              "版本更新", "2026-08-06", model="GPT-5.6 Sol")
+        state = {"pending": {"app": {item["id"]: item}}, "delivered": {"original": 1}}
+        self.assertEqual(collector.eligible_pending(state), ([], False))
+        self.assertEqual(state, {"pending": {}, "delivered": {"original": 1}})
+
+    def test_application_source_filter_keeps_a_real_model_launch_in_the_same_feed(self):
+        source = {"id": "openai", "org": "OpenAI", "channel": "feeds", "url": "https://openai.com/news/rss.xml"}
+        rss = '''<rss><channel><item><title>Improving GPT-5.6 Sol in ChatGPT</title>
+          <link>https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt/</link>
+          <pubDate>2026-08-06</pubDate></item><item><title>Introducing GPT-5.6</title>
+          <link>https://openai.com/index/introducing-gpt-5-6/</link>
+          <pubDate>2026-07-09</pubDate></item></channel></rss>'''
+        with patch.object(sources, "get") as get:
+            get.return_value.content = rss.encode()
+            rows = list(sources.read_source(source, None).values())
+        self.assertEqual([row["url"] for row in rows], ["https://openai.com/index/introducing-gpt-5-6/"])
+
     def test_publisher_versions_keep_the_original_hub_lineage(self):
         version = dict(MODEL, id="org/Example-7B-Instruct", tags=[
             "base_model:org/Example-7B", "base_model:finetune:org/Example-7B",
