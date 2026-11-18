@@ -6345,12 +6345,12 @@
     "date": "2026-11-16",
     "kind": "发布",
     "name": "Hy4 flash",
-    "note": "腾讯混元发布 Hy4 flash：224B 总参数（含 64B Engram 参数）、每词元激活约 12B 的 MoE 多模态模型，支持 1M 词元上下文；API 定价每百万词元缓存输入 0.003、输入 0.070、输出 0.281 美元，在腾讯云 TokenHub、WorkBuddy、元宝、企业微信等上线，并宣布已在 GitHub/Hugging Face/ModelScope 开放权重。",
+    "note": "腾讯混元发布 Hy4 flash：224B 总参数（含 64B Engram 参数）、每词元激活约 12B 的 MoE 多模态模型，支持 1M 词元上下文；API 定价每百万词元缓存输入 0.003、输入 0.070、输出 0.281 美元，在腾讯云 TokenHub、WorkBuddy、元宝、企业微信等上线。",
     "org": "Tencent",
     "source": "官方发布公告",
-    "stage": "腾讯云 TokenHub / WorkBuddy 等产品上线，并同步开放权重",
+    "stage": "腾讯云 TokenHub / WorkBuddy 等产品上线",
     "url": "https://hy.tencent.ai/research/hy4-flash",
-    "url2": "https://huggingface.co/tencent/Hy4-flash"
+    "url2": "https://www.tencent.com/tencent-launches-hy4-flash-to-power-high-speed-cost-efficient-ai-deployment-for-everyday-workflows/"
   },
   {
     "date": "2026-11-17",
@@ -6372,5 +6372,15 @@
     "stage": "ChatGPT Work / Codex / API 同步发布",
     "url": "https://openai.com/index/introducing-gpt-6-2-astra-sol",
     "url2": "https://developers.openai.com/api/docs/guides/latest-model"
+  },
+  {
+    "date": "2026-11-18",
+    "org": "Tencent",
+    "name": "Hy4 flash",
+    "kind": "开放权重",
+    "note": "腾讯混元宣布开放 Instruct、FP8 Instruct 和 Base 三个版本的权重，采用 Tencent Hy License。权重通过 Hugging Face、ModelScope 和 GitCode 分发。日期为官方宣布开放权重的日期。",
+    "url": "https://github.com/Tencent-Hunyuan/Hy4-flash#model-links",
+    "source": "腾讯混元官方模型仓库与权重开放公告",
+    "url2": "https://x.com/TencentHunyuan/status/2122912575302119554"
   }
 ]
