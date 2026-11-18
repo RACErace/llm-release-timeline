@@ -6382,5 +6382,14 @@
     "url": "https://github.com/Tencent-Hunyuan/Hy4-flash#model-links",
     "source": "腾讯混元官方模型仓库与权重开放公告",
     "url2": "https://x.com/TencentHunyuan/status/2122912575302119554"
+  },
+  {
+    "date": "2026-11-18",
+    "kind": "开放权重",
+    "name": "Aion 1.0 Instruct 2.3B",
+    "note": "微软 Windows 应用科学组（ASG）的 2.29B 指令语言模型，面向端侧 Windows AI 与操作系统场景，32K 上下文、支持英/德/西/葡/意/法/中/日八种语言，采用混合注意力（21 层滑窗 + 7 层全注意力）与 GQA；MIT 许可，先行开放未量化 bf16 权重，并定位为 2027 年 1 月底成为 Windows OS SLM 的预览介绍版。",
+    "org": "Microsoft",
+    "source": "官方模型卡",
+    "url": "https://huggingface.co/microsoft/Aion-1.0-Instruct-2.3B"
   }
 ]
