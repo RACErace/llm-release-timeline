@@ -18,10 +18,11 @@ from urllib3.util.retry import Retry
 
 from anthropic_releases import release as anthropic_release
 from baidu_releases import read_announcement as baidu_announcement, release_cards as baidu_cards
+from inception_releases import model_articles as inception_articles, publication_date as inception_date
 from model_hubs import huggingface_models, legacy_model, modelscope_models
 from model_scope import announcement_in_scope, hub_release_evidence, hub_metadata_in_scope
 from publisher_releases import PARSERS as PUBLISHER_PARSERS, thinking_releases
-from release_notes import PARSERS as NOTE_PARSERS, markdown_releases
+from release_notes import PARSERS as NOTE_PARSERS, markdown_releases, stage
 from release_text import headline_model, normalized_text
 
 HERE = Path(__file__).resolve().parent
@@ -271,6 +272,16 @@ def page_items(source, raw, seen=None):
                          release.date, release.excerpt, model=release.name)
         return
     soup = BeautifulSoup(raw, "html.parser")
+    if source["id"] == "mercury":
+        for model, title, url in inception_articles(soup, source["url"], get):
+            kind = stage(title, "发布")
+            # A post keeps its identity if the publisher later adds a date.
+            identity = "|".join((url, model.casefold(), kind))
+            if seen and key(source["id"], identity) in seen:
+                continue
+            date = inception_date(get(url), url, title)
+            yield signal(source, identity, model, url, kind, date, title, model=model)
+        return
     parsers = PUBLISHER_PARSERS | NOTE_PARSERS
     if source["id"] in parsers or source["id"] == "thinking-news":
         releases = (

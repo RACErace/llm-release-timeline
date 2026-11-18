@@ -189,13 +189,6 @@ class ReleaseNoteTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             page("xai", html.replace("December 2026", "December"))
 
-    def test_inception_dated_model_card_and_award(self):
-        html = '<a href="/blog/mercury-3"><time datetime="2026-10-19T00:00:00Z"/>'
-        html += '<h3>Diffusion at Scale: Introducing Mercury 3</h3></a>'
-        html += '<a href="/blog/award"><time datetime="2026-10-20T00:00:00Z"/><h3>Mercury 3 wins award</h3></a>'
-        item, = page("mercury", html)
-        self.assertEqual((item["model"], item["date"]), ("Mercury 3", "2026-10-19"))
-
     def test_markdown_release_does_not_import_resales_or_promised_weights(self):
         md = '# Changelog\n\n## 2026-10-06\n\n- Mistral Large 4 (`mistral-large-4`) is now available in Public Preview.\n'
         md += '  - Open weights are coming soon.\n\n- Z.ai GLM (`zai-glm-5`) is now available.\n'

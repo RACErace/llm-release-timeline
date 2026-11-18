@@ -114,22 +114,6 @@ def xai(soup, url):
         yield Release(name, stamp, stage(title), url + "#" + quote(h["id"]), text(card))
 
 
-def mercury(soup, url):
-    cards = soup.select("a[href] time[datetime]")
-    if not cards:
-        raise ValueError("missing Inception dated blog cards")
-    for stamp in cards:
-        card = stamp.find_parent("a")
-        h = card.select_one("h2, h3")
-        if not h or not re.search(r"introduc|launch|releas|unveil", text(h), re.I):
-            continue
-        name = headline_model(text(h), "Inception Labs")
-        if not name or re.search(r"voice|audio|speech", name, re.I):
-            continue
-        day = datetime.fromisoformat(stamp["datetime"]).date().isoformat()
-        yield Release(name, day, stage(text(h), "发布"), first_party(url, card["href"]), text(h))
-
-
 def longcat(soup, url):
     headings = soup.select("main h3[id]")
     if not headings:
@@ -267,6 +251,6 @@ def markdown_releases(raw, url, provider):
                 yield Release(name, stamp, kind, target, normalized_text(lead))
 
 
-PARSERS = {"deepseek": deepseek, "kimi": kimi, "xai": xai, "mercury": mercury,
+PARSERS = {"deepseek": deepseek, "kimi": kimi, "xai": xai,
            "longcat-api": longcat, "mimo-api": mimo, "zai-api": zai, "cohere-api": cohere,
            "minimax-news": minimax, "doubao-api": doubao}

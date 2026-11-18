@@ -86,7 +86,7 @@
     {"id":"thinking-news","org":"Thinking Machines Lab","url":"https://thinkingmachines.ai/news/","bootstrap_days":3},
     {"id":"xai","org":"xAI","url":"https://docs.x.ai/developers/release-notes","revision":2,"bootstrap_days":14},
     {"id":"meta-research","org":"Meta","url":"https://research.meta.ai/","bootstrap_days":1,"revision":3},
-    {"id":"mercury","org":"Inception Labs","url":"https://www.inceptionlabs.ai/blog","revision":2,"bootstrap_days":14},
+    {"id":"mercury","org":"Inception Labs","url":"https://www.inceptionlabs.ai/","revision":3,"bootstrap_days":14},
     {"id":"spark","org":"科大讯飞","url":"https://www.xfyun.cn/doc/spark/Web.html","select":"main p > strong","include":"^公告说明.*(?:X[0-9]|星火|Spark)","kind":"版本更新","revision":2,"bootstrap_days":14},
     {"id":"kimi","org":"Moonshot","url":"https://www.kimi.com/code/docs/en/kimi-code/whats-new.html","revision":2,"bootstrap_days":14},
     {"id":"gemini-api","org":"Google","url":"https://aistudio.google.com/docs/changelog.md","bootstrap_days":14,"format":"markdown"},
