@@ -6391,5 +6391,15 @@
     "org": "Microsoft",
     "source": "官方模型卡",
     "url": "https://huggingface.co/microsoft/Aion-1.0-Instruct-2.3B"
+  },
+  {
+    "date": "2026-11-18",
+    "kind": "发布",
+    "name": "Gemini 4 Neon",
+    "note": "Google 在 Gemini API 正式发布 gemini-4-neon：面向复杂软件工程、知识工作与科研流程的前沿级模型，支持 low/medium/high（默认）/xhigh 四档思考等级、统一 1M 词元上下文与最长 1M 词元的续写；付费层定价每百万词元输入 3、输出 15 美元。",
+    "org": "Google",
+    "source": "官方发布说明",
+    "stage": "Gemini API 付费层普遍可用",
+    "url": "https://aistudio.google.com/docs/changelog#11-18-2026"
   }
 ]
