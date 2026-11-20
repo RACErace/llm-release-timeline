@@ -6403,21 +6403,22 @@
     "url": "https://aistudio.google.com/docs/changelog#11-18-2026"
   },
   {
-    "date": "2026-11-18",
+    "date": "2026-11-20",
     "kind": "开放权重",
     "name": "Hy4（开放权重）",
-    "note": "腾讯混元在 Hugging Face 开放 Hy4 旗舰模型的预训练基座权重（Hy4-base）：MoE 多模态架构，BF16 权重约 771B 参数（含视觉编码器，每词元激活约 49B），仓库附带微调脚本与 Tencent Hy License 许可；此前官方已宣布将开放 Hy4 权重，本条为基座权重实际可下载的日期。",
+    "note": "腾讯混元在 Hugging Face 开放 Hy4 旗舰模型的预训练基座权重（Hy4-base）：MoE 多模态架构，BF16 权重约 771B 参数（含视觉编码器，每词元激活约 49B），仓库附带微调脚本与 Tencent Hy License 许可；日期取 Hugging Face 目前最早可核实、含完整分片的公开权重提交；11 月 18 日是该仓库的创建日期。",
     "org": "Tencent",
-    "source": "官方模型仓库",
-    "url": "https://huggingface.co/tencent/Hy4-base"
+    "source": "腾讯混元官方权重提交",
+    "url": "https://huggingface.co/tencent/Hy4-base/commit/590e462ff0c58c07ec2e2555b3829a24718b33e1"
   },
   {
     "date": "2026-11-20",
     "kind": "开放权重",
     "name": "Hy4 指令版（开放权重）",
-    "note": "腾讯混元在 Hugging Face 开放 Hy4 指令版权重（tencent/Hy4，与基座仓 Hy4-base 分开发布）：约 774B 参数 BF16（含视觉编码器）的 MoE 多模态模型，支持思考模式与工具调用，采用 Tencent Hy License；仓库提交记显示权重于 2026-11-20 更新可用。",
+    "note": "腾讯混元在 Hugging Face 开放 Hy4 指令版权重（tencent/Hy4，与基座仓 Hy4-base 分开发布）：约 774B 参数 BF16（含视觉编码器）的 MoE 多模态模型，支持思考模式与工具调用，采用 Tencent Hy License；同期提供 FP8 量化指令版；日期取 Hugging Face 目前最早可核实、含完整分片的公开权重提交。",
     "org": "Tencent",
-    "source": "官方模型仓库",
-    "url": "https://huggingface.co/tencent/Hy4"
+    "source": "腾讯混元官方权重提交",
+    "url": "https://huggingface.co/tencent/Hy4/commit/c10c0de5b6f850703fb0a90e65d1c32b558b9167",
+    "url2": "https://huggingface.co/tencent/Hy4-FP8/commit/d063b5853ecf56e0776266dab28305fc17a137cc"
   }
 ]
