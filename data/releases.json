@@ -6410,5 +6410,14 @@
     "org": "Tencent",
     "source": "官方模型仓库",
     "url": "https://huggingface.co/tencent/Hy4-base"
+  },
+  {
+    "date": "2026-11-20",
+    "kind": "开放权重",
+    "name": "Hy4 指令版（开放权重）",
+    "note": "腾讯混元在 Hugging Face 开放 Hy4 指令版权重（tencent/Hy4，与基座仓 Hy4-base 分开发布）：约 774B 参数 BF16（含视觉编码器）的 MoE 多模态模型，支持思考模式与工具调用，采用 Tencent Hy License；仓库提交记显示权重于 2026-11-20 更新可用。",
+    "org": "Tencent",
+    "source": "官方模型仓库",
+    "url": "https://huggingface.co/tencent/Hy4"
   }
 ]
