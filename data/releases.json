@@ -4684,6 +4684,15 @@
     "url2": "https://huggingface.co/LiquidAI/LFM2-24B-A2B"
   },
   {
+    "date": "2026-02-24",
+    "kind": "开放权重",
+    "name": "Qwen3.5-35B-A3B",
+    "note": "Qwen3.5 家族的中等规模开放权重规格：35B 总参数、每词元 3B 激活的混合架构（Gated DeltaNet + 稀疏 MoE）多模态模型，带视觉编码器，262,144 原生上下文并可扩展至约 100 万词元，默认思考模式；Apache 2.0 许可，权重在 Hugging Face 发布（首发 397B-A17B 已于 2 月 16 日发布）。",
+    "org": "Alibaba",
+    "source": "官方模型卡",
+    "url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B"
+  },
+  {
     "date": "2026-03-03",
     "org": "Google",
     "name": "Gemini 3.1 Flash-Lite",
