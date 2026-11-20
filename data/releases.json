@@ -6401,5 +6401,14 @@
     "source": "官方发布说明",
     "stage": "Gemini API 付费层普遍可用",
     "url": "https://aistudio.google.com/docs/changelog#11-18-2026"
+  },
+  {
+    "date": "2026-11-18",
+    "kind": "开放权重",
+    "name": "Hy4（开放权重）",
+    "note": "腾讯混元在 Hugging Face 开放 Hy4 旗舰模型的预训练基座权重（Hy4-base）：MoE 多模态架构，BF16 权重约 771B 参数（含视觉编码器，每词元激活约 49B），仓库附带微调脚本与 Tencent Hy License 许可；此前官方已宣布将开放 Hy4 权重，本条为基座权重实际可下载的日期。",
+    "org": "Tencent",
+    "source": "官方模型仓库",
+    "url": "https://huggingface.co/tencent/Hy4-base"
   }
 ]
