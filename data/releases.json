@@ -6429,5 +6429,15 @@
     "source": "腾讯混元官方权重提交",
     "url": "https://huggingface.co/tencent/Hy4/commit/c10c0de5b6f850703fb0a90e65d1c32b558b9167",
     "url2": "https://huggingface.co/tencent/Hy4-FP8/commit/d063b5853ecf56e0776266dab28305fc17a137cc"
+  },
+  {
+    "date": "2026-11-20",
+    "kind": "开放权重",
+    "name": "Inkling 2 Mini",
+    "note": "Thinking Machines Lab 发布 Inkling 2 Mini：26.4B 总参数、3.4B 激活的 MoE 循环 Transformer（中间两个 6 层块循环三次），原生 NVFP4（末四层 MXFP8）训练与部署，约 20GB 显存可在本地运行；Apache 2.0 开放权重，发布当日可在 Tinker 使用，并同时公开可变循环研究模型 TML-d24-varloop-research。",
+    "org": "Thinking Machines Lab",
+    "source": "官方发布公告",
+    "url": "https://thinkingmachines.ai/news/inkling-2-mini/",
+    "url2": "https://huggingface.co/thinkingmachines/Inkling-2-Mini"
   }
 ]
