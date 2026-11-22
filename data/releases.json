@@ -6439,5 +6439,14 @@
     "source": "官方发布公告",
     "url": "https://thinkingmachines.ai/news/inkling-2-mini/",
     "url2": "https://huggingface.co/thinkingmachines/Inkling-2-Mini"
+  },
+  {
+    "date": "2026-11-22",
+    "kind": "开放权重",
+    "name": "LingSante-3.1-flash",
+    "note": "蚂蚁 InclusionAI 发布医疗领域的开放权重模型 LingSante-3.1-flash，基于 Ling-3.1-flash（560B 总参数、每词元 25B 激活的混合线性 MoE，1M 词元上下文）；经医疗混合预训练、中期训练、监督微调、任务强化学习与多教师 on-policy 蒸馏，面向医学推理、专业医疗沟通与长程医疗任务，MIT 许可。",
+    "org": "蚂蚁集团",
+    "source": "官方模型卡",
+    "url": "https://huggingface.co/inclusionAI/LingSante-3.1-flash"
   }
 ]
