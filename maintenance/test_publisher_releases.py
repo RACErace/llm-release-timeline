@@ -75,6 +75,40 @@ class PublisherReleaseTests(unittest.TestCase):
                                                   "2026-11-16", [dict(row, name="Qwen4-Max")]), 0)
         self.assertEqual(state["delivered"], {"previous": 99})
 
+    def test_zai_autoclaw_only_collects_new_models_with_coding_plan_access(self):
+        def card(slug, title, excerpt, stamp="2026-11-23"):
+            return (f'<article class="blog-card"><h2>'
+                    f'<a class="blog-card__link" href="/en/blog/model/{slug}/">{title}</a></h2>'
+                    f'<p class="blog-card__excerpt">{excerpt}</p>'
+                    f'<time datetime="{stamp}"></time></article>')
+
+        src = source("zai-autoclaw-models")
+        current = card("GLM-5.4", "Meet GLM-5.4 in AutoClaw.",
+                       "GLM-5.4, the latest flagship model, is now integrated into "
+                       "AutoClaw and supports use via the GLM Coding Plan, with 1.5x quota.")
+        html = current + card("GLM-5.3-FlashX-Legal", "GLM-5.3-FlashX-Legal",
+                              "The latest model is now available via the GLM Coding Plan.")
+        html += card("glm-5.3-flash", "GLM-5.3-Flash",
+                     "GLM-5.3-Flash is our first natively multimodal model in the GLM-5 family.")
+        html += card("glm-5.3", "GLM-5.3 in AutoClaw",
+                     "GLM-5.3 is the latest model and is now integrated in AutoClaw.")
+        row, = parse(src["id"], html)
+        self.assertEqual((row["model"], row["date"], row["kind"], row["url"]), (
+            "GLM-5.4", "2026-11-23", "受限开放",
+            "https://autoclaw.z.ai/en/blog/model/GLM-5.4/"))
+        snapshot = {row["id"]: row}
+        state = {"sources": {}, "pending": {}, "delivered": {}}
+        self.assertEqual(collector.accept_snapshot(state, src, snapshot, row["date"], []), 1)
+        self.assertEqual(collector.accept_snapshot(state, src, snapshot, row["date"], []), 0)
+        self.assertTrue(collector.already_catalogued(row, [dict(
+            row, url="https://z.ai/blog/glm-5.4")]))
+        self.assertFalse(collector.already_catalogued(row, [dict(
+            row, kind="开放 API")]))
+        with self.assertRaisesRegex(ValueError, "missing AutoClaw model blog cards"):
+            parse(src["id"], "<h1>Unexpected layout</h1>")
+        with self.assertRaisesRegex(ValueError, "missing AutoClaw model publication date"):
+            parse(src["id"], current.replace(' datetime="2026-11-23"', ''))
+
     def test_same_thinking_article_gains_a_dated_weight_event(self):
         src = source("thinking-news")
         index = ('<a class="post-item-link" href="/news/inkling-2-small/">'
