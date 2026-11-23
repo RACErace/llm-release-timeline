@@ -187,8 +187,44 @@ def thinking_releases(soup, url, get):
                 yield Release(name, when, "开放权重", target, update[2])
 
 
+def zai_autoclaw_models(soup, url):
+    """Only named GLM releases explicitly available through Coding Plan."""
+    cards = soup.select("article.blog-card")
+    if not cards:
+        raise ValueError("missing AutoClaw model blog cards")
+    for card in cards:
+        link = card.select_one("h2 a.blog-card__link[href]")
+        lead = card.select_one(".blog-card__excerpt")
+        if not link or not lead:
+            raise ValueError("missing AutoClaw model card title or excerpt")
+        target = first_party(url, link["href"])
+        path = urlsplit(target).path
+        # The complete official slug, not a version prefix inside a product name.
+        match = re.fullmatch(r"/en/blog/model/(GLM-\d+(?:\.\d+)+(?:-(?:Flash|Plus|Pro|Air))?)/?",
+                             path, re.I)
+        if not match:
+            continue
+        name = match[1].upper().replace("-FLASH", "-Flash").replace(
+            "-PLUS", "-Plus").replace("-PRO", "-Pro").replace("-AIR", "-Air")
+        excerpt = text(lead)
+        if not re.search(r"(?<![\w-])" + re.escape(name) + r"(?![\w.-])", text(link) + " " + excerpt, re.I):
+            continue
+        if not (
+            re.search(r"\b(?:latest|new)\s+(?:flagship\s+)?model\b", excerpt, re.I)
+            and re.search(r"\b(?:now integrated|now available|now accessible)\b", excerpt, re.I)
+            and re.search(r"\b(?:via|through|on)\s+(?:the\s+)?GLM Coding Plan\b", excerpt, re.I)
+        ):
+            continue
+        stamp = card.select_one("time[datetime]")
+        if not stamp:
+            raise ValueError("missing AutoClaw model publication date: " + path)
+        target = urlsplit(target)._replace(query="", fragment="").geturl()
+        yield Release(name, iso(stamp["datetime"]), "受限开放", target, excerpt)
+
+
 PARSERS = {
     "huawei-maas": huawei_releases,
     "tencent-tokenhub": tencent_releases,
     "bailian-releases": bailian_releases,
+    "zai-autoclaw-models": zai_autoclaw_models,
 }

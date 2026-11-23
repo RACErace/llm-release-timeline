@@ -93,6 +93,7 @@
     {"id":"mistral-api","org":"Mistral","url":"https://docs.mistral.ai/resources/changelogs.md","bootstrap_days":14,"format":"markdown"},
     {"id":"cohere-api","org":"Cohere","url":"https://docs.cohere.com/v2/changelog","bootstrap_days":14},
     {"id":"zai-api","org":"Z.ai","url":"https://docs.z.ai/release-notes/new-released","bootstrap_days":14},
+    {"id":"zai-autoclaw-models","org":"Z.ai","url":"https://autoclaw.z.ai/en/blog/model/","bootstrap_days":3},
     {"id":"mimo-api","org":"Xiaomi","url":"https://mimo.mi.com/docs/en-US/updates/model","bootstrap_days":14},
     {"id":"longcat-api","org":"美团","url":"https://longcat.chat/platform/docs/zh/ChangeLog.html","bootstrap_days":14},
     {"id":"minimax-news","org":"MiniMax","url":"https://www.minimax.io/blog","bootstrap_days":14},

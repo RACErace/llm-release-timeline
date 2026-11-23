@@ -6448,5 +6448,16 @@
     "org": "蚂蚁集团",
     "source": "官方模型卡",
     "url": "https://huggingface.co/inclusionAI/LingSante-3.1-flash"
+  },
+  {
+    "date": "2026-11-23",
+    "kind": "受限开放",
+    "name": "GLM-5.4",
+    "note": "智谱向 GLM Coding Plan 订阅用户开放 GLM-5.4。其 Loop Transformer 让 28 层共享权重的网络块运行两遍，并新增视觉能力；此条记录的是订阅上线，不是通用 API 或开放权重。",
+    "org": "Z.ai",
+    "source": "智谱官方技术博客",
+    "stage": "GLM Coding Plan 订阅可用",
+    "url": "https://z.ai/blog/glm-5.4",
+    "url2": "https://autoclaw.z.ai/en/blog/model/GLM-5.4/"
   }
 ]
