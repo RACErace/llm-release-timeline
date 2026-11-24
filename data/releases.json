@@ -1308,6 +1308,15 @@
     "source": "官方原文"
   },
   {
+    "date": "2023-12-11",
+    "kind": "开放权重",
+    "name": "Mistral 7B Instruct v0.2",
+    "note": "Mistral 发布 7B 指令模型的 v0.2 更新：取消 v0.1 对 system 提示的限制，并将上下文窗口从 8K 扩展至 32K，与 Mixtral 8x7B 同日开放，Apache 2.0 许可。",
+    "org": "Mistral",
+    "source": "官方模型仓库",
+    "url": "https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2"
+  },
+  {
     "date": "2023-12-12",
     "org": "Microsoft",
     "name": "Phi-2",
