@@ -6459,5 +6459,15 @@
     "stage": "GLM Coding Plan 订阅可用",
     "url": "https://z.ai/blog/glm-5.4",
     "url2": "https://autoclaw.z.ai/en/blog/model/GLM-5.4/"
+  },
+  {
+    "date": "2026-11-23",
+    "kind": "开放权重",
+    "name": "ERNIE 5.5 Flash Preview（开放权重）",
+    "note": "百度在 Hugging Face 开放 ERNIE 5.5 Flash Preview 权重：该版本是 ERNIE 5.5 Flash Base（280B 总参数、每词元激活 14B 的 MoE）的首个官方后训练版，支持 100 万词元上下文，仓库以 FP8 量化权重加 flashindexer 发布，Apache 2.0 许可；预览 API 已于 11 月 11 日在百度智能云千帆开放。",
+    "org": "Baidu",
+    "source": "官方模型仓库与文心发布公告",
+    "url": "https://huggingface.co/baidu/ERNIE-5.5-Flash-Preview",
+    "url2": "https://ernie.baidu.com/zh/release/ernie-5-5-flash-preview/"
   }
 ]
