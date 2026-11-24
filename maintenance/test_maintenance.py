@@ -163,6 +163,7 @@ class CollectorTests(unittest.TestCase):
             return {
                 "id": "official/" + name,
                 "lastModified": stamp,
+                "createdAt": stamp,
                 "pipeline_tag": "text-generation",
                 "siblings": [{"rfilename": "model.safetensors"}],
             }
