@@ -6,9 +6,12 @@ from urllib.parse import urlsplit
 import requests
 
 
+MODEL_OVERLAP = timedelta(hours=24)
+
+
 def recent_models(pages, modified_field, since):
     """Walk newest-first pages through the previous check, with a day of overlap."""
-    cutoff = datetime.fromisoformat(since) - timedelta(hours=24) if since else None
+    cutoff = datetime.fromisoformat(since) - MODEL_OVERLAP if since else None
     for rows in pages:
         if not isinstance(rows, list) or (not rows and not since):
             raise ValueError("expected a non-empty initial public organization listing")

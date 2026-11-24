@@ -19,7 +19,7 @@ from urllib3.util.retry import Retry
 from anthropic_releases import release as anthropic_release
 from baidu_releases import read_announcement as baidu_announcement, release_cards as baidu_cards
 from inception_releases import model_articles as inception_articles, publication_date as inception_date
-from model_hubs import huggingface_models, legacy_model, modelscope_models
+from model_hubs import MODEL_OVERLAP, huggingface_models, legacy_model, modelscope_models
 from model_scope import announcement_in_scope, hub_release_evidence, hub_metadata_in_scope
 from publisher_releases import PARSERS as PUBLISHER_PARSERS, thinking_releases
 from release_notes import PARSERS as NOTE_PARSERS, markdown_releases, stage
@@ -369,6 +369,58 @@ def page_items(source, raw, seen=None):
         )
 
 
+WEIGHT_FILE = re.compile(
+    r"(?:\.safetensors|pytorch_model[^/]*\.bin|consolidated[^/]*\.pth)$",
+    re.IGNORECASE,
+)
+HF_REVISION = re.compile(r"[a-f0-9]{40}")
+
+
+def hf_weight_files(row):
+    return {
+        name
+        for f in (row.get("siblings") or ())
+        if (name := f["rfilename"]) and WEIGHT_FILE.search(name)
+        and "adapter" not in name.lower()
+    }
+
+
+def hf_recent_weight_evidence(row, item, source, since, seen):
+    """Do not treat a newly seen repo modification as a new weights release."""
+    cutoff = datetime.fromisoformat(since) - MODEL_OVERLAP
+    created = row.get("createdAt")
+    if created and datetime.fromisoformat(created) >= cutoff:
+        return True
+    if item["kind"] == "开放权重" and key(source["id"], row["id"] + "|受限开放") in (seen or ()):
+        return True
+
+    # Old shells can still launch today. Compare to the immutable revision just
+    # before the overlap window, never to a commit title or its last-edit date.
+    # If no older snapshot can be proved, leave the event to official news or
+    # manual review instead of reporting an unverified fresh upload.
+    revision = row.get("sha", "")
+    if not isinstance(revision, str) or not HF_REVISION.fullmatch(revision):
+        return False
+    base = "https://huggingface.co/api/models/" + quote(row["id"], safe="/")
+    try:
+        commits = get(f"{base}/commits/{revision}").json()
+        if not isinstance(commits, list) or not commits or commits[0]["id"] != revision:
+            raise ValueError("unexpected Hugging Face revision history")
+        prior = next((c["id"] for c in commits if datetime.fromisoformat(c["date"]) < cutoff), None)
+        if prior is None:
+            return False
+        if not HF_REVISION.fullmatch(prior):
+            raise ValueError("invalid Hugging Face historical revision")
+        old = get(f"{base}/revision/{prior}").json()
+        if old.get("sha") != prior or not isinstance(old.get("siblings"), list):
+            raise ValueError("unexpected Hugging Face historical file list")
+        return not hf_weight_files(old)
+    except requests.HTTPError as exc:
+        if exc.response is not None and exc.response.status_code in {401, 403, 404}:
+            return False
+        raise
+
+
 def hub_signal(source, row):
     hf = source["channel"] == "huggingface"
     repo = row["id"]
@@ -379,16 +431,7 @@ def hub_signal(source, row):
     if not hub_metadata_in_scope(row):
         return None
     if hf:
-        files = [f["rfilename"] for f in row.get("siblings", [])]
-        if not any(
-            re.search(
-                r"(?:\.safetensors|pytorch_model[^/]*\.bin|consolidated[^/]*\.pth)$",
-                f,
-                re.IGNORECASE,
-            )
-            and "adapter" not in f.lower()
-            for f in files
-        ):
+        if not hf_weight_files(row):
             return None
     elif "library:safetensors" not in tags and not row.get("params"):
         return None
@@ -474,6 +517,10 @@ def hub_items(source, since, seen):
     for row, updated in listing(source["owner"], since, request):
         item = hub_signal(source, row)
         if not item or (seen is not None and item["id"] in seen):
+            continue
+        if since and source["channel"] == "huggingface" and not hf_recent_weight_evidence(
+            row, item, source, since, seen
+        ):
             continue
         # The first scan only establishes an ID baseline. Verify previously
         # unseen listings against the publisher's card before queueing them.
