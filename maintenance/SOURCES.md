@@ -14,7 +14,7 @@
 | Google Gemini API 更新日志 | 当前 AI Studio 官方日志；保留完整型号、日期和发布阶段，不把图像、视频、Embedding 或 Decision 专用模型混入语言模型 |
 | DeepSeek、xAI、Kimi 官方更新日志 | 完整型号与所在日期区段；区分 Speciale、Exp、Code、Highspeed 等版本，不截取为型号前缀 |
 | Inception Labs、MiniMax 官方博客 | 带日期的语言模型发布卡片；过滤获奖文章、客户端功能与音视频生成产品 |
-| Mistral API 更新日志 | 自有语言模型的发布与预览；不采集第三方模型转售或把“即将开放权重”当成已开放 |
+| Mistral API [发布说明](https://docs.mistral.ai/resources/release-notes) | 列表日期与详情中的 API 模型 ID；沿用旧来源进度，不回扫历史，只采集自有语言模型，不采集第三方转售或预告权重 |
 | Cohere、Z.ai 官方更新日志 | 自有语言模型及其官方版本；排除检索、嵌入等专用产品 |
 | 智谱 AutoClaw 官方模型博客 | 仅补充采集明确写明通过 Coding Plan 开放的新 GLM 模型；不把单纯的 AutoClaw 集成、额度活动或技术介绍算作发布。不代替智谱技术博客或 API 更新日志 |
 | Xiaomi MiMo、LongCat 官方更新日志 | 模型仓之前的 API 发布、预览与正式版本 |

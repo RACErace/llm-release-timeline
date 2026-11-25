@@ -4,6 +4,8 @@ import re
 from datetime import datetime
 from urllib.parse import quote
 
+from bs4 import BeautifulSoup
+
 from model_scope import announcement_in_scope
 from publisher_releases import Release, first_party, iso, named_tables, text
 from release_text import headline_model, normalized_text
@@ -217,6 +219,56 @@ def doubao(soup, url):
             yield Release(name, stamp, kind, url + "#" + h["id"], row.get("其它说明", name))
     if not found:
         raise ValueError("missing Doubao release month")
+
+
+MISTRAL_FAMILY = r"(?:mistral|mixtral|magistral|ministral|codestral|devstral|leanstral|mathstral)"
+MISTRAL_ID = re.compile(rf"{MISTRAL_FAMILY}(?:-[a-z0-9][a-z0-9.]*)+", re.I)
+MODEL_AVAILABILITY = re.compile(r"\b(?:releas(?:e|ed)|availab(?:le|ility)|introduc(?:e|ing)|launch(?:ed|es)?)\b", re.I)
+
+
+def mistral(soup, url, fetch, cutoff):
+    """Read dated model cards and take API IDs from their official detail pages."""
+    cards = soup.select('main a[href^="/resources/release-note/"]')
+    if not cards:
+        raise ValueError("missing Mistral release-note cards")
+    for card in cards:
+        heading, stamp = card.select_one("h3"), card.select_one("time[datetime]")
+        if not heading or not stamp:
+            raise ValueError("missing Mistral release-note headline/date")
+        title = text(heading)
+        tags = {text(tag).casefold() for tag in stamp.parent.select("span")}
+        if "models" not in tags or tags.isdisjoint({"what's new", "improvement"}):
+            continue
+        if not re.match(rf"{MISTRAL_FAMILY}(?:[- ]|$)", title, re.I) or not MODEL_AVAILABILITY.search(title):
+            continue
+        if not announcement_in_scope(title) or re.search(r"\b(?:moderat\w*|audio|transcri\w*|deprecat\w*|pricing)\b", title, re.I):
+            continue
+        day = english_date(text(stamp))
+        if day != datetime.fromisoformat(stamp["datetime"]).date().isoformat():
+            raise ValueError("inconsistent Mistral release-note dates")
+        # The old Markdown source has already done its historical scan. Preserve
+        # its checkpoint, and allow same-day entries (the publisher gives no time).
+        if cutoff and day < cutoff:
+            continue
+        target = first_party(url, card["href"])
+        response = fetch(target)
+        first_party(url, response.url)
+        article = BeautifulSoup(response.content, "html.parser").select_one("main article")
+        if not article:
+            raise ValueError("missing Mistral release-note article")
+        for block in article.select("p, li"):
+            if block.name == "li" and block.find("p"):
+                continue
+            lead = text(block)
+            if not MODEL_AVAILABILITY.search(lead) or re.search(r"will be|coming soon|deprecat|retir", lead, re.I):
+                continue
+            for name in sorted({text(code) for code in block.select("code")}):
+                if not MISTRAL_ID.fullmatch(name) or not announcement_in_scope(name):
+                    continue
+                if re.search(r"audio|video|tts|transcri|moderat|computer-use", name, re.I):
+                    continue
+                kind = stage(title + " " + lead, "发布" if re.search(r"\breleased?\b", title, re.I) else "开放 API")
+                yield Release(name, day, kind, target, lead)
 
 
 def markdown_releases(raw, url, provider):
