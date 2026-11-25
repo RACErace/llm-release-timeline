@@ -5,7 +5,7 @@ import json
 import re
 import threading
 from copy import deepcopy
-from datetime import datetime
+from datetime import UTC, datetime, timedelta
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.parse import quote, urljoin, urlsplit
@@ -22,7 +22,7 @@ from inception_releases import model_articles as inception_articles, publication
 from model_hubs import MODEL_OVERLAP, huggingface_models, legacy_model, modelscope_models
 from model_scope import announcement_in_scope, hub_release_evidence, hub_metadata_in_scope
 from publisher_releases import PARSERS as PUBLISHER_PARSERS, thinking_releases
-from release_notes import PARSERS as NOTE_PARSERS, markdown_releases, stage
+from release_notes import PARSERS as NOTE_PARSERS, markdown_releases, mistral, stage
 from release_text import headline_model, normalized_text
 
 HERE = Path(__file__).resolve().parent
@@ -263,7 +263,7 @@ def meta_research_items(source, soup):
         yield signal(source, identity, title, url, kind, date, title, model=model)
 
 
-def page_items(source, raw, seen=None):
+def page_items(source, raw, seen=None, *, since=None):
     if source.get("format") == "markdown":
         raw = raw.decode("utf-8") if isinstance(raw, bytes) else raw
         for release in markdown_releases(raw, source["url"], source["org"]):
@@ -283,12 +283,15 @@ def page_items(source, raw, seen=None):
             yield signal(source, identity, model, url, kind, date, title, model=model)
         return
     parsers = PUBLISHER_PARSERS | NOTE_PARSERS
-    if source["id"] in parsers or source["id"] == "thinking-news":
-        releases = (
-            thinking_releases(soup, source["url"], get)
-            if source["id"] == "thinking-news"
-            else parsers[source["id"]](soup, source["url"])
-        )
+    if source["id"] in parsers or source["id"] in {"thinking-news", "mistral-api"}:
+        if source["id"] == "mistral-api":
+            cutoff = (datetime.fromisoformat(since).date() if since else
+                      datetime.now(UTC).date() - timedelta(days=source["bootstrap_days"]))
+            releases = mistral(soup, source["url"], get, cutoff.isoformat())
+        elif source["id"] == "thinking-news":
+            releases = thinking_releases(soup, source["url"], get)
+        else:
+            releases = parsers[source["id"]](soup, source["url"])
         for release in releases:
             identity = "|".join((release.name.casefold(), release.date, release.kind))
             if release.kind == "版本更新" and len(release.date) < 10:
@@ -538,6 +541,6 @@ def read_source(source, since, seen=None):
         rows = (
             feed_items(source, response.content)
             if source["channel"] == "feeds"
-            else page_items(source, response.content, seen)
+            else page_items(source, response.content, seen, since=since)
         )
     return {r["id"]: r for r in rows if announcement_in_scope(r.get("model") or r["name"], r["url"])}

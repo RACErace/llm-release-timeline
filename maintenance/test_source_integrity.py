@@ -4,6 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 from xml.etree import ElementTree as ET
 
@@ -192,13 +193,65 @@ class ReleaseNoteTests(unittest.TestCase):
     def test_markdown_release_does_not_import_resales_or_promised_weights(self):
         md = '# Changelog\n\n## 2026-10-06\n\n- Mistral Large 4 (`mistral-large-4`) is now available in Public Preview.\n'
         md += '  - Open weights are coming soon.\n\n- Z.ai GLM (`zai-glm-5`) is now available.\n'
-        item, = page("mistral-api", md)
+        item, = sources.page_items(dict(source("mistral-api"), format="markdown"), md)
         self.assertEqual((item["model"], item["kind"]), ("mistral-large-4", "预览"))
         md = '# Release notes\n\n## November 12, 2026 {% id="11-12-2026" %}\n'
         md += '* **Gemini 4 Hydrogen (`gemini-4-hydrogen`) GA**: Released Gemini 4 Hydrogen.\n'
         md += '* Released `gemini-omni-1.2-flash`, a video generation model.\n'
         item, = page("gemini-api", md)
         self.assertEqual((item["model"], item["kind"]), ("gemini-4-hydrogen", "发布"))
+
+    def test_mistral_html_migration_only_fetches_new_first_party_releases(self):
+        def card(slug, title, day, labels=("What's new", "Models")):
+            tags = "".join(f"<span>{label}</span>" for label in labels)
+            return (f'<a href="/resources/release-note/{slug}"><div>'
+                    f'<time datetime="2026-11-{day}T00:00:00.000Z">November {day}, 2026</time>'
+                    f'{tags}</div><h3>{title}</h3></a>')
+
+        html = "<main>" + "".join([
+            card("old", "Mistral Small 4 released", "18"),
+            card("resale", "Z.ai GLM 5.3 Flash available on the API", "24"),
+            card("ocr", "Mistral OCR 4.1 available", "24"),
+            card("retired", "Leanstral 1.5 retired", "24", ("Deprecation", "Models")),
+            card("vibe", "Mistral Vibe released", "24", ("What's new", "Vibe Code")),
+            card("large-preview", "Mistral Large 4 available in Public Preview", "24"),
+            card("large-ga", "Mistral Large 4 is now Generally Available", "25", ("Improvement", "Models")),
+        ]) + "</main>"
+        cfg = source("mistral-api")
+        prior = "2026-11-24T16:32:15+00:00"
+        base = "https://docs.mistral.ai/resources/release-note/"
+        preview = base + "large-preview"
+        ga = base + "large-ga"
+
+        def fetch(url):
+            self.assertIn(url, {preview, ga})
+            lead = "is now available in Public Preview" if url == preview else "is now generally available"
+            body = (f"<main><article><p>Mistral Large 4 (<code>mistral-large-4</code>) {lead}.</p>"
+                    "<p><code>zai-glm-5</code> is also available.</p>"
+                    "<p><code>mistral-future-5</code> will be available soon.</p></article></main>")
+            return SimpleNamespace(url=url, content=body.encode())
+
+        with patch.object(sources, "get", side_effect=fetch) as get:
+            rows = list(sources.page_items(cfg, html, since=prior))
+            self.assertEqual([call.args[0] for call in get.call_args_list], [preview, ga])
+        self.assertEqual([(row["date"], row["model"], row["kind"], row["url"]) for row in rows], [
+            ("2026-11-24", "mistral-large-4", "预览", preview),
+            ("2026-11-25", "mistral-large-4", "开放 API", ga),
+        ])
+
+        # The old Markdown identity is preserved, even though the evidence URL changed.
+        md = "# Changelog\n\n## 2026-11-24\n\n- Mistral Large 4 (`mistral-large-4`) is available in Public Preview.\n"
+        old, = sources.page_items(dict(cfg, format="markdown"), md)
+        self.assertEqual(old["id"], rows[0]["id"])
+        state = {"sources": {cfg["id"]: {"seen": [old["id"]], "checked": prior}}, "pending": {}}
+        snapshot = {row["id"]: row for row in rows}
+        self.assertEqual(collector.accept_snapshot(state, cfg, snapshot, "2026-11-25T01:25:00+00:00", []), 1)
+        self.assertEqual(collector.accept_snapshot(state, cfg, snapshot, "2026-11-25T02:25:00+00:00", []), 0)
+
+        with patch.object(sources, "get", return_value=SimpleNamespace(url=preview, content=b"<main>error</main>")):
+            with self.assertRaisesRegex(ValueError, "article"):
+                list(sources.page_items(cfg, html, since=prior))
+
 
     def test_longcat_preview_and_formal(self):
         html = '<main><h2>版本: 2026-11-02</h2><h3 id="final">LongCat-2.5 上线</h3>'
